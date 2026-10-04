@@ -1,8 +1,8 @@
 # 01：Python 使用者的 JavaScript 阅读桥梁
 
-[返回伴读入口](README.md) · 下一章：[历史阅读路线](02-history-reading-route.md)
+[返回讲义入口](README.md) · 配合：[代码与装配讲义](03-architecture-and-entrypoints.md)
 
-你的目标首先是看懂项目控制流。下面只覆盖本项目高频语法；Python 代码是 **teaching** 类比，不能直接替换 JavaScript 实现。
+这是按需查询的语言补充。先沿八讲阅读项目原文；遇到不熟悉的 JS 表达式，再查对应小节。下面只覆盖本项目高频语法；Python 代码是 **teaching** 类比，不能直接替换 JavaScript 实现。
 
 ## 1. 文件、运行环境与依赖
 

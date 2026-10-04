@@ -1,57 +1,51 @@
-# qwen-audio-agent 项目伴读：给 Python 使用者的演进式阅读路线
+# qwen-audio-agent 项目理解讲义：给 Python 使用者
 
-**先把握项目目标：qwen-audio-agent 要让用户通过实时语音与一个持续在场的助理交流，并在它办事期间继续对话。** 普通对话、自然打断、前台工具和后台执行共同服务这段体验。当前重点应用是桌面办公，也提供座舱、客服等扩展示例。产品定位以[项目 README](../../README_ZH.md)为依据，详见[系统地图](00-system-overview.md)。
+这份讲义把散落的项目文档串成一条学习路线。**项目已有的定义、架构、配置、协议和使用说明，直接打开原文阅读；这里补充阅读目的、文档之间的联系、Python 类比和检查题。** 原文中的完整条件和例外保留在链接目标中。
 
-**可以用 Git 历史来逐步理解这个项目。推荐的方式是：先认识产品目标和一次普通对话，再建立系统地图，按架构转折点回看历史，每一阶段回到代码基线验证。** 发布标签适合作为阶段结束的快照，功能提交适合解释某个设计为什么出现。
+## 现在从哪里开始
 
-这份伴读假设你会 Python、尚不熟悉 JavaScript。目标是让你能自己追踪一次实时对话、一项前台工具调用、一项后台工作及其结果回流，理解模块怎样支持产品体验，并知道以后应到哪里查问题或增加能力。
+先打开项目自带的[架构总览](../architecture/overview.zh.md)，只读“核心逻辑架构”和“Gateway 与客户端”。然后看[第 1 讲的解读](00-system-overview.md)：借助 Python 的服务对象、接口和进程概念，理解原文中的职责划分。
 
-源码分析日期：**2026-10-03，Asia/Shanghai**；产品定位与阅读顺序修订于 **2026-10-04**。代码基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`；包版本 `2.0.1`。该基线的本地历史完整，共 810 条可达提交，比 `v2.0.1` 标签多一次提交。后续伴读文档提交不改变这个源码基线。详见[证据与版本](evidence-and-history.md)。
+**这一步的目标只有一个：说清系统由谁负责交流、谁负责衔接、谁负责办事，以及客户端和 Gateway 放在哪里。** 检查题答清后，再进入下一讲。
 
-## 为什么不用“从第一条提交开始全部读”
+## 八讲主线
 
-最早的 `edb2365` 已有 137 个文件、约 2.48 万行新增，包含网关、语音、后台、桌面和 TUI。仓库记录从一个已经成形的系统开始，无法还原更早的从零开发过程。历史中还有合并、补丁、回退、发版与大量文档变更；逐条读会失去主线。
+| 顺序 | 讲义 | 要解决的问题 | 本讲主要原文 |
+| --- | --- | --- | --- |
+| 1 | [整体架构](00-system-overview.md) | 项目目标是什么，各角色怎样分工？ | [项目 README](../../README_ZH.md)、[架构总览](../architecture/overview.zh.md) |
+| 2 | [架构怎样落到代码与启动入口](03-architecture-and-entrypoints.md) | 从哪里启动，谁创建和连接各模块？ | [源码导航](../../server/src/README.md)、[依赖方向](../architecture/deep-dive.zh.md#9-依赖方向) |
+| 3 | [实时对话与前台工具](flows/voice-and-tools.md) | 一句话如何得到回复，何时调用工具？ | [对话与附件](../guides/conversation.zh.md)、[实时边界](../architecture/deep-dive.zh.md#3-实时边界) |
+| 4 | [后台工作与结果回流](flows/tasks-permissions-and-delivery.md) | 对话怎样与办事并行，权限和结果如何衔接？ | [后台工作与授权](../guides/tasks.zh.md)、[详细架构](../architecture/deep-dive.zh.md) |
+| 5 | [记忆、知识与上下文](subsystems/memory-knowledge-and-context.md) | 助手怎样记住用户，资料从哪里来？ | [个性化](../reference/personalization.zh.md)、[记忆](../reference/memory.zh.md)、[资料库](../guides/knowledge.zh.md) |
+| 6 | [状态、持久化与恢复](data/state-and-persistence.md) | 谁保存什么，换客户端或重启后发生什么？ | [配置与数据目录](../configuration.zh.md#配置与数据目录)、[回放](../gateway-protocol.zh.md#8-回放错误与限制) |
+| 7 | [客户端、扩展与场景](subsystems/clients-and-extensions.md) | 如何换模型、后台、界面，Python 能接在哪？ | [扩展总览](../extensions.zh.md)、[客户端协议](../gateway-protocol.zh.md)、[示例索引](../scenarios/index.zh.md) |
+| 8 | [运行、诊断与验证](operations/runtime-and-tests.md) | 怎样验证自己理解的链路，问题属于哪层？ | [安装](../getting-started/install.zh.md)、[快速开始](../getting-started/quickstart.zh.md)、[故障排查](../operations/troubleshooting.zh.md) |
 
-本伴读选择 12 个认知阶段。每阶段都解释：当时解决什么问题、增加哪个概念、看哪次提交、当前实现在哪里，以及读完能回答什么。这个阶段划分是教学安排，不是项目官方的版本分类。
+每讲按“带着问题打开原文 → 阅读讲义补充 → 回答检查题 → 按需看源码”进行。源码定位是验证入口，第一遍只看本讲指定的少量符号。
 
-## 从哪里开始
+## 按自己的时间选择
 
-| 时间 | 路径 | 达成目标 |
+| 时间 | 阅读范围 | 预期收获 |
 | --- | --- | --- |
-| 5 分钟 | [系统地图](00-system-overview.md)的产品目标、使用场景与架构图 | 说清项目目标，区分直接对话、前台工具和后台工作 |
-| 30 分钟 | 系统地图 → [Python 到 JavaScript](01-python-to-javascript.md)的第 1～5 节 → [入口与装配](03-architecture-and-entrypoints.md) → [语音流程](flows/voice-and-tools.md)的主路径 | 找到入口，解释一次对话如何进入模型、返回声音，以及工具分支在哪里 |
-| 深读 | Python 到 JavaScript → [12 阶段历史路线](02-history-reading-route.md) → [后台工作与结果回流](flows/tasks-permissions-and-delivery.md) → 各专题 → [练习与答案](exercises/reading-workbook.md) | 用源码解释实时交流与持续工作如何协作，以及状态、权限、投递和恢复 |
+| 5 分钟 | 架构总览前两节 + 第 1 讲 | 建立整体职责地图 |
+| 30 分钟 | 第 1～3 讲的必读原文和补充；遇到语法查 JS 桥梁 | 把职责地图接到启动、普通对话和工具调用 |
+| 分次完整学习 | 按八讲顺序，每次完成一讲的检查题 | 覆盖架构、核心流程、数据、部署与扩展；再用历史解释演进 |
 
-建议每次只完成一个阶段。先读该阶段的问题，再读 2～4 个定位符号；能回答检查题之后再看 diff。第一次阅读不需要安装全部后台、接入全部模型，也不需要先掌握 React。
+时间是阅读安排，不是保证。遇到不熟悉的 JS 表达式，查[Python 到 JavaScript 阅读桥梁](01-python-to-javascript.md)的对应节即可；它是本讲义针对你的语言背景补充的教材。
 
-## 章节导航
+## 随时可查的附录
 
-- [00：系统地图与术语](00-system-overview.md)：项目做什么，哪些能力在边界之外。
-- [01：Python 使用者的 JavaScript 阅读桥梁](01-python-to-javascript.md)：从真实项目片段理解语法与异步行为。
-- [02：按历史演进的 12 阶段](02-history-reading-route.md)：发布节点、功能提交、当前代码和检查题。
-- [03：架构、进程与执行入口](03-architecture-and-entrypoints.md)：启动、依赖注入、职责与生命周期。
-- [流程 A：语音、模型与工具](flows/voice-and-tools.md)：音频如何变成工具调用，工具结果如何续答。
-- [流程 B：任务、权限与结果投递](flows/tasks-permissions-and-delivery.md)：受理、排队、后台、取消与播报。
-- [专题：记忆、知识与上下文](subsystems/memory-knowledge-and-context.md)：偏好、事实、清单、历史与资料的区别。
-- [专题：客户端和扩展边界](subsystems/clients-and-extensions.md)：Web、桌面、TUI、手机，以及 Python 可以参与的位置。
-- [状态与持久化](data/state-and-persistence.md)：谁拥有事实，文件存什么，重启能恢复什么。
-- [运行与测试](operations/runtime-and-tests.md)：如何先读再跑，以及本次验证范围。
-- [练习与答案](exercises/reading-workbook.md)：分阶段任务、源码检查题和可运行的 Python 教学模型。
-- [关键代码索引](key-code-index.md)：按职责定位文件、符号和准确行号。
-- [证据与版本](evidence-and-history.md)：标签表、参考来源、分析方法与局限。
+- [原文阅读地图](source-reading-map.md)：按主题汇总原项目文档，标明用途与进阶入口。
+- [Python 到 JavaScript](01-python-to-javascript.md)：导入、对象、异步、回调、事件、类与少量 React。
+- [12 阶段 Git 历史路线](02-history-reading-route.md)：已有整体地图后，回看重要版本和功能转折。
+- [学习练习](exercises/reading-workbook.md)：各讲检查题的参考依据，以及可选 Python 教学模型。
+- [代码定位索引](key-code-index.md)：文件、符号、基线行号与职责。
+- [证据与版本](evidence-and-history.md)：源码基线、分析范围、测试记录与标签表。
 
-## 如何读代码证据
+## 怎么区分原文与补充
 
-正文的代码链接固定到上述提交的 GitHub 行号，避免 `main` 更新后错位；[代码索引](key-code-index.md)还提供本地文件链接。行号只对本次基线成立。离线时用文件名与符号搜索即可。
+**原文**是项目维护者提供的文档与配置；链接旁写清应读的章节。**讲义补充 / teaching** 是面向 Python 使用者的解释、类比与练习，帮助理解原文，不是新的项目契约。**源码定位 / static** 用于核对文档中的机制。已执行的测试单独标明日期与范围，未执行的只作为阅读入口。
 
-- **static**：直接核对源码、配置或 Git diff。
-- **test-run**：本次运行的现有自动化测试通过；不代表真实模型或硬件已验证。
-- **test-source**：阅读了测试用例，但本次未执行该文件。
-- **teaching**：帮助理解的 Python 模型或类比，不是生产实现。
-- **inferred**：推断，必须附上待验证条件；本伴读不会用它证明真实外部服务的表现。
+讲义修订日期：2026-10-04，Asia/Shanghai。源码分析基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`（包版本 `2.0.1`）；首次源码分析日期为 2026-10-03。其后的提交只修改本讲义，源码行号仍按该基线核对。原文使用仓库内相对链接；固定源码行号使用该提交的链接。
 
-## 本伴读的边界
-
-当前核心调用链已核对代码。GitNexus 临时索引对应当前基线，辅助确认符号和调用者；全文搜索未启用，图中的动态回调和截断路径需要用源码补证。真实云端语音延迟、麦克风权限、远程连接、后台 Agent 登录和桌面打包未在本次验证中运行。
-
-参考了你提供的 [zread 项目概述](https://zread.ai/QwenAudio/qwen-audio-agent)，成功提取的是开篇概述，不是完整目录的逐章内容。项目自带的架构文档、协议、配置和代码是本伴读的主要依据。既有用户手册负责操作说明，本伴读负责解释“为什么这样组织、代码怎样实现”。
+原文、历史规划、示例和代码有不同语境。遇到不一致，记录具体章节，回到该基线的配置、装配和实现核对。真实模型、音频设备和远端 Agent 的表现仍需实际接入；本讲义的验证范围见[证据记录](evidence-and-history.md)。

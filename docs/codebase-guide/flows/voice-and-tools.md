@@ -1,111 +1,63 @@
-# 流程 A：从麦克风到模型工具，再到回复
+# 第 3 讲：实时对话与前台工具
 
-[返回伴读入口](../README.md) · 后续：[Task 与结果投递](tasks-permissions-and-delivery.md)
+[讲义入口](../README.md) · 上一讲：[启动与装配](../03-architecture-and-entrypoints.md) · 下一讲：[后台工作](tasks-permissions-and-delivery.md)
 
-本页从普通实时对话开始：用户说话，模型理解并回应，客户端播放；用户可以继续补充或打断。只有请求需要当前可用的工具时，才进入工具分支；需要后台能力时，才通过工具转入[流程 B](tasks-permissions-and-delivery.md)。这三条路径的选择由前台模型结合指令与实际能力决定，规则见 [PROMPT 的 Routing](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/config/frontend-agent/PROMPT.md#L24)。
+本讲回答：**用户的一次输入怎样得到回复？何时直接交流，何时使用工具？**
 
-## 1. 先分开两条连接
+## 1. 先从用户行为读原文
 
-```text
-客户端音频 / 文本 / 图片
-  → Gateway Client Protocol 接入
-  → 每条连接的前台会话运行时
-  → Realtime Provider 的模型连接
-  → 模型音频 / 转写 / 工具事件
-  → 运行时处理与公开事件投影
-  → 客户端展示、排队播放、回传播放事实
-```
-
-客户端到 Gateway、Gateway 到模型供应商是不同连接。它们的连接状态、认证、采样率和恢复机制分别维护。服务收到某个音频块，也不意味着该块已经被识别成完整文本。
-
-本页主要以默认 WebSocket 客户端和 PCM 音频路径讲解。WebRTC 提供另一种媒体入口，不能把此处所有线上编码细节原样套用到它；共享的运行时语义见[客户端专题](../subsystems/clients-and-extensions.md)。
-
-代码依据：[useRealtimeVoice](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/useRealtimeVoice.js#L203)、[GatewayClient](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/gateway/client-sdk.mjs#L63)、[attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62)、[createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)、[RealtimeFrontend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-provider.mjs#L111)。
-
-## 2. 客户端采集和协商
-
-Web 客户端的音频采集相关代码在 `web/src/realtime/`。麦克风由 AudioWorklet 路径采样；重采样器跨分块保留处理状态。普通 WebSocket 音频路径会把 PCM 数据编码后放入协议事件发送，并控制发送缓存，防止慢连接无限积压。
-
-先读 [createStreamingResampler](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/audio.js#L23) 和[麦克风采集](../../../web/src/realtime/microphone-capture.js)，再读 [useRealtimeVoice](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/useRealtimeVoice.js#L203) 的采集、连接和播放回调。输入与输出采样率由模型能力和握手信息参与决定；不要认定所有 Provider 都用同一个固定采样率。
-
-GatewayClient 先建立 Socket，再发送 `session.hello`；收到 `session.ready` 才完成 GCP 握手。能力协商决定哪些输入、命令和回执可以使用。模型可用性另由实时连接状态表示。实现见 [GatewayClient](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/gateway/client-sdk.mjs#L63) 与 [GATEWAY_CLIENT_PROTOCOL_VERSION / protocol definitions](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/protocol/gateway-client-protocol.mjs#L13)。
-
-## 3. Transport 把网络输入交给会话运行时
-
-[attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62) 接受已认证的 owner 和逻辑 session，创建前台 Session，处理连接归属及消息路由。`send`、任务事件投影、响应完成观察等以回调形式注入。
-
-[createFrontendRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/frontend-runtime.mjs#L12) 持有共享依赖，工具来源只初始化一次；每次 `createSession()` 调用 [createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)。这个拆分使 Session 不必知道 Socket 或设备 Token，Transport 也不必装配搜索、知识库和模型工具。
-
-每条连接有自己的音频轮次、响应管理、工具调用及 SessionTaskCoordinator。应用的 Task 状态则由共享 TaskManager 持有；连接级状态和工作级状态不能互相覆盖。
-
-## 4. Provider 的职责是转换，不是替业务作决定
-
-[RealtimeFrontend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-provider.mjs#L111) 封装模型会话操作；[RealtimeProviderRegistry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/providers/provider-registry.mjs#L261) 校验和登记具体 Provider。`voice/providers/` 中的实现负责端点、认证、Session 配置、模型能力、事件转换及协议方法。
-
-模型供应商的原生转写、音频和工具事件经过适配进入通用运行时。前台模型是否直接回答、调用搜索工具还是提交 `spawn_thinking`，取决于当前上下文、指令、可用工具与模型行为；不是 TaskManager 对每句 ASR 进行固定关键词分类。
-
-Python 理解锚点：Provider 类似外部客户端适配层；RealtimeFrontend 类似统一客户端门面；会话运行时类似拥有业务状态和回调的一次长连接服务实例。
-
-## 5. 一次工具调用的真实入口
-
-```mermaid
-sequenceDiagram
-  participant M as 实时模型
-  participant P as Realtime Provider / Frontend
-  participant S as Session Runtime
-  participant H as ToolCallHandler
-  participant E as 工具执行器与具体 handler
-  M->>P: 原生工具参数事件
-  P->>S: 归一化 function_call_arguments.done
-  S->>H: handle(event, callContext)
-  H->>E: 查定义、解析校验、检查能力和重复调用
-  E-->>H: 结果或失败
-  H->>P: function output；安排必要续答
-  P->>M: 工具结果
-  M-->>S: 后续回复 / 音频 / 新工具调用
-```
-
-依据：[handleEvent: function_call_arguments.done](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L575) → [ToolCallHandler.handle](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/tool-call-handler.mjs#L481) → [FrontendToolRegistry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/frontend-tool-registry.mjs#L107)、[FrontendToolExecutor](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/frontend-tool-registry.mjs#L166) → [ToolCallHandler.sendOutput](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/tool-call-handler.mjs#L266)。实现包含回复占用、延迟工具结果与重复调用处理，因此图表示语义路径，不代表每条操作都同步依次完成。
-
-工具有三件不同的事：**定义 schema** 让模型知道怎样调用；**可用性** 决定当前会话是否提供；**handler** 执行真实动作并校验。仅在 Prompt 中写一个工具名，不会创建实际能力。
-
-核心工具、可选功能与动态工具都要通过实际能力约束。未配置后台时不应提供可执行的后台委派能力；权限回复工具只在有真实请求时出现。定义与装配见 [frontendTools](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/frontend-tools.mjs#L109)、[optionalFrontendFeatures](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/optional-features.mjs#L6)、[前台 MCP](../../../server/src/frontend/tools/mcp/frontend-mcp-client.mjs)。
-
-`ToolCallHandler` 的输入包含 callId、turnId、responseId 和轮次 generation。这些信息用于判断关联和过期，不是供最终用户背诵的业务字段。
-
-## 6. 工具执行分成哪些情况
-
-| 情况 | 例子 | 生命周期 |
+| 顺序 | 原文 | 本次阅读重点 |
 | --- | --- | --- |
-| 即时读取或简单操作 | 时间、Task 状态、清单 | handler 返回结果，模型据此回答 |
-| 前台外部工具 | 网页读取、知识检索、MCP / OpenAPI | 有真实 I/O 和失败处理；通常不创建后台办事 Task |
-| 后台受理 | `spawn_thinking` | 先创建 Task、给模型受理回执，工作以后完成 |
-| 已有工作的控制 | 取消、权限回复、补充输入 | 针对真实 task/request；不能自动创建另一项工作 |
+| 1 | [对话与附件](../../guides/conversation.zh.md) | 语音、文字、发送、静音、附件与新会话分别意味着什么 |
+| 2 | [详细架构：实时边界](../../architecture/deep-dive.zh.md#3-实时边界) | 前台可以直接处理哪些请求，工具如何随能力提供 |
+| 3 | [前台核心 Prompt](../../../config/frontend-agent/PROMPT.md) | `Routing` 和 `Voice interaction`；这是中文规则，可以先于 JS 阅读 |
 
-这个表是阅读分类，不是运行时必须声明的工具 mode。当前注册表没有要求所有工具填写“核心 / 可选”或“同步 / 异步”分类元数据。工具循环、结果大小与重复调用策略看实际 policy 和 handler。
+Prompt 告诉模型如何选择路径；工具 schema 描述如何调用；运行时执行真实校验。将这三层一起看，才知道“写了规则”和“实现了能力”各在哪里。
 
-**前台外部工具也可能需要等待 I/O。** 非阻塞后台设计的保证是受理路径不等待整个后台工作完成，而不是整个语音系统永远没有任何等待。即使 `spawn_thinking` 内也有发送工具结果的异步操作；空 objective 的少见纠错路径还会等待转写解析。依据 [AgentTaskRuntime.executeSpawnThinkingToolCall](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/agent-task-runtime.mjs#L195)。
+## 2. 讲义补充：连续对话是一段事件流
 
-## 7. 音频生成完成与播放事实
+如果你熟悉 Python 的 `requests`，它容易给人“一次请求、一个完整返回值”的印象。这里更适合用 `asyncio` 长连接理解：输入音频不断到来，模型可能陆续返回转写、音频块或工具事件，客户端再排队播放。事件到达的时间、模型处理的时间和设备播放的时间并不相同。
 
-普通音频回复生成结束时，服务端看到 `response.done`。客户端可能仍有已排队音频，也可能尚未开始播放。浏览器 Web Audio 按自己的时钟安排播放；客户端确认实际开始后，回传 `playback.started`。
+沿[原文架构演示](../../voice-agent-architecture-presentation.zh.md)中“一个助手，运行在两种时间尺度上”和“结果交付必须服从双工会话状态”阅读，观察为什么系统需要分别记录用户说话、模型回复和客户端播放。
 
-代码看 [confirmTrackedPlaybackStart](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/playback-lifecycle.js#L10)、[useRealtimeVoice](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/useRealtimeVoice.js#L203)，服务端看 [AnnouncementManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/announcement/announcement-manager.mjs#L66) 与 [AnnouncementWindow](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/announcement/announcement-window.mjs#L1)。后台结果是否已交付不能仅由模型 `response.done` 决定。完整解释见[流程 B 的投递部分](tasks-permissions-and-delivery.md)。
+源码可沿这条 **static 定位路径** 追踪：
 
-用户打断当前音频会影响 response / 播放状态，但不会默认调用 TaskOperations.cancel。静音、休眠、断连也要看各自的生命周期入口。
+[Web 的 useRealtimeVoice](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/useRealtimeVoice.js#L203) → [客户端传输](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62) → [前台会话运行时](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56) → [RealtimeFrontend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-provider.mjs#L111)。
 
-## 8. 失败与过期回调怎么读
+不用一次读完这些文件。第一遍在会话运行时找输入处理、模型事件处理和向客户端发事件的三个位置；遇到回调查[语言桥梁](../01-python-to-javascript.md)。
 
-- 模型认证、额度或端点失败属于模型连接错误；Gateway 监听成功不代表它们成功。
-- 工具不可用、参数错误、外部服务超时属于工具结果分支；不能直接把它们当成已完成的后台 Task。
-- 同一调用或同一轮次的重复操作受到 handler / loop / submissionKey 等不同层级的约束；这些不是一把全局去重锁。
-- Session 关闭和轮次变化后，迟到回调不能再受理新工作或污染新回复；看 `closed`、generation 和 `shouldDeliver` 等条件。
-- 连接恢复与 response 冲突有各自有界处理，不能把所有异常统一解释为“自动重试到成功”。
+## 3. 把“模型调用工具”与“工具执行”接起来
 
-定位：[ToolCallHandler.handle](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/tool-call-handler.mjs#L481)、[AgentTaskRuntime.executeSpawnThinkingToolCall](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/agent-task-runtime.mjs#L195)、[createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)、[响应占用](../../../server/src/voice/realtime-response-slot.mjs)、[恢复上下文](../../../server/src/voice/realtime-recovery-context.mjs)。真实服务行为仍取决于 Provider 和外部系统。
+Python 类比：一个字典可以保存 `工具名 → 函数`，另一个字典描述函数参数。模型返回名称和参数后，程序查表、验证、调用，再把结果给模型。这能帮助你理解本项目的定义、注册表和 handler，但真实的去重、轮次与异步续答应以代码为准。
 
-## 9. 测试与阅读练习
+| 代码定位 | 对应阅读问题 |
+| --- | --- |
+| [frontendTools](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/frontend-tools.mjs#L109) | 当前模型会看到哪些工具定义？ |
+| [FrontendToolRegistry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/frontend-tool-registry.mjs#L107) | 配置、能力和客户端条件怎样影响可用性？ |
+| [ToolCallHandler.handle](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/tool-call-handler.mjs#L481) | 工具事件怎样被验证、派发和回填？ |
 
-本次已运行 `announcement-window.test.mjs` 与相关依赖边界测试。`realtime-session-runtime.test.mjs`、`realtime-provider-behavior.test.mjs` 和 `frontend-tool-registry.test.mjs` 是继续阅读的代表用例，本次没有执行它们，不应据此声称所有 Provider 已实测。
+再读以下原文，给自己选两个真实例子：
 
-练习：沿 `response.function_call_arguments.done` 找到 `spawn_thinking` 的 handler，再找工具结果回送模型的方法。沿路标出哪些函数只转发，哪些真正校验或改变状态。此时不需要读完 `useRealtimeVoice.js` 的全部 UI 状态。
+- [联网搜索](../../guides/web-search.zh.md)的“结果与引用”：检索和读取网页可以组合，调用次数不自动决定转交后台。
+- [清单与提醒](../../guides/notes-reminders.zh.md)：清单条目、到点播报、定时执行要区分。
+- [前台 MCP](../../reference/frontend-mcp.zh.md)和[OpenAPI](../../reference/frontend-openapi.zh.md)：外部工具通过显式配置进入工具面；详细白名单和权限边界读原文。
+
+前台 MCP 和后台 Agent 自带的 MCP 是不同接入位置。比较[前台 MCP 原文](../../reference/frontend-mcp.zh.md)与[后台 Skills 指南](../../guides/skills.zh.md)，先问“这个服务被谁调用”，不要只看协议名称。
+
+## 4. 媒体和供应商差异去哪里看
+
+[视觉输入](../../guides/vision.zh.md)已经完整区分附件、摄像头帧和 X-Omni 按需采集，本讲不重新列一份限制表。对照其“客户端限制”，解释为什么有摄像头权限仍不足以证明当前组合支持视觉工具。
+
+配置现成模型读[语音前台设置](../../configuration/frontend.zh.md)和所选服务文档，入口在[原文地图](../source-reading-map.md#3-对话媒体与语音模型)。想理解协议转换再读[自定义 Realtime Provider](../../voice-frontends/custom-provider.zh.md)：关注 `encodeOutgoing` / `normalizeIncoming`，以及“上下文写入”和“触发回复”的区别。
+
+Provider 可类比 Python 中包装外部 SDK 的对象。统一方法方便上层调用；原生工具续答、确认事件与输入能力仍有差异，必须在 Adapter 内声明和处理。完整方法与测试规则在原文中。
+
+## 5. 本讲检查题
+
+1. 普通对话是否必须创建后台 Task？
+2. 工具定义、可用性与 handler 分别解决什么问题？
+3. 前台搜索为什么不要求后台 Agent？
+4. 图片附件与实时摄像头帧为何不能当成同一输入？
+5. 模型生成结束为什么不等于设备播放结束？
+
+用上面的原文回答前四题；第五题从架构演示和[下一讲的结果交付](tasks-permissions-and-delivery.md#4-讲义补充完成与交付是两条状态轴)继续理解。

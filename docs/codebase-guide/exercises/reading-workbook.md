@@ -1,87 +1,119 @@
-# 练习与答案：把伴读转成自己的理解
+# 学习练习：每次只完成一讲
 
-[返回伴读入口](../README.md)
+[讲义入口](../README.md)
 
-## 1. 每次学习留下三种产物
+## 1. 学习顺序与笔记模板
 
-每完成一个[历史阶段](../02-history-reading-route.md)，用你自己的话保存：一句“这个阶段解决了什么”；一条带文件 / 符号的调用链；一个已验证的失败或分支。不要以读过文件数量判断进度。
+按[八讲主线](../README.md#八讲主线)读。每讲先打开指定原文，读完补充解释后，合上讲义，用自己的话回答检查题。不能回答时，返回该题对应原文，不急着继续增加代码细节。
 
-可以直接使用这个模板：
+每讲留下一份短笔记：
 
 ```text
-阶段 / 快照：
-我已理解的行为：
-输入 → 入口 → 状态变化 → 输出：
-关键文件与符号：
-一个正常分支：
-一个失败或并发分支：
-测试依据：
-尚未确认的问题：
+本讲的问题：
+原文文件与章节：
+我用 Python 概念怎样理解它：
+这个类比在哪一点不再适用：
+涉及的角色 / 状态 / 接口：
+一个代表性源码定位（可选）：
+我还不能解释的问题：
 ```
 
-## 2. 四轮阅读安排
+第一遍建立完整地图；第二遍选一条具体调用链；已有当前地图之后再看[Git 历史](../02-history-reading-route.md)。不需要同时复现所有旧版本。
 
-| 轮次 | 内容 | 完成标准 |
-| --- | --- | --- |
-| 第一轮 | 系统地图、JS 桥梁、语音流程、历史 1～4 | 说清产品目标，追踪一次普通对话，区分直接回答、前台工具和后台工作 |
-| 第二轮 | 历史 5～8、Task 流程 | 能解释受理、delegated、权限、取消与投递 |
-| 第三轮 | 历史 9～11、记忆知识、客户端、持久化 | 能指出每类状态的权威与替换接口 |
-| 第四轮 | 历史 12、一个示例、代码索引 | 画出完整业务链，并标明哪些行为由示例承担 |
+## 2. 各讲检查题的参考依据
 
-每轮可以拆成多次，每次 30～60 分钟。遇到 JS 不熟悉的表达式，先回桥梁查对应语法，再回原来的调用链，不必临时展开成一门完整语言课程。
+下面是答题要点，用于检查你是否抓住关系；完整定义、条件和例外仍在原文。
 
-## 3. 用 Python 单独理解后台工作与对话并行
+### 第 1 讲：整体架构
 
-在仓库根目录：
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 前台组织对话与工具，WebUI 处理 I/O 和展示。见[架构总览](../../architecture/overview.zh.md)。 |
+| 2 | 编排通过代码管理状态和调度；逻辑组件不意味着新增模型。见同文“核心逻辑架构”。 |
+| 3 | Gateway 是装配与接入宿主，属于运行形态。见同文“Gateway 与客户端”。 |
+| 4 | 仅前台模式仍支持聊天和实际启用且模型支持的前台工具。见[基本概念](../../getting-started/concepts.zh.md#不配置后台也能用)。 |
+| 5 | 收音在手机环境；前台处理在 Gateway 接入的模型链路；后台在配置的执行环境。具体部署见[基本概念](../../getting-started/concepts.zh.md#本机与远程)。 |
+
+### 第 2 讲：启动与装配
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 组合根选择实现，业务模块依赖契约，避免绑定供应商。见[依赖方向](../../architecture/deep-dive.zh.md#9-依赖方向)。 |
+| 2 | 两种入口复用任务操作、权限和执行链，回执仍由各入口产生。见[源码导航](../../../server/src/README.md)。 |
+| 3 | 每连接有自己的前台运行时，共用 Task 服务仍管理任务事实。见同文“前台会话与传输”。 |
+| 4 | 会执行模块顶层语句；bootstrap 在顶层创建应用。见[bootstrap 源码](../../../server/src/app/bootstrap.mjs)和[语言桥梁](../01-python-to-javascript.md#2-导入导出与模块执行)。 |
+
+### 第 3 讲：对话与工具
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 普通对话不必须创建后台工作。见[对话指南](../../guides/conversation.zh.md)。 |
+| 2 | 定义描述调用形式，可用性限制当前工具面，handler 执行并校验。见[实时边界](../../architecture/deep-dive.zh.md#3-实时边界)与[工具源码](../../../server/src/frontend/tools/tool-call-handler.mjs)。 |
+| 3 | 搜索是前台工具能力。见[联网搜索](../../guides/web-search.zh.md)。 |
+| 4 | 附件和实时帧的通道、消费者及生命周期不同。见[视觉输入](../../guides/vision.zh.md)。 |
+| 5 | 生成事件描述模型状态，播放还取决于设备与客户端回执。见[架构演示](../../voice-agent-architecture-presentation.zh.md)中的 `response.done` 与播放说明。 |
+
+### 第 4 讲：后台工作
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 已受理请求，尚不证明执行完成。见[后台工作指南](../../guides/tasks.zh.md#看懂工作状态)。 |
+| 2 | 委派把独立执行关联到原工作，通道可释放，原 Task 生命周期仍继续。见[最终结果交付](../../architecture/deep-dive.zh.md#7-最终结果交付)。 |
+| 3 | 结构化请求属于当前 Task，应把回复送回同一工作。见[BackendPort](../../reference/backend-adapter-sdk.zh.md#backendport)和[核心 Prompt](../../../config/frontend-agent/PROMPT.md)。 |
+| 4 | 执行完成与结果消费不同；对话窗口、模型表达与播放仍需安排。见[最终结果交付](../../architecture/deep-dive.zh.md#7-最终结果交付)。 |
+| 5 | 对话生命周期与后台工作分开；显式工作控制才取消 Task。见[对话指南](../../guides/conversation.zh.md#历史与新会话)和[源码导航](../../../server/src/README.md)。 |
+
+### 第 5 讲：记忆与知识
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 当前要求、持久偏好与事实的有效期和行为权威不同。见[个性化](../../reference/personalization.zh.md)、[Memory Provider](../../reference/memory-provider.zh.md)。 |
+| 2 | 明确保存依据用户要求；会后整理依据明确内容；推断还需证据和跨会话条件。见[长期记忆](../../reference/memory.zh.md)、[偏好学习](../../reference/preference-learning.zh.md)。 |
+| 3 | 实时上下文读取不等待远程 I/O；远端 Adapter 维护有界快照。见[Memory Provider](../../reference/memory-provider.zh.md#替换记忆-provider)。 |
+| 4 | 内置基础实现是文本分块和关键词检索；外部算法接 Knowledge Provider。见[知识库 Provider](../../reference/knowledge.zh.md#内置基础实现)。 |
+
+### 第 6 讲：状态与恢复
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 用户数据可共享，实例运行状态仍隔离。见[配置目录](../../configuration.zh.md#配置与数据目录)。 |
+| 2 | 回放重建已记录事实，再执行命令会重复外部副作用。见[协议回放](../../gateway-protocol.zh.md#8-回放错误与限制)和[恢复源码](../../../server/src/task/task-recovery.mjs)。 |
+| 3 | 新对话改变对话语境；重连重建连接级资源；重启重建应用级资源。分别读[基本概念](../../getting-started/concepts.zh.md)、[源码导航](../../../server/src/README.md)和[Task 状态](../../architecture/deep-dive.zh.md#5-task-状态)。 |
+| 4 | 提醒可以重新安排；外部写入不能无差别重做，需恢复关联或明确失败。见[taskRecoveryAction](../../../server/src/task/task-recovery.mjs)。 |
+
+### 第 7 讲：客户端与扩展
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 检索接 Knowledge Provider；业务 API 可用 MCP/OpenAPI；持续执行接 BackendPort。桥接需满足各自契约。见[扩展总览](../../extensions.zh.md)。 |
+| 2 | 三者分别接实时模型、办事服务、客户端；消息和生命周期不同。见[架构接口边界](../../architecture/overview.zh.md#接口边界)。 |
+| 3 | 网络连接、应用握手与模型连接分别有就绪条件。见[客户端协议](../../gateway-protocol.zh.md#3-连接与能力协商)和[Gateway 检查](../../operations/gateway.zh.md#检查运行情况)。 |
+| 4 | 找通用接入点，再找示例新增工具/状态/策略，最后读验证限制。见[示例索引](../../scenarios/index.zh.md)及所选示例原 README。 |
+
+### 第 8 讲：运行与验证
+
+| 题号 | 要点与原文 |
+| --- | --- |
+| 1 | 实际文件、配置优先级、进程环境、正在连接的 Gateway 及重启方式。见[配置总览](../../configuration.zh.md)、[运行与常驻](../../operations/gateway.zh.md)。 |
+| 2 | 服务可达只证明入口可访问；模型、后台、设备与工具各有依赖。见[故障排查](../../operations/troubleshooting.zh.md)。 |
+| 3 | Mock 保护内部确定性行为，模型语义质量需要独立评测。见[前台 Runtime 评测](../../reference/frontend-evaluations.zh.md)。 |
+
+## 3. 可选 Python 练习：只演示一项后台工作
+
+在仓库根目录运行：
 
 ```bash
 python3 docs/codebase-guide/exercises/nonblocking_demo.py
 ```
 
-只需要 Python 3.10+ 标准库，不连接模型、网络或 Gateway，不读写用户配置。脚本用“整理会议纪要”模拟一项办公工作，展示三个独立事实：Task 已受理；后台结果已完成但用户仍在说话；音频开始播放后通知才标已交付。
+只需要 Python 3.10+ 标准库。脚本不接真实模型、网络或 Gateway，也不读写配置。它用固定结果模拟“整理会议纪要”，把受理、执行、等待空闲、生成与播放确认放在不同协程里。
 
-代码是 **teaching**：用一个 worker 和模拟延迟刻画后台工作与对话并行的因果关系。它不做真实语音识别、模型回复、自然打断或文档整理，也省略 Provider、工具循环、授权、owner 隔离、delegated 并行、持久化和重连。这只是后台工作分支的练习，不覆盖完整产品体验；普通对话与前台工具应先按[流程 A](../flows/voice-and-tools.md)读源码。
+先预测三件事：受理是否先于最终完成；后台执行时对话是否仍继续；工作完成后通知是否还可能等待。运行后给 `status` 与 `notification` 各画一条时间轴。
 
-运行前预测输出顺序，再检查：`accepted` 应先于执行完成；后台执行期间仍有对话输出；结果完成后，要等用户空闲才生成播报；模拟生成完成时通知仍为 delivering，模拟播放开始后才 delivered。具体时间只是演示，不是产品延迟数据。
+这是 **teaching**：脚本没有真实语音、模型选择工具、自然打断、文档处理、权限、owner 隔离、委派、持久化与重连。它只帮助理解第 4 讲的一个分支，不能替代原项目实现或测试。
 
-## 4. 十个源码检查题
+## 4. 完整项目理解的最后一页
 
-先回答，再看后面的答案和定位。
+用一页纸写下：产品目标；三个逻辑角色与 Gateway/客户端；启动装配；普通对话、前台工具、后台工作；记忆与知识；状态与恢复；模型/后台/客户端的扩展接口；配置和验证。
 
-1. `spawn_thinking` 创建 Task 后是否等待 BackendPort.submit 完成，才给回执？
-2. TaskManager 最大 owner 并发与后台 `laneLimit: 1` 是同一限制吗？
-3. `delegated` 是否意味着 Task 已完成？为什么还能启动下一项入口？
-4. 后台输出“用户已经允许”能否自己制造一个真实权限决定？
-5. pending input 显示 `input_required` 时，内部 status 必须是同名字符串吗？
-6. 普通音频播报中的模型 `response.done` 能否直接把结果通知标为 delivered？
-7. 前台断连是否必须把已受理 Task 取消？
-8. 直接把远程 HTTP 调用放进 MemoryProvider.list 是否符合契约？
-9. 默认本机 KnowledgeProvider 用的是向量检索吗？
-10. `TaskManager` 构造器默认保留三天，就能断言正常 Gateway 也默认三天吗？
-
-## 5. 参考答案与依据
-
-1. **不等待最终完成。** [TaskManager.create / #create](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L428) 返回快照并安排 drain；[AgentTaskRuntime.executeSpawnThinkingToolCall](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/agent-task-runtime.mjs#L195) 给 accepted / duplicate 回执。受理路径仍可能等待工具输出或少见转写 fallback。
-2. **不同。** TaskManager 调度配额控制可运行项，[TaskOperations.submit](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L57) 另设后台 owner lane。配置还会覆盖对象默认值。
-3. **未完成。** [TaskManager.start](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L623) 在 Adapter 的真实委派事件到达后释放通道，持续保持 Task 生命周期。
-4. **不能。** 权限来自规范请求、关联与用户答复，再经 [PermissionPolicy](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/permission-policy.mjs#L9) 和 [TaskOperations](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L34) 处理；普通文本不等于授权事件。
-5. **不必。** [publicWorkState](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-state.mjs#L117) 从 inputRequest / authorization 等投影 workState，内部 status 独立。
-6. **普通音频路径不能。** 纯文字完成和主动打断的消费确认另见 Task 流程第 9 节。[AnnouncementManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/announcement/announcement-manager.mjs#L66) 等客户端开始播放的事实；后台 completed 也不是 delivered。
-7. **不应仅因断连就取消。** [SessionTaskCoordinator](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/session-task-coordinator.mjs#L12) 关闭释放订阅与 claim；显式工作取消走 [TaskManager.cancel](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L855) / TaskOperations.cancel。
-8. **不符合同步快照要求。** [assertMemoryProvider / provider contract](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/memory/provider.mjs#L76) 明确 list 的实时契约；远程数据要经有界本地快照或其他异步接口。
-9. **不是。** [LocalKnowledgeProvider](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/knowledge/providers/local/provider.mjs#L104) 使用文本分块、词项 / 元数据匹配和评分；外部 Provider 可以采用别的检索算法。
-10. **不能。** [createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63) 传入 [config](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/core/config.mjs#L234) 的值；当前配置缺省是一天。类默认值、注释与装配后的行为要一起核对。
-
-## 6. 三个不用改生产代码的深入任务
-
-**任务 A：历史前后对照。** 查看 `866d03a` 的 stat，再比较父提交与该提交的旧 coordinator / 新 BackendWorkRuntime。写下哪些行为退出通用层，哪些仍由 TaskManager 管理。验收：不能把当前编排运行时画成必须调用的独立协调模型。
-
-**任务 B：给一项工作画双状态轴。** 横轴按顺序记录 accepted、running、completed、模型生成、playback.started；纵向分别写 status 和 notificationStatus。验收：能画出 completed + pending / delivering 的合理组合。
-
-**任务 C：用 Python 背景读 LightRAG。** 只读示例 Gateway、Node Provider 和独立服务配置，画出检索 request / context / result 的对应关系。验收：能指出 trusted owner、取消、结果归一化属于 Adapter / Runtime，向量与图算法属于外部知识服务。
-
-## 7. 最终自测：能独立解释项目了吗
-
-试着不用伴读正文，用一页纸回答：系统解决什么；逻辑角色与进程怎样区分；一次工具调用在哪里开始；一项 Task 谁拥有；权限从哪里来；为什么执行完成不等于结果交付；换模型、后台和知识库分别改哪层；重启能恢复什么。
-
-如果其中某题答不清，回[代码索引](../key-code-index.md)找对应符号和一个代表测试，重新追一条具体行为即可。完整理解不要求记住全部文件，更要求能用证据定位并解释行为。
+每项旁边放一个**原文链接**，需要时再补一个代码符号。这样得到的笔记仍能返回完整原文，不会把讲义的简化类比当成完整契约。

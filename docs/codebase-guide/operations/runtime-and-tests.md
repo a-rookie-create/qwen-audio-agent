@@ -1,109 +1,51 @@
-# 运行与测试：先验证理解，再接入真实服务
+# 第 8 讲：运行、诊断与验证理解
 
-[返回伴读入口](../README.md) · 实践：[练习与答案](../exercises/reading-workbook.md)
+[讲义入口](../README.md) · 上一讲：[客户端与扩展](../subsystems/clients-and-extensions.md) · 后续：[练习](../exercises/reading-workbook.md)、[历史](../02-history-reading-route.md)
 
-## 1. 阅读不要求启动所有能力
+本讲回答：**如何用一次实际操作验证前面所读，发生问题时从哪层查起？**
 
-第一遍使用 `git show`、编辑器搜索和现有测试即可。理解正常链路之后，先运行当前版本的普通对话，再接后台；随后增加一个前台工具或一个示例。每次只增加一项外部依赖，便于判断错误属于哪层。
+## 1. 操作步骤直接读原文
 
-下面命令是供你按需操作的阅读材料，本次没有安装 npm 依赖、登录后台、修改日常配置或启动真实云端对话。
-
-## 2. 当前基线的源码运行入口
-
-安装要求以[仓库安装文档](../../getting-started/install.zh.md)、[package.json](../../../package.json)、[.nvmrc](../../../.nvmrc)为准。本次基线的 `.nvmrc` / `.node-version` 固定到 `22.22.2`；安装文档列出 `^22.22.2`、`^24.15.0` 或 `>=26.0.0` 与 npm 10+。
-
-```bash
-# 在仓库根目录，已使用适配的 Node.js 环境
-npm ci
-npm run build
-npm run cli -- config
-
-# 按生成配置填入前台模型信息后启动
-npm run gateway
-
-# 另一终端连接 WebUI
-npm run cli -- webui
-```
-
-`npm run dev` 启动开发 server / web；`npm run desktop` 启动 Electron 开发入口；`npm run cli -- ...` 和 `npm run gateway` 从本仓库启动。全局安装的 `qwenaudio` 可能来自另一版本，调试时要确认你运行哪份代码。
-
-配置命令会创建缺失模板；Gateway 导入配置也可能初始化目录。若要独立学习配置，可以先设置 `QWAUDIO_CONFIG_DIR` 到专用目录。模型 API Key、后台自身登录与 Gateway 客户端接入凭据有不同用途；沿对应模块查找，不要把它们混为一个“配置成功”。
-
-## 3. 每层如何判断成功
-
-| 检查点 | 能证明什么 | 不能单独证明什么 |
+| 顺序 | 原文 | 用途 |
 | --- | --- | --- |
-| 版本 / 配置路径 | 当前程序版本和使用的配置位置 | 模型或后台连通 |
-| Gateway 监听 / health | 服务和返回的健康信息 | 实际麦克风输入、所有模型能力可用 |
-| GCP session.ready | 客户端协议握手成功 | Realtime 认证、后台登录成功 |
-| 前台模型 ready / connected | 当前 Provider 会话状态 | 每个工具和后台业务操作成功 |
-| accepted Task 回执 | 本地工作受理 | 外部操作完成 |
-| completed Task | 执行返回完成结果 | 客户端已开始播放 |
-| playback.started | 对应音频已开始交付 | 用户听完或业务结果正确 |
+| 1 | [安装与升级](../../getting-started/install.zh.md) | 选择运行环境与安装方式；源码运行要求在“从源码安装” |
+| 2 | [快速开始](../../getting-started/quickstart.zh.md) | 按原步骤完成普通对话，再按需要添加后台 |
+| 3 | [配置总览](../../configuration.zh.md) | 核对配置优先级、准确路径和实际实例 |
+| 4 | [Gateway 运行](../../operations/gateway.zh.md) | 选择运行方式、应用配置、检查状态和理解进程所有权 |
+| 5 | [故障排查](../../operations/troubleshooting.zh.md) | 沿连接、音频、后台与远程边界收集证据 |
 
-依据：[Gateway process entry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/index.mjs#L1)、[GatewayClient](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/gateway/client-sdk.mjs#L63)、[attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62)、[AgentTaskRuntime.executeSpawnThinkingToolCall](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/agent-task-runtime.mjs#L195)、[TaskStatus / TRANSITIONS](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-state.mjs#L5)、[AnnouncementManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/announcement/announcement-manager.mjs#L66)。
+具体命令、参数、支持版本与配置例子在原文中执行和查阅，本讲不重新维护第二份安装教程。开发脚本的实际命令看[根 package.json](../../../package.json)，工程检查读[贡献指南](../../../CONTRIBUTING.md)。
 
-## 4. 本次运行了哪些现有测试
+## 2. 讲义补充：验证一条链路时，每次增加一个环节
 
-分析日期 2026-10-03，代码 `f6dd0e3`。分三组直接运行 Node 内置测试，共 **151 tests，151 pass，0 fail**，涉及 13 个文件：
+你可以先理解并验证普通前台对话，再增加一项前台工具，再增加后台工作，最后研究记忆或远程客户端。这个顺序是教学安排，便于把新增依赖和失败位置关联起来。
 
-| 文件 | 对伴读解释提供的验证 |
+Python 中“Web 服务已监听”“数据库连接成功”“某次事务提交成功”也是三个不同检查点。在这里同样要把 Gateway 可达、GCP 握手、实时模型连接、工具操作、后台工作和结果呈现逐层判断。相关证据分别由[Gateway 检查](../../operations/gateway.zh.md#检查运行情况)、[协议握手](../../gateway-protocol.zh.md#3-连接与能力协商)、[工作指南](../../guides/tasks.zh.md#看懂工作状态)和[结果交付](../../architecture/deep-dive.zh.md#7-最终结果交付)解释。
+
+比如“受理了但一直没有结果”，先问工作记录是否完成；如果完成，再沿通知与播放找证据。不要只重复检查模型 Key。日志入口、关联信息与反馈方式已在[故障排查](../../operations/troubleshooting.zh.md)中给出。
+
+## 3. 自动化测试能帮你理解什么
+
+先读[前台 Runtime 评测](../../reference/frontend-evaluations.zh.md)：它解释确定性运行时验证与模型语义质量的区别。再读[Provider 的行为验证](../../voice-frontends/custom-provider.zh.md#行为验证)和[Backend SDK 的 Conformance](../../reference/backend-adapter-sdk.zh.md#conformance)，理解“共同契约”怎样保护可替换接口。
+
+Python 类比是用 fake client 测自己的业务服务：可以证明状态转换、取消和事件处理，却不能据此证明真实远端模型一定选择正确工具。读测试时找真实生产对象、模拟边界和断言，避免把 fixture 的输出当成产品能力。
+
+按问题选择现有测试作为代码阅读入口：
+
+| 想验证的理解 | 现有测试源码 |
 | --- | --- |
-| `server/test/task-state.test.mjs` | 内部状态 / 公开工作状态、合法转换 |
-| `server/test/task-manager.test.mjs` | 即时受理、串行入口、delegated 让出通道、取消、通知、去重 |
-| `server/test/backend-work-runtime.test.mjs` | 统一 BackendPort 输入、隔离工作、取消与状态接口 |
-| `server/test/session-task-coordinator.test.mjs` | 权限 / 输入投递、重连、关闭释放 claim、工作继续 |
-| `server/test/task-notification-queue.test.mjs` | 领取、续期、释放、过期与交付 |
-| `server/test/dependency-boundaries.test.mjs` | 模块依赖方向、接入与业务职责边界 |
-| `server/test/announcement-window.test.mjs` | 说话 / 回复 / 播放窗口 |
-| `server/test/task-store.test.mjs` | 工作持久化、损坏处理、延迟写与终态写 |
-| `server/test/session-journal.test.mjs` | 日志追加、读取、恢复和规范化 |
-| `server/test/permission-policy.test.mjs` | 任务 / 会话范围的权限策略 |
-| `server/test/announcement-manager.test.mjs` | 生成与播放确认分离、批次、有界重试 |
-| `server/test/task-repository.test.mjs` | 仓储状态与持久化行为 |
-| `server/test/realtime-presentation-runtime.test.mjs` | 音频展示、播放生命周期、主动打断确认与迟到输出 |
+| 前台会话与工具事件 | [会话运行时测试](../../../server/test/realtime-session-runtime.test.mjs)、[工具调用测试](../../../server/test/tool-call-handler.test.mjs) |
+| Task 受理、调度与取消 | [任务管理测试](../../../server/test/task-manager.test.mjs)、[任务操作测试](../../../server/test/task-operations.test.mjs) |
+| 结果生成与播放确认 | [播报测试](../../../server/test/announcement-manager.test.mjs)、[呈现测试](../../../server/test/realtime-presentation-runtime.test.mjs) |
+| 存储、重连和恢复 | [任务存储](../../../server/test/task-store.test.mjs)、[会话日志](../../../server/test/session-journal.test.mjs)、[会话任务协调](../../../server/test/session-task-coordinator.test.mjs) |
+| 外部能力与模块边界 | [Provider 行为](../../../server/test/realtime-provider-behavior.test.mjs)、[依赖方向](../../../server/test/dependency-boundaries.test.mjs)、[模块裁剪](../../../server/test/optional-modules-pruning.test.mjs) |
 
-测试运行环境为宿主 Node `v25.9.0`，它不在仓库声明的支持版本范围内；本次通过结果应连同该限制理解。日常运行和复现建议使用仓库指定版本，不把这里的通过视为新增 Node 25 支持。
+这是选读表，不表示本轮运行了这些测试。首次分析的已执行记录单列在[验证记录](analysis-validation.md)，真实模型、硬件和示例业务仍需各自验证。发布/CI 的完整检查范围看[原 CI 配置](../../../.github/workflows/ci.yml)。
 
-首次运行有一个测试因配置初始化尝试写默认用户目录而失败；随后把配置、数据、状态、缓存全部指向 `/tmp` 的学习专用目录，同一组用例通过。此处报告的是隔离后完整通过结果。
+## 4. 本讲检查题
 
-在仓库根目录复现：
+1. 改了配置未生效，应先核对哪些文件、环境和实例？
+2. Gateway 可达，为什么仍可能无法对话或执行后台工作？
+3. Mock 测试通过与真实模型选对工具，有什么证据范围差别？
 
-```bash
-QWAUDIO_CONFIG_DIR=/tmp/qwen-audio-agent-guide-test-config \
-QWAUDIO_DATA_DIR=/tmp/qwen-audio-agent-guide-test-data \
-QWAUDIO_STATE_DIR=/tmp/qwen-audio-agent-guide-test-state \
-QWAUDIO_CACHE_DIR=/tmp/qwen-audio-agent-guide-test-cache \
-node --test \
-  server/test/task-state.test.mjs \
-  server/test/task-manager.test.mjs \
-  server/test/backend-work-runtime.test.mjs \
-  server/test/session-task-coordinator.test.mjs \
-  server/test/task-notification-queue.test.mjs \
-  server/test/dependency-boundaries.test.mjs \
-  server/test/announcement-window.test.mjs \
-  server/test/task-store.test.mjs \
-  server/test/session-journal.test.mjs \
-  server/test/permission-policy.test.mjs \
-  server/test/announcement-manager.test.mjs \
-  server/test/task-repository.test.mjs \
-  server/test/realtime-presentation-runtime.test.mjs
-```
-
-这个命令只跑已选用例，没有执行 npm 全套测试中的示例依赖安装前置脚本。所选测试使用伪边界或临时资源，不进行真实云端语音对话。
-
-## 5. 继续验证时按问题选择测试
-
-- 想理解模型 / 工具生命周期：`realtime-session-runtime.test.mjs`、`tool-call-handler.test.mjs`。
-- 想理解统一用户操作：`task-operations.test.mjs`、`client-command-runtime.test.mjs`。
-- 想理解不同 Provider：`realtime-provider-behavior.test.mjs` 和具体 Provider 用例。
-- 想理解协议：`gateway-client-handshake.test.mjs`、`gateway-client-protocol-session.test.mjs`。
-- 想理解裁剪：`optional-modules-pruning.test.mjs`，它会在临时副本中处理领域目录。
-
-这些是代码里已存在的继续阅读入口，**本次未运行**。需要真实云模型、后台进程、浏览器音频或 WebRTC 的场景，应按各自配置再验证；Mock 通过不能替代实际接入验证。
-
-## 6. 读日志的顺序
-
-先用关联 ID 确认 owner / session / turn / response / call / Task，再判断问题发生在客户端连接、模型、工具、后台执行还是通知播放。关键日志和状态在各自职责模块，而不是只有一个文件能解释全部错误。
-
-不要仅因界面显示“正在处理”就认定后台仍在运行。先查询 Task，再核对最新活动和当前待授权 / 待输入；若 Task 已完成，再沿 notification / playback 链检查。
+先从对应原文找答案，再为自己选择一个可验证的检查点。八讲读完后，用[练习页](../exercises/reading-workbook.md)把架构、流程、状态和扩展连成一页笔记。

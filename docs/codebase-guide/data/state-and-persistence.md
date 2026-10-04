@@ -1,80 +1,53 @@
-# 状态与持久化：谁拥有事实，重启能恢复什么
+# 第 6 讲：状态、持久化与恢复
 
-[返回伴读入口](../README.md) · 关联：[Task 流程](../flows/tasks-permissions-and-delivery.md)
+[讲义入口](../README.md) · 上一讲：[记忆与知识](../subsystems/memory-knowledge-and-context.md) · 下一讲：[客户端与扩展](../subsystems/clients-and-extensions.md)
 
-## 1. 先确定状态权威
+本讲回答：**同一个用户的数据、一次对话、一项工作分别由谁保存？换连接或重启后能恢复什么？**
 
-| 状态 / 事实 | 权威与路径 | 其他模块如何使用 |
+## 1. 先读原文的目录与会话说明
+
+| 顺序 | 原文 | 本次关注 |
 | --- | --- | --- |
-| Task 生命周期、产物、通知 | TaskManager / TaskRepository / TaskStore | 公开快照、领域事件、查询和领取 |
-| 是否允许当前操作 | PermissionPolicy + 真实后台请求 + 用户决定 | TaskOperations 转发并限制范围 |
-| 模型连接、轮次、响应与播放窗口 | 前台 Session 的 voice 模块 | 控制回复、工具续答与安全播报 |
-| 已记录的会话事件 | SessionJournal / Registry | 回放与恢复、投影 |
-| 当前对话展示 | ConversationSync 与对话投影 | UI 历史、上下文组装 |
-| 长期偏好与事实 | Memory Provider | 前台上下文、明确写入与可选学习 |
-| 业务库存、退款资格等 | 示例领域服务 | 前后台工具调用共同访问 |
+| 1 | [配置总览](../../configuration.zh.md) | “配置优先级”“配置与数据目录”“客户端目录” |
+| 2 | [基本概念](../../getting-started/concepts.zh.md) | “会话、工作与工作区”“本机与远程” |
+| 3 | [Gateway 运行](../../operations/gateway.zh.md#实例与客户端) | 一个实例与多个客户端的区别，以及进程所有权 |
+| 4 | [客户端协议：回放、错误与限制](../../gateway-protocol.zh.md#8-回放错误与限制)与[架构：Task 状态](../../architecture/deep-dive.zh.md#5-task-状态) | 恢复哪些事实，哪些工作无法安全恢复 |
 
-依据：[TaskManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L56)、[PermissionPolicy](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/permission-policy.mjs#L9)、[createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)、[SessionJournal](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/session/session-journal.mjs#L18)、[assertMemoryProvider / provider contract](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/memory/provider.mjs#L76)。普通模型文本、UI 动画和日志中的一行说明，都不能取代这些权威。
+具体目录和保留设置直接查原文。内部状态文件格式是否可以作为外部依赖，先看[Gateway 契约的开头](../../contract.zh.md)。
 
-## 2. 配置、数据和运行状态目录分开
+## 2. 讲义补充：文件存在不等于状态相同
 
-[resolveRuntimePaths](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/runtime-paths.mjs#L19) 默认配置根为 `~/.config/qwaudio`（也支持 XDG 和显式覆盖）。`data/` 存用户持久数据，`state/` 或客户端 / Gateway 的状态目录存运行实例状态，`cache/` 存缓存。`QWAUDIO_CONFIG_DIR / DATA_DIR / STATE_DIR / CACHE_DIR / WORKSPACE` 可以覆盖相应位置。
+你在 Python 中可能同时有配置文件、用户数据、当前进程状态和可重建缓存。它们都在磁盘上，生命周期仍然不同。把这个经验用于原文目录表：先问这个目录属于用户、Gateway 实例还是客户端，再问它是否可共享。
 
-下表是默认职责，最终解析结果仍要读运行环境与配置，而不能只凭目录名：
+例如，桌面和 CLI 共享用户偏好，并不表示它们正在使用同一个 TaskManager。对照[配置目录表](../../configuration.zh.md#配置与数据目录)与[实例说明](../../operations/gateway.zh.md#实例与客户端)，解释为什么“看得到同一份记忆”与“看得到同一项工作”是两件事。
 
-| 材料 | 典型位置 | 实现入口 |
-| --- | --- | --- |
-| 用户配置 | `<config-dir>/config.env` | shared/runtime-environment.mjs |
-| 助手画像 | `<config-dir>/ASSISTANT.md` | runtime environment / frontend profile |
-| 长期偏好、事实 | `<data-dir>/USER.md`、`MEMORY.md` | Markdown Memory Provider |
-| 命名清单 | `<data-dir>/frontend-notes.json` | FrontendNotesStore |
-| 工作快照 | `<state-dir>/tasks.json` | TaskStore |
-| 会话事件日志 | `<state-dir>/sessions/` 下的会话文件 | SessionJournalRegistry |
-| ACP Session 注册 | 默认 `<state-dir>/acp-sessions.json` | ACP Session Registry / config |
-| 资料库 | 配置确定的本机 library 目录或外部服务 | Knowledge Module / Provider |
-| 后台工作区 | 默认共享 workspace，或独立配置目录 | backend workspace 解析 |
+继续把[记忆回溯](../../reference/memory.zh.md#会话回溯)与[工作状态](../../guides/tasks.zh.md#看懂工作状态)放在一起读：摘要能帮助想起聊过什么，但当前执行事实仍需查任务台账。
 
-依据：[loadRuntimeEnvironment](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/runtime-environment.mjs#L254)、[config](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/core/config.mjs#L234)、[TaskStore](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-store.mjs#L17)、[SessionJournalRegistry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/session/session-journal-registry.mjs#L17)。旧版本曾采用更强的桌面 / CLI 数据隔离；当前共享配置与用户数据，同时隔离运行状态。不能把旧 CHANGELOG 的目录策略直接视为当前实现。
+## 3. 源码补充：快照与事件日志解决不同问题
 
-## 3. 快照和事件日志为什么同时存在
+原文提供目录和外部回放契约；内部存储实现可按下面的 **static 定位** 理解：
 
-TaskRepository 管当前记录，TaskStore 存有版本号的 JSON 快照与编号状态。它处理文件缺失、格式损坏、隔离、警告及延迟进度写入。关键终态与异步进度写入之间有防止旧写覆盖新状态的逻辑。看 [TaskStore](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-store.mjs#L17)。
-
-SessionJournal 追加规范化事件，使用事件 ID 处理重复，维护写队列、保留限制、压缩与文件损坏尾部处理。它不依赖 TaskManager / ACP，消费者再根据日志构建投影。看 [SessionJournal](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/session/session-journal.mjs#L18)、[保留策略](../../../server/src/session/session-journal-retention.mjs)。
-
-应用装配把 Task 事件复制进日志，而不是让会话日志共享一个可变 Task 对象作为事实。看 [createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63) 的 Task journal 订阅。事件回放也不等于重新执行所有命令；“重建状态”与“重做外部副作用”必须区分。
-
-本次运行 `task-store.test.mjs`、`task-repository.test.mjs` 和 `session-journal.test.mjs`。这验证所选存储行为，不是任意磁盘故障或跨进程部署的全面证明。
-
-## 4. 重启不是重新执行所有工作
-
-[taskRecoveryAction](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-recovery.mjs#L21) 定义恢复策略，简化如下：
-
-| 已保存情况 | 可能采取的恢复动作 |
+| 文件 / 符号 | 阅读问题 |
 | --- | --- |
-| scheduled 或可重放的 reminder | 重新安排到期执行 |
-| cancelling | 完成取消路径 |
-| delegated / finalizing 且具备委派与 Session 关联 | 列为重新关联候选，再由后台恢复能力处理 |
-| 其他仍 active 的普通工作 | 标为失败，避免盲目重做外部操作 |
-| 终态记录 | 恢复记录与通知状态 |
-| 通知原来 delivering | 可恢复为 pending，后续重新领取 |
+| [TaskStore](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-store.mjs#L17) | 当前任务记录怎样保存成快照？ |
+| [SessionJournal](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/session/session-journal.mjs#L18) | 会话事件怎样追加、排序和恢复？ |
+| [createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63) | 谁将 Task 变化记录到会话日志？ |
 
-恢复候选并不保证后台目标仍存在或 Adapter 一定恢复成功。通用策略与 Adapter 的恢复实现要一起看。前台重连则通常只是重新领取通知 / 投递未解决请求，不是 Gateway 进程重启，也不重跑已受理 Task。
+Python 类比：一个 JSON 文件保存当前字典；另一份追加日志保存发生过的事件。读日志重建展示与状态，不代表再次执行造成外部副作用的函数。外部客户端依赖的回放行为读协议，内部文件实现读上述代码，两种边界不能混用。
 
-## 5. 默认值还要经过装配配置
+## 4. 重连、重启与续接后台各指什么
 
-一个很有用的阅读例子：TaskManager 构造器里的 terminalTtlMs 默认是 3 天，但当前 `core/config.mjs` 的对应缺省值是 1 天，正常应用装配显式把 config 传进去。所以部署的保留时间不能只看类的默认值或旁边注释。
+重连是客户端连接发生变化；Gateway 重启是应用内存和资源重建；后台原生 Session 恢复是 Adapter 与执行服务的能力。按[基本概念](../../getting-started/concepts.zh.md)、[架构第 4、5、7 节](../../architecture/deep-dive.zh.md)和[A2A 会话连续性](../../reference/a2a-backend-adapter.zh.md#会话连续性)分别阅读。
 
-类似地，TaskManager 的 owner 并发配额，与 TaskOperations 后台 lane 的限制不同。所有配置要沿 **环境 / 配置解析 → 装配实参 → 对象实际行为** 核对。依据 [TaskManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L56)、[config](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/core/config.mjs#L234)、[createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63)、[TaskOperations.submit](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L57)。
+想核对具体重启策略时看 [taskRecoveryAction](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-recovery.mjs#L21)：提醒可重新调度；取消中的工作走取消；有持久关联的委派工作可能重新挂接；其他活动工作走失败处理。完整分支以函数为准，恢复候选仍取决于后台能力。
 
-## 6. 不同“会话”不要混用
+Python 里的 `asyncio.Task` 对象不会因为你把任务描述写到 JSON 就自动跨进程恢复。项目同样必须显式保存关联并选择恢复策略，不能无差别重新执行外部操作。
 
-- 客户端逻辑 sessionId 是对话与操作归属的一部分。
-- 前台 Session Runtime 属于一次连接的状态和资源，重连可创建新运行实例。
-- SessionJournal 持有可回放的逻辑会话事件。
-- ACP 协调 / 项目 Session 是后台原生执行上下文，标识保留在 Adapter 边界。
-- A2A contextId / 原生 taskId 属于外部协议，Adapter 负责关联。
+## 5. 本讲检查题
 
-源码中同样出现 session 字样时，先问“谁创建、谁存、谁销毁、是否跨连接”，再决定它是否是同一概念。
+1. 共享配置和记忆，是否等于共享工作状态？
+2. 事件回放为什么不等于重新执行命令？
+3. 开始新对话、客户端重连与 Gateway 重启分别改变什么？
+4. 一个提醒与一个正在写外部文件的任务，为什么不能采用相同的重跑策略？
 
-**读完检查：**Gateway 重启后，一个正在写外部系统的 running Task 与一个 scheduled reminder 为什么不能无差别重跑？请从恢复策略找依据。
+从目录表、协议回放、会话说明和恢复源码分别给出依据。若要进一步研究默认值，沿“配置解析 → 装配实参 → 类内部行为”读；只看构造器默认值不足以确认实际部署设置。

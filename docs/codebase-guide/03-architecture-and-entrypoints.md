@@ -1,95 +1,58 @@
-# 03：架构、进程与执行入口
+# 第 2 讲：架构怎样落到代码与启动入口
 
-[返回伴读入口](README.md) · 下一步：[语音流程](flows/voice-and-tools.md)
+[讲义入口](README.md) · 上一讲：[整体架构](00-system-overview.md) · 下一讲：[实时对话与工具](flows/voice-and-tools.md)
 
-## 1. 目录是一张职责地图
+带着上一讲的角色地图，本讲回答：**它们在哪些目录里实现，谁把它们连接起来？**
 
-| 目录 | 拥有的职责 | 首先阅读 |
+## 1. 先读原文，再打开三个代码入口
+
+| 顺序 | 原文 | 本次关注 |
 | --- | --- | --- |
-| `cli/` | 命令解析、配置、启动与服务管理 | [CLI executable](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/cli/bin/qwenaudio.mjs#L1)、[main](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/cli/src/launcher.mjs#L220) |
-| `server/src/app/` | 创建共享服务、注入依赖、注册接入与整体关闭 | [createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63)、[createFrontendRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/frontend-runtime.mjs#L12) |
-| `server/src/frontend/` | 前台指令、工具定义与执行、网页检索 | [frontendTools](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/frontend-tools.mjs#L109)、[ToolCallHandler](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/frontend/tools/tool-call-handler.mjs#L78) |
-| `server/src/voice/` | 每条前台连接的模型、音频轮次、响应、播放与恢复 | [createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)、[RealtimeFrontend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-provider.mjs#L111) |
-| `server/src/orchestration/` | 共用用户任务操作、会话级投递协调 | [TaskOperations](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L34)、[SessionTaskCoordinator](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/session-task-coordinator.mjs#L12) |
-| `server/src/task/` | Task 状态、排队、权限策略、提醒、持久化和通知领取 | [TaskManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-manager.mjs#L56)、[TaskStatus / TRANSITIONS](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/task/task-state.mjs#L5) |
-| `server/src/backend/` | BackendPort 与通用执行门面；具体协议在 adapters | [BACKEND_PORT_METHODS / assertBackendPort](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/backend/backend-port.mjs#L22)、[BackendWorkRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/backend/backend-work-runtime.mjs#L14) |
-| `server/src/client/`、`transport/` | 客户端命令 / 环境动作，与网络连接 / 协议投影 | [GatewayClientCommandRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/client/client-command-runtime.mjs#L39)、[attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62) |
-| `memory/`、`knowledge/`、`conversation/`、`session/` | 记忆、资料、对话上下文与事件日志各自的状态 | [专题](subsystems/memory-knowledge-and-context.md)、[持久化](data/state-and-persistence.md) |
-| `access/`、`process/`、`core/` | 接入身份、后台进程、配置日志等基础能力 | [GatewayAccessManager](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/access/gateway-access.mjs#L245)、[startManagedBackend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/process/managed-backend.mjs#L181)、[config](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/core/config.mjs#L234) |
-| `shared/` | 客户端 SDK、协议、路径、配置与跨进程基础能力 | [GatewayClient](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/gateway/client-sdk.mjs#L63)、[GATEWAY_CLIENT_PROTOCOL_VERSION / protocol definitions](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/shared/protocol/gateway-client-protocol.mjs#L13) |
-| `web/`、`desktop/`、`tui/`、`mobile/` | 各客户端的 I/O、展示与本地生命周期 | [客户端专题](subsystems/clients-and-extensions.md) |
-| `examples/` | 特定业务与外部服务集成 | 智能座舱、客服、LightRAG 等各自 README |
+| 1 | [服务端源码导航](../../server/src/README.md) | 目录职责表；“前台会话与传输”；“任务协调” |
+| 2 | [详细架构：依赖方向](../architecture/deep-dive.zh.md#9-依赖方向) | 什么属于通用运行时，什么留在 Provider / Adapter；组合根如何接线 |
+| 3 | [Gateway 运行](../operations/gateway.zh.md#从源码启动)与[Gateway 契约](../contract.zh.md#嵌入流程) | 现成 CLI 启动和代码嵌入是怎样的两种入口 |
 
-阅读 `server/src/README.md` 能快速定位，但业务调用可能横跨数个领域。`orchestration/` 不等于全部编排运行时，`voice/` 也不等于模型供应商 API。
+目录的完整职责表直接看源码导航；公开包入口直接看[契约“包入口”](../contract.zh.md#包入口package-exports)。内部文件路径用于理解实现，开发扩展时使用公开导出。
 
-## 2. 从 CLI 启动时实际走哪里
+## 2. 讲义补充：从 Python 的应用工厂理解组合根
 
-```text
-package.json 的 bin：qwenaudio
-  → cli/bin/qwenaudio.mjs
-  → cli/src/launcher.mjs 的 main
-  → runtime / process 启动或复用 Gateway
-  → server/src/index.mjs
-  → app/bootstrap.mjs
-  → createGatewayApplication(...)
-```
+想象一个 Python `create_app()`：它先创建存储、任务服务和外部服务客户端，再把对象作为参数交给请求处理器。这就是本项目原文所说的 **Composition Root / 组合根**。它的主要工作是选实现、创建对象、连接依赖和安排关闭。
 
-依据：[CLI executable](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/cli/bin/qwenaudio.mjs#L1)、[main](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/cli/src/launcher.mjs#L220)、[Gateway process entry](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/index.mjs#L1)、[bootstrap module](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/bootstrap.mjs#L1)、[createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63)。不同命令不全走这条链路：`config`、`doctor`、WebUI 启动和后台服务管理有独立分支。先确定实际命令，再沿调用者阅读。
+因此第一次打开 [createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63)，先看参数和 `new` / 工厂调用：
 
-`server/src/index.mjs` 负责运行环境、setup gate、Gateway 租约、受管后台、退出信号和生命周期。它不是全部 HTTP / WebSocket 业务代码。异常启动会记录失败；技能补装失败则有自己的非阻塞启动策略，不应混成同一种错误。
+1. 哪些对象可以从参数注入，哪些在缺省时创建？
+2. `TaskManager` 与 `TaskOperations` 怎样连接？
+3. 同一个 `taskOperations` 被交给了哪些入口？
+4. 模型、记忆、知识和工具的实现在哪里被选择？
 
-## 3. 为什么 createGatewayApplication 是最重要的装配入口
+这里的 JS 参数对象可类比 Python 的配置字典；默认值、解构和展开见[语言桥梁第 3 节](01-python-to-javascript.md#3-对象解构与展开读懂配置和依赖注入)。参数传递让调用方能换实现；业务模块不用自行猜测供应商。
 
-这个工厂函数把 TaskManager、BackendWorkRuntime、TaskOperations、上下文、可选模块、工具来源、客户端命令、前台运行时和传输连起来。调用方可以注入替换实现；缺省路径也能装配正常产品。
+## 3. 把“启动”“装配”“使用”接起来
 
-```mermaid
-flowchart TD
-  A[createGatewayApplication] --> T[TaskManager + TaskStore]
-  A --> B[BackendWorkRuntime + BackendPort 实现]
-  A --> O[TaskOperations]
-  O --> T
-  O --> B
-  A --> M[可选 Memory / Knowledge 模块]
-  A --> F[createFrontendRuntime]
-  F --> S[每条连接的 createRealtimeSessionRuntime]
-  S --> C[SessionTaskCoordinator]
-  S --> H[ToolCallHandler]
-  H --> O
-  C --> T
-  A --> P[HTTP 路由与 Gateway Transport]
-  P --> F
-```
+CLI 启动路径的定位顺序是：[命令入口](../../cli/bin/qwenaudio.mjs) → [launcher 的 main](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/cli/src/launcher.mjs#L220) → [服务进程入口](../../server/src/index.mjs) → [bootstrap](../../server/src/app/bootstrap.mjs) → `createGatewayApplication`。这是 **static 源码定位**，用来把原文运行命令对应到代码；配置、诊断等命令有自己的分支。
 
-核心依据：[createGatewayApplication](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-application.mjs#L63)、[TaskOperations](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L34)、[createFrontendRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/frontend-runtime.mjs#L12)、[createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56)、[SessionTaskCoordinator](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/session-task-coordinator.mjs#L12)。依赖通过参数和事件连接；通用运行时不应向下导入具体模型 Provider 或 ACP 实现来选择业务策略。
+装配之后，再看两处：
 
-Python 类比：`create_app()` 创建 service / repository / client，给服务注入接口实现。读它主要是确认“谁创建谁、谁把什么交给谁”，不要在第一遍追入每个构造函数。
+| 代码定位 | 带着什么问题看 |
+| --- | --- |
+| [createFrontendRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/frontend-runtime.mjs#L12) | 哪些依赖共享，`createSession()` 每次创建什么？ |
+| [attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62) | 接入通过后，如何把解码事件交给前台运行时？ |
 
-装配函数引用具体实现是必要的；通用业务层引用具体实现则会破坏可替换性。[依赖边界测试](../../server/test/dependency-boundaries.test.mjs)检查了这类规则，本次已运行通过。
+对照[原文“前台会话与传输”](../../server/src/README.md)。Python 中也常把 Socket 处理和业务对象分开：网络入口处理连接，业务对象接收已验证的参数。这里传输层与前台会话运行时的分工同样需要分开理解。
 
-## 4. 三种对象生命周期
+## 4. 讲义补充：对象生命周期决定哪些状态能共享
 
-| 生命周期 | 对象 / 资源 | 关闭的意义 |
-| --- | --- | --- |
-| 应用级 | TaskManager、后台门面、可选模块、工具来源、HTTP / Transport | 服务整体释放资源，按其策略收尾或关闭执行 |
-| 前台连接级 | 会话运行时、ToolCallHandler、SessionTaskCoordinator、计时器、投递 claim | 该连接停止收听与投递；已受理的后台工作不会仅因此取消 |
-| 单次操作级 | turn、response、tool call、Task runner、permission request | 根据各自的 ID 与状态结束；不能互相替代 |
+一个 Python 模块里的单例、每个请求创建的对象、每次循环的局部变量，生命周期不同。本项目应区分应用级服务、连接级会话和单次操作。原文的每连接 `SessionTaskCoordinator` 与共用 Task 服务，正是这种差别。
 
-[createFrontendRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/frontend-runtime.mjs#L12) 的 `createSession()` 为连接创建独立运行时，`close()` 关闭所有前台会话并等待生命周期观察器。[createRealtimeSessionRuntime](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/voice/realtime-session-runtime.mjs#L56) 管模型与工具，[SessionTaskCoordinator](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/session-task-coordinator.mjs#L12) 释放订阅和通知 claim。工具来源服务由应用拥有和关闭，不由某次 Socket 握手临时重复发现。
+特别留意：**共享任务管理服务，不代表共享一个模型会话。** 重连可能创建新的前台运行实例，已受理工作仍由应用级任务服务管理。回到[源码导航](../../server/src/README.md)的关闭说明，看关闭连接释放了什么，再在下一讲追一次输入。
 
-## 5. 接入层与业务层的边界
+可选模块的装配也有原文：[裁剪可选模块](../../server/src/README.md)及[依赖方向](../architecture/deep-dive.zh.md#9-依赖方向)。这里的两处显式接线可类比 Python 的 `create_app()` 注册模块；不要把它理解成任意目录可动态发现和删除。
 
-[attachGatewayClientTransport](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/transport/gateway-client-transport.mjs#L62) 处理接入认证、能力、连接归属、协议解码、心跳和公开投影，并调用注入的 frontend runtime。会话运行时接收可信身份与解码事件；它管理模型、音频、上下文、工具和播放，不拥有接入凭据或 GCP 握手。
+## 5. 本讲检查题
 
-HTTP 路由注册在 [registerGatewayHttpRoutes](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/app/gateway-http-routes.mjs#L30)，装配函数提供依赖。配置、健康、知识库管理等控制面接口，与模型工具调用的行为入口不能混为一谈。前台工具和直接客户端 Task 命令最终共用 [TaskOperations](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/orchestration/task-operations.mjs#L34)；公开协议回执各留在自己的入口层。
+1. `app/` 为什么可以选择具体 Provider，而通用业务模块要依赖接口？
+2. 同一个 TaskOperations 被交给前台工具和客户端命令，有什么作用？
+3. 每个连接创建独立会话后，哪些任务事实仍然共享？
+4. 代码里用 `import` 打开 bootstrap，是否可能立即执行装配？
 
-## 6. 逻辑组件与进程拓扑
-
-- WebUI 是浏览器页面，经网络连接 Gateway。
-- TUI 是终端客户端；音频后端根据平台与模式选择。
-- 桌面应用是 Electron 主进程与渲染界面；可以管理内置 Gateway，也可以连接独立 Gateway。
-- 手机是带原生能力的开发客户端，主要复用 Web 交互；手机接入不意味着后台工作在手机执行。
-- 后台 Agent 可以由本机进程驱动管理，也可通过 Adapter 接入外部服务；云端实时模型通常是另一项服务。
-
-证据：[startConfiguredRuntime / Electron main](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/desktop/src/main.mjs#L390)、[useRealtimeVoice](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/web/src/realtime/useRealtimeVoice.js#L203)、[runTui](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/tui/src/index.mjs#L141)、[移动端入口](../../mobile/src/main.jsx)、[startManagedBackend](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/process/managed-backend.mjs#L181)、[A2ABackendAdapter](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/backend/adapters/a2a/backend-adapter.mjs#L513)。这些是实现支持的拓扑，不是本次已运行的所有部署组合。
-
-**读完检查：**你能从 `createGatewayApplication` 找到同一个 TaskOperations 被交给工具和客户端命令的两个位置，并解释为什么关闭一个 SessionTaskCoordinator 不应该取消所有 Task 吗？
+前三题回源码导航与装配入口；第四题回[语言桥梁“模块执行”](01-python-to-javascript.md#2-导入导出与模块执行)。更多定位按需查[代码索引](key-code-index.md)。

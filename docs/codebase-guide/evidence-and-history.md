@@ -1,11 +1,11 @@
 # 证据、版本与分析范围
 
-[返回伴读入口](README.md)
+[返回讲义入口](README.md) · [原文阅读地图](source-reading-map.md)
 
 ## 1. 本地基线
 
 - 仓库：`QwenAudio/qwen-audio-agent`，本地 `main`。
-- 源码分析日期：2026-10-03，Asia/Shanghai；产品定位与阅读顺序修订日期：2026-10-04。
+- 源码分析日期：2026-10-03，Asia/Shanghai；按“原文阅读 + Python 解读”组织讲义的修订日期：2026-10-04。
 - 源码分析基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`，提交日期 2026-09-28。后续伴读文档提交不改变源码基线与行号。
 - 根包版本：`2.0.1`；`v2.0.1` 指向 `a73bcbc`，源码基线是它后续的 `f6dd0e3`。
 - 历史：非 shallow，共 810 条从源码基线可达的提交；不声称包含所有远端分支或开发前历史。
@@ -14,13 +14,15 @@
 
 核对命令：`git rev-parse f6dd0e3`、`git rev-parse --is-shallow-repository`、`git log --reverse f6dd0e3`、`git show --stat edb2365`、`git tag --sort=version:refname`。历史路线日期使用 committer 时间；标签表展示被标记提交的时间，不等于 Release 页面发布时间或 tagger 时间。
 
-## 2. 主要参考资料及优先级
+## 2. 原文、讲义补充与验证的分工
 
-**第一层：当前源码、配置、已有测试与运行验证。** 工具受理、队列、权限、Session 与投递等关键行为分别定位到[代码索引](key-code-index.md)；准确路径、声明匹配和行号另存 [code-landmarks.json](code-landmarks.json)。历史因果用功能提交 diff 核对。
+**阅读主体：项目自带文档。** 产品目标、架构、使用说明、配置、协议和接口直接链接原文，由[原文地图](source-reading-map.md)按主题组织。八讲的必读表标明章节与问题，不另写一套配置或契约。
 
-**第二层：项目自带文档。** 产品目标与应用定位从[项目 README](../../README_ZH.md)开始；机制与边界阅读[架构总览](../architecture/overview.zh.md)、[架构不变量](../architecture/deep-dive.zh.md)、[服务端地图](../../server/src/README.md)、[客户端协议](../gateway-protocol.zh.md)、[扩展](../extensions.zh.md)、[配置](../configuration.zh.md)与[CHANGELOG](../../CHANGELOG.md)。场景事实使用各示例自己的 README 和代码。
+**讲义补充：阅读关系与 Python 桥梁。** 类比、教学代码、检查题和历史阶段划分帮助读原文，标为 teaching。它们不是项目新增接口，也不替代原文中的条件和例外。核心产品与架构从[README](../../README_ZH.md)、[架构总览](../architecture/overview.zh.md)进入；其余功能按课程或原文地图选读。
 
-**第三层：外部概述。** 参考了用户提供的 [zread 页面](https://zread.ai/QwenAudio/qwen-audio-agent)。它强调实时交流继续进行、后台工作结束后自然回流。Defuddle 成功提取到开篇概述，未取得完整目录所有章节；提取结果还缺失一处委派工具名称，因此工具名和实现细节均以源码核对。外部生成说明没有覆盖更高优先级的本地证据。
+**验证依据：当前源码、配置和测试。** 原文机制的定位与必要补充分别链接到[代码索引](key-code-index.md)，准确路径、声明和行号存于 [code-landmarks.json](code-landmarks.json)。只在原文不足以解释当前分支时补源码说明，例如文字与打断的通知消费。遇到不同文档语境或版本差异，核对配置、装配和实现，不能把简化类比当作证明。
+
+**外部概述仅作初次分析参考。** 曾参考用户提供的 [zread 页面](https://zread.ai/QwenAudio/qwen-audio-agent)，成功提取的是开篇概述，未取得完整目录所有章节；还缺失一处委派工具名称。讲义的原文阅读主线来自项目自身资料，不依赖该概述；本轮也未重新验证外部技术报告。
 
 **历史与路线图：** 用来理解旧设计和演进动机，不直接证明当前行为。旧“协调 Agent”、已移除工具分类、旧数据目录和旧路径特别容易误导，应回到当前实现验证。
 
@@ -36,7 +38,9 @@ MCP 最初返回无已索引仓库；CLI 首次尝试遇到全局注册目录写
 
 ## 4. 已验证与未验证
 
-本次运行了 13 个现有测试文件，151 tests 全部通过，详见[测试范围与命令](operations/runtime-and-tests.md)。另外运行了 Python 教学模型，确认示例可直接执行。文档交付时检查内部链接、代码定位、Git commit / tag 以及未替换标记。
+首次分析（2026-10-03）运行了 13 个现有测试文件，151 tests 全部通过；日志记录与命令归入[独立验证记录](operations/analysis-validation.md)。本轮讲义修订没有改产品代码，没有重跑完整产品测试；再次运行了 Python 教学模型。
+
+本轮验收分别检查：八讲覆盖架构、启动、对话/工具、后台、记忆/知识、状态、客户端/扩展与运行；各讲提供原文阅读问题、Python 解读和检查题；原文地图链接全部 68 份项目中文文档（不含本讲义），并提供场景示例 README；链接及章节锚点、84 个源码定位和课程检查题/答案逐项核对。原项目文档与产品代码未改动。
 
 本次没有实测云端实时模型、后台原生登录、真实麦克风 / 摄像头、WebRTC、手机、桌面成品或场景 benchmark。Mock 测试证明选择的内部分支，不证明外部模型必然遵守 Prompt，也不证明端到端延迟、可靠性或业务正确率。
 

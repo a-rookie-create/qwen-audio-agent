@@ -1,10 +1,10 @@
-# 02：按开发演进加深理解的 12 阶段
+# 附录：按开发演进加深理解的 12 阶段
 
-[返回伴读入口](README.md) · 前置：[JavaScript 阅读桥梁](01-python-to-javascript.md) · 当前实现：[架构与入口](03-architecture-and-entrypoints.md)
+[返回讲义入口](README.md) · 前置：[八讲主线](README.md#八讲主线) · 语法查询：[Python 到 JavaScript](01-python-to-javascript.md)
 
 ## 使用方法与时间口径
 
-开始历史阅读之前，先按[系统地图](00-system-overview.md)认识产品目标，再沿[语音流程](flows/voice-and-tools.md)追踪一次普通对话，区分直接回答、前台工具和后台工作。历史路线用于解释这些能力如何演进。
+先通过八讲和原项目文档建立当前地图，再使用本附录回答“为什么出现这个设计”。发布说明和功能原文使用链接；阶段划分、Python 锚点与检查题是讲义补充。先按[整体架构讲义](00-system-overview.md)读原文，再沿[语音流程讲义](flows/voice-and-tools.md)追踪普通对话，区分直接回答、前台工具和后台工作。
 
 每阶段按“问题 → 官方文档 → 关键符号 → 历史 diff → 检查题”阅读。一次只追一条行为。版本标签用于保存阶段结果；功能提交用于观察设计变化。补丁版本只有在改变理解时才单列。
 
