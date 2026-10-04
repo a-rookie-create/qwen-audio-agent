@@ -1,0 +1,762 @@
+{
+  "commit": "f6dd0e3703d58e4941159c1be89447f3fcb5063a",
+  "analyzed_date": "2026-10-03",
+  "landmarks": {
+    "cli-entry": {
+      "group": "启动与应用装配",
+      "path": "cli/bin/qwenaudio.mjs",
+      "line": 1,
+      "symbol": "CLI executable",
+      "role": "命令行可执行入口",
+      "pattern": "^\\#!/usr/bin/env\\ node$",
+      "evidence": "static"
+    },
+    "cli-main": {
+      "group": "启动与应用装配",
+      "path": "cli/src/launcher.mjs",
+      "line": 220,
+      "symbol": "main",
+      "role": "命令分派与启动管理",
+      "pattern": "^export async function main\\(",
+      "evidence": "static"
+    },
+    "server-entry": {
+      "group": "启动与应用装配",
+      "path": "server/src/index.mjs",
+      "line": 1,
+      "symbol": "Gateway process entry",
+      "role": "环境、租约、后台与退出生命周期",
+      "pattern": "^import\\ \\{\\ dirname,\\ resolve\\ \\}\\ from\\ 'node:path'$",
+      "evidence": "static"
+    },
+    "bootstrap": {
+      "group": "启动与应用装配",
+      "path": "server/src/app/bootstrap.mjs",
+      "line": 1,
+      "symbol": "bootstrap module",
+      "role": "创建默认应用并导出服务",
+      "pattern": "^import\\ \\{\\ createGatewayApplication\\ \\}\\ from\\ '\\./gateway\\-application\\.mjs'$",
+      "evidence": "static"
+    },
+    "application": {
+      "group": "启动与应用装配",
+      "path": "server/src/app/gateway-application.mjs",
+      "line": 63,
+      "symbol": "createGatewayApplication",
+      "role": "核心装配与依赖注入",
+      "pattern": "^export function createGatewayApplication\\(",
+      "evidence": "static"
+    },
+    "http-routes": {
+      "group": "启动与应用装配",
+      "path": "server/src/app/gateway-http-routes.mjs",
+      "line": 30,
+      "symbol": "registerGatewayHttpRoutes",
+      "role": "控制面 HTTP 注册",
+      "pattern": "^export function registerGatewayHttpRoutes\\(",
+      "evidence": "static"
+    },
+    "frontend-runtime": {
+      "group": "启动与应用装配",
+      "path": "server/src/app/frontend-runtime.mjs",
+      "line": 12,
+      "symbol": "createFrontendRuntime",
+      "role": "共享依赖和每连接 Session 创建",
+      "pattern": "^export function createFrontendRuntime\\(",
+      "evidence": "static"
+    },
+    "optional-modules": {
+      "group": "启动与应用装配",
+      "path": "server/src/app/optional-modules.mjs",
+      "line": 6,
+      "symbol": "optionalModuleFactories",
+      "role": "应用级可选领域装配",
+      "pattern": "^export const optionalModuleFactories",
+      "evidence": "static"
+    },
+    "optional-features": {
+      "group": "启动与应用装配",
+      "path": "server/src/frontend/optional-features.mjs",
+      "line": 6,
+      "symbol": "optionalFrontendFeatures",
+      "role": "前台可选能力装配",
+      "pattern": "^export const optionalFrontendFeatures",
+      "evidence": "static"
+    },
+    "config": {
+      "group": "启动与应用装配",
+      "path": "server/src/core/config.mjs",
+      "line": 234,
+      "symbol": "config",
+      "role": "解析后的产品配置",
+      "pattern": "^export const config =",
+      "evidence": "static"
+    },
+    "runtime-paths": {
+      "group": "启动与应用装配",
+      "path": "shared/runtime-paths.mjs",
+      "line": 19,
+      "symbol": "resolveRuntimePaths",
+      "role": "配置、数据与状态路径策略",
+      "pattern": "^export function resolveRuntimePaths\\(",
+      "evidence": "static"
+    },
+    "runtime-environment": {
+      "group": "启动与应用装配",
+      "path": "shared/runtime-environment.mjs",
+      "line": 254,
+      "symbol": "loadRuntimeEnvironment",
+      "role": "加载配置、初始化模板与运行目录",
+      "pattern": "^export function loadRuntimeEnvironment\\(",
+      "evidence": "static"
+    },
+    "transport": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/transport/gateway-client-transport.mjs",
+      "line": 62,
+      "symbol": "attachGatewayClientTransport",
+      "role": "接入、归属、协议路由与投影",
+      "pattern": "^export function attachGatewayClientTransport\\(",
+      "evidence": "static"
+    },
+    "session-runtime": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/voice/realtime-session-runtime.mjs",
+      "line": 56,
+      "symbol": "createRealtimeSessionRuntime",
+      "role": "模型、音频、工具与播放生命周期",
+      "pattern": "^export function createRealtimeSessionRuntime\\(",
+      "evidence": "static"
+    },
+    "session-tool-event": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/voice/realtime-session-runtime.mjs",
+      "line": 575,
+      "symbol": "handleEvent: function_call_arguments.done",
+      "role": "模型工具调用进入真实 handler 的分支",
+      "pattern": "^    if \\(event.type === 'response.function_call_arguments.done'\\)",
+      "evidence": "static"
+    },
+    "input-runtime": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/voice/realtime-input-runtime.mjs",
+      "line": 30,
+      "symbol": "RealtimeInputRuntime",
+      "role": "输入、语音轮次与提交",
+      "pattern": "^export class RealtimeInputRuntime",
+      "evidence": "static"
+    },
+    "realtime": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/voice/realtime-provider.mjs",
+      "line": 111,
+      "symbol": "RealtimeFrontend",
+      "role": "通用模型会话门面",
+      "pattern": "^export class RealtimeFrontend",
+      "evidence": "static"
+    },
+    "provider-registry": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/voice/providers/provider-registry.mjs",
+      "line": 261,
+      "symbol": "RealtimeProviderRegistry",
+      "role": "可替换实时 Provider 注册与校验",
+      "pattern": "^export class RealtimeProviderRegistry",
+      "evidence": "static"
+    },
+    "gcp": {
+      "group": "客户端接入与实时会话",
+      "path": "shared/protocol/gateway-client-protocol.mjs",
+      "line": 13,
+      "symbol": "GATEWAY_CLIENT_PROTOCOL_VERSION / protocol definitions",
+      "role": "线版本、事件、能力和 schema",
+      "pattern": "^export const GATEWAY_CLIENT_PROTOCOL_VERSION",
+      "evidence": "static"
+    },
+    "gateway-client": {
+      "group": "客户端接入与实时会话",
+      "path": "shared/gateway/client-sdk.mjs",
+      "line": 63,
+      "symbol": "GatewayClient",
+      "role": "握手、请求关联、重连与客户端生命周期",
+      "pattern": "^export class GatewayClient",
+      "evidence": "static"
+    },
+    "client-reducer": {
+      "group": "客户端接入与实时会话",
+      "path": "shared/gateway/client-state.mjs",
+      "line": 29,
+      "symbol": "reduceGatewayClientState",
+      "role": "客户端通用状态投影",
+      "pattern": "^export function reduceGatewayClientState\\(",
+      "evidence": "static"
+    },
+    "client-commands": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/client/client-command-runtime.mjs",
+      "line": 39,
+      "symbol": "GatewayClientCommandRuntime",
+      "role": "公开客户端命令与共用用户 Task 操作",
+      "pattern": "^export class GatewayClientCommandRuntime",
+      "evidence": "static"
+    },
+    "access": {
+      "group": "客户端接入与实时会话",
+      "path": "server/src/access/gateway-access.mjs",
+      "line": 245,
+      "symbol": "GatewayAccessManager",
+      "role": "可信接入身份与凭据验证",
+      "pattern": "^export class GatewayAccessManager",
+      "evidence": "static"
+    },
+    "frontend-tools": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/frontend-tools.mjs",
+      "line": 109,
+      "symbol": "frontendTools",
+      "role": "组装当前模型可用工具",
+      "pattern": "^export function frontendTools\\(",
+      "evidence": "static"
+    },
+    "tool-registry": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/frontend-tool-registry.mjs",
+      "line": 107,
+      "symbol": "FrontendToolRegistry",
+      "role": "定义登记、策略与可用性",
+      "pattern": "^export class FrontendToolRegistry",
+      "evidence": "static"
+    },
+    "tool-executor": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/frontend-tool-registry.mjs",
+      "line": 166,
+      "symbol": "FrontendToolExecutor",
+      "role": "精确 handler 分派、能力与循环限制",
+      "pattern": "^export class FrontendToolExecutor",
+      "evidence": "static"
+    },
+    "tool-source": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/frontend-tool-source.mjs",
+      "line": 12,
+      "symbol": "assertFrontendToolSource",
+      "role": "动态工具来源契约",
+      "pattern": "^export function assertFrontendToolSource\\(",
+      "evidence": "static"
+    },
+    "tool-handler": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/tool-call-handler.mjs",
+      "line": 78,
+      "symbol": "ToolCallHandler",
+      "role": "模型调用关联、参数、工具输出和各 handler 装配",
+      "pattern": "^export class ToolCallHandler",
+      "evidence": "static"
+    },
+    "tool-handle": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/tool-call-handler.mjs",
+      "line": 481,
+      "symbol": "ToolCallHandler.handle",
+      "role": "真实模型事件入口",
+      "pattern": "^  async handle\\(event",
+      "evidence": "static"
+    },
+    "tool-output": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/tool-call-handler.mjs",
+      "line": 266,
+      "symbol": "ToolCallHandler.sendOutput",
+      "role": "工具结果回送模型与续答",
+      "pattern": "^  async sendOutput\\(",
+      "evidence": "static"
+    },
+    "spawn-schema": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/spawn-thinking-tool.mjs",
+      "line": 3,
+      "symbol": "spawnThinkingTool",
+      "role": "后台请求 schema 与语义边界",
+      "pattern": "^export const spawnThinkingTool =",
+      "evidence": "static"
+    },
+    "agent-task": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/agent-task-runtime.mjs",
+      "line": 60,
+      "symbol": "AgentTaskRuntime",
+      "role": "受理、查询、取消、权限与输入工具",
+      "pattern": "^export class AgentTaskRuntime",
+      "evidence": "static"
+    },
+    "spawn": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/agent-task-runtime.mjs",
+      "line": 195,
+      "symbol": "AgentTaskRuntime.executeSpawnThinkingToolCall",
+      "role": "受理回执、输入、重复请求与可用性",
+      "pattern": "^  async executeSpawnThinkingToolCall\\(",
+      "evidence": "static"
+    },
+    "agent-task-tools": {
+      "group": "前台工具与受理",
+      "path": "server/src/frontend/tools/features/agent-task-tools.mjs",
+      "line": 119,
+      "symbol": "agentTaskToolEntries",
+      "role": "任务工具 schema 与能力策略",
+      "pattern": "^export const agentTaskToolEntries =",
+      "evidence": "static"
+    },
+    "input-assets": {
+      "group": "前台工具与受理",
+      "path": "server/src/voice/input-asset-registry.mjs",
+      "line": 41,
+      "symbol": "InputAssetRegistry",
+      "role": "图片和文件历史引用及归属",
+      "pattern": "^export class InputAssetRegistry",
+      "evidence": "static"
+    },
+    "task-ops": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/orchestration/task-operations.mjs",
+      "line": 34,
+      "symbol": "TaskOperations",
+      "role": "传输中立的用户工作操作门面",
+      "pattern": "^export class TaskOperations",
+      "evidence": "static"
+    },
+    "task-submit": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/orchestration/task-operations.mjs",
+      "line": 57,
+      "symbol": "TaskOperations.submit",
+      "role": "owner lane、runner 与 canceler 装配",
+      "pattern": "^  submit\\(",
+      "evidence": "static"
+    },
+    "task-manager": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-manager.mjs",
+      "line": 56,
+      "symbol": "TaskManager",
+      "role": "Task 状态、调度与通知权威",
+      "pattern": "^export class TaskManager",
+      "evidence": "static"
+    },
+    "task-create": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-manager.mjs",
+      "line": 428,
+      "symbol": "TaskManager.create / #create",
+      "role": "工作受理并立即返回公开快照",
+      "pattern": "^  create\\(options",
+      "evidence": "static"
+    },
+    "task-drain": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-manager.mjs",
+      "line": 610,
+      "symbol": "TaskManager.drain",
+      "role": "排序与调度配额选择",
+      "pattern": "^  drain\\(",
+      "evidence": "static"
+    },
+    "task-start": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-manager.mjs",
+      "line": 623,
+      "symbol": "TaskManager.start",
+      "role": "运行、后台事件、委派让出通道与终态",
+      "pattern": "^  start\\(task",
+      "evidence": "static"
+    },
+    "task-cancel": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-manager.mjs",
+      "line": 855,
+      "symbol": "TaskManager.cancel",
+      "role": "排队与已启动工作的确认式取消",
+      "pattern": "^  async cancel\\(",
+      "evidence": "static"
+    },
+    "task-state": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-state.mjs",
+      "line": 5,
+      "symbol": "TaskStatus / TRANSITIONS",
+      "role": "内部状态和允许转换",
+      "pattern": "^export const TaskStatus",
+      "evidence": "static"
+    },
+    "task-transition": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-state.mjs",
+      "line": 131,
+      "symbol": "transitionTask",
+      "role": "非法转换保护",
+      "pattern": "^export function transitionTask\\(",
+      "evidence": "static"
+    },
+    "public-work-state": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-state.mjs",
+      "line": 117,
+      "symbol": "publicWorkState",
+      "role": "权限 / 输入要求的公开投影",
+      "pattern": "^export function publicWorkState\\(",
+      "evidence": "static"
+    },
+    "permission-policy": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/permission-policy.mjs",
+      "line": 9,
+      "symbol": "PermissionPolicy",
+      "role": "工作与会话范围的授权策略",
+      "pattern": "^export class PermissionPolicy",
+      "evidence": "static"
+    },
+    "task-artifact": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-artifact.mjs",
+      "line": 117,
+      "symbol": "normalizeArtifacts",
+      "role": "有界、公开的工作产物",
+      "pattern": "^export function normalizeArtifacts\\(",
+      "evidence": "static"
+    },
+    "reminder-scheduler": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/reminder-scheduler.mjs",
+      "line": 24,
+      "symbol": "ReminderScheduler",
+      "role": "定时提醒恢复与到期调度",
+      "pattern": "^export class ReminderScheduler",
+      "evidence": "static"
+    },
+    "task-recovery": {
+      "group": "Task 状态、执行与权限",
+      "path": "server/src/task/task-recovery.mjs",
+      "line": 21,
+      "symbol": "taskRecoveryAction",
+      "role": "恢复、重排、重新关联、取消或失败策略",
+      "pattern": "^export function taskRecoveryAction\\(",
+      "evidence": "static"
+    },
+    "backend-port": {
+      "group": "后台协议与进程",
+      "path": "server/src/backend/backend-port.mjs",
+      "line": 22,
+      "symbol": "BACKEND_PORT_METHODS / assertBackendPort",
+      "role": "协议中立接口契约",
+      "pattern": "^export const BACKEND_PORT_METHODS",
+      "evidence": "static"
+    },
+    "backend-work": {
+      "group": "后台协议与进程",
+      "path": "server/src/backend/backend-work-runtime.mjs",
+      "line": 14,
+      "symbol": "BackendWorkRuntime",
+      "role": "构成执行输入并调用 BackendPort",
+      "pattern": "^export class BackendWorkRuntime",
+      "evidence": "static"
+    },
+    "acp-adapter": {
+      "group": "后台协议与进程",
+      "path": "server/src/backend/adapters/acp/backend-adapter.mjs",
+      "line": 115,
+      "symbol": "AcpBackendAdapter",
+      "role": "ACP Session、委派、权限和恢复边界",
+      "pattern": "^export class AcpBackendAdapter",
+      "evidence": "static"
+    },
+    "acp-submit": {
+      "group": "后台协议与进程",
+      "path": "server/src/backend/adapters/acp/backend-adapter.mjs",
+      "line": 1160,
+      "symbol": "AcpBackendAdapter.submit",
+      "role": "真正后台工作入口及隔离工作分支",
+      "pattern": "^  async submit\\(",
+      "evidence": "static"
+    },
+    "a2a-adapter": {
+      "group": "后台协议与进程",
+      "path": "server/src/backend/adapters/a2a/backend-adapter.mjs",
+      "line": 513,
+      "symbol": "A2ABackendAdapter",
+      "role": "A2A 状态、输入和产物归一化",
+      "pattern": "^export class A2ABackendAdapter",
+      "evidence": "static"
+    },
+    "managed-backend": {
+      "group": "后台协议与进程",
+      "path": "server/src/process/managed-backend.mjs",
+      "line": 181,
+      "symbol": "startManagedBackend",
+      "role": "本机后台进程启动和归属",
+      "pattern": "^export async function startManagedBackend\\(",
+      "evidence": "static"
+    },
+    "coordinator": {
+      "group": "结果投递与播放",
+      "path": "server/src/orchestration/session-task-coordinator.mjs",
+      "line": 12,
+      "symbol": "SessionTaskCoordinator",
+      "role": "观察 Task、请求投递、通知领取和关闭",
+      "pattern": "^export class SessionTaskCoordinator",
+      "evidence": "static"
+    },
+    "notification-queue": {
+      "group": "结果投递与播放",
+      "path": "server/src/task/task-notification-queue.mjs",
+      "line": 8,
+      "symbol": "TaskNotificationQueue",
+      "role": "claim、续期、释放和交付",
+      "pattern": "^export class TaskNotificationQueue",
+      "evidence": "static"
+    },
+    "announcement-window": {
+      "group": "结果投递与播放",
+      "path": "server/src/voice/announcement/announcement-window.mjs",
+      "line": 1,
+      "symbol": "AnnouncementWindow",
+      "role": "双工插入窗口",
+      "pattern": "^export class AnnouncementWindow",
+      "evidence": "static"
+    },
+    "announcement-manager": {
+      "group": "结果投递与播放",
+      "path": "server/src/voice/announcement/announcement-manager.mjs",
+      "line": 66,
+      "symbol": "AnnouncementManager",
+      "role": "批次、恢复、重试与播放确认",
+      "pattern": "^export class AnnouncementManager",
+      "evidence": "static"
+    },
+    "announcement-deliver": {
+      "group": "结果投递与播放",
+      "path": "server/src/voice/announcement/announcement-manager.mjs",
+      "line": 351,
+      "symbol": "AnnouncementManager.deliver",
+      "role": "请求模型表达并等待真正播放",
+      "pattern": "^  async deliver\\(",
+      "evidence": "static"
+    },
+    "playback-confirm": {
+      "group": "结果投递与播放",
+      "path": "web/src/realtime/playback-lifecycle.js",
+      "line": 10,
+      "symbol": "confirmTrackedPlaybackStart",
+      "role": "Web 客户端确认实际开始播放",
+      "pattern": "^export function confirmTrackedPlaybackStart\\(",
+      "evidence": "static"
+    },
+    "conversation-context": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/conversation/frontend-agent-context.mjs",
+      "line": 120,
+      "symbol": "buildFrontendContext",
+      "role": "前台上下文与客户端环境",
+      "pattern": "^export function buildFrontendContext\\(",
+      "evidence": "static"
+    },
+    "notes": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/conversation/frontend-notes.mjs",
+      "line": 85,
+      "symbol": "FrontendNotesStore",
+      "role": "命名清单及跨进程持久集合",
+      "pattern": "^export class FrontendNotesStore",
+      "evidence": "static"
+    },
+    "memory-port": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/provider.mjs",
+      "line": 76,
+      "symbol": "assertMemoryProvider / provider contract",
+      "role": "同步快照与可选观察接口",
+      "pattern": "^export function assertMemoryProvider\\(",
+      "evidence": "static"
+    },
+    "memory-runtime": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/runtime.mjs",
+      "line": 53,
+      "symbol": "FrontendMemoryRuntime",
+      "role": "归一化、变更与 owner 写入通道",
+      "pattern": "^export class FrontendMemoryRuntime",
+      "evidence": "static"
+    },
+    "memory-context": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/context.mjs",
+      "line": 60,
+      "symbol": "buildMemoryContext",
+      "role": "偏好和事实的上下文边界",
+      "pattern": "^export function buildMemoryContext\\(",
+      "evidence": "static"
+    },
+    "memory-module": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/module.mjs",
+      "line": 10,
+      "symbol": "createMemoryModule",
+      "role": "记忆 Provider、学习、观察和路由装配",
+      "pattern": "^export function createMemoryModule\\(",
+      "evidence": "static"
+    },
+    "memory-tools": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/tools.mjs",
+      "line": 186,
+      "symbol": "memoryToolHandlers",
+      "role": "read / append / replace 的模型工具入口",
+      "pattern": "^export function memoryToolHandlers\\(",
+      "evidence": "static"
+    },
+    "memory-extractor": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/memory/learning/extractor.mjs",
+      "line": 202,
+      "symbol": "MemoryExtractor",
+      "role": "会话后明确偏好与事实提取",
+      "pattern": "^export class MemoryExtractor",
+      "evidence": "static"
+    },
+    "knowledge-port": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/knowledge/provider.mjs",
+      "line": 156,
+      "symbol": "assertKnowledgeRetrievalProvider",
+      "role": "检索和可选管理契约",
+      "pattern": "^export function assertKnowledgeRetrievalProvider\\(",
+      "evidence": "static"
+    },
+    "knowledge-runtime": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/knowledge/runtime.mjs",
+      "line": 25,
+      "symbol": "FrontendKnowledgeRuntime",
+      "role": "可信 owner、限量、超时和结果归一化",
+      "pattern": "^export class FrontendKnowledgeRuntime",
+      "evidence": "static"
+    },
+    "knowledge-module": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/knowledge/module.mjs",
+      "line": 9,
+      "symbol": "createKnowledgeModule",
+      "role": "知识 Provider、入库与路由装配",
+      "pattern": "^export function createKnowledgeModule\\(",
+      "evidence": "static"
+    },
+    "knowledge-library-service": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/knowledge/library-service.mjs",
+      "line": 20,
+      "symbol": "KnowledgeLibraryService",
+      "role": "异步资料入库与管理",
+      "pattern": "^export class KnowledgeLibraryService",
+      "evidence": "static"
+    },
+    "local-knowledge": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/knowledge/providers/local/provider.mjs",
+      "line": 104,
+      "symbol": "LocalKnowledgeProvider",
+      "role": "确定性文本片段检索与本机管理",
+      "pattern": "^export class LocalKnowledgeProvider",
+      "evidence": "static"
+    },
+    "task-store": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/task/task-store.mjs",
+      "line": 17,
+      "symbol": "TaskStore",
+      "role": "工作快照与有序持久写入",
+      "pattern": "^export class TaskStore",
+      "evidence": "static"
+    },
+    "journal": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/session/session-journal.mjs",
+      "line": 18,
+      "symbol": "SessionJournal",
+      "role": "持久会话事件、写队列与压缩",
+      "pattern": "^export class SessionJournal",
+      "evidence": "static"
+    },
+    "journal-registry": {
+      "group": "上下文、可选领域与持久化",
+      "path": "server/src/session/session-journal-registry.mjs",
+      "line": 17,
+      "symbol": "SessionJournalRegistry",
+      "role": "owner/session 的日志文件和缓存管理",
+      "pattern": "^export class SessionJournalRegistry",
+      "evidence": "static"
+    },
+    "web-voice": {
+      "group": "客户端与音频实现",
+      "path": "web/src/realtime/useRealtimeVoice.js",
+      "line": 203,
+      "symbol": "useRealtimeVoice",
+      "role": "Web 的连接、采集、播放与交互",
+      "pattern": "^export default function useRealtimeVoice\\(",
+      "evidence": "static"
+    },
+    "resampler": {
+      "group": "客户端与音频实现",
+      "path": "web/src/realtime/audio.js",
+      "line": 23,
+      "symbol": "createStreamingResampler",
+      "role": "跨分块重采样状态",
+      "pattern": "^export function createStreamingResampler\\(",
+      "evidence": "static"
+    },
+    "desktop-main": {
+      "group": "客户端与音频实现",
+      "path": "desktop/src/main.mjs",
+      "line": 390,
+      "symbol": "startConfiguredRuntime / Electron main",
+      "role": "桌面连接与内置运行时启动",
+      "pattern": "^async function startConfiguredRuntime\\(",
+      "evidence": "static"
+    },
+    "wake-word": {
+      "group": "客户端与音频实现",
+      "path": "desktop/src/wake-word/runtime.mjs",
+      "line": 3,
+      "symbol": "DesktopWakeWordRuntime",
+      "role": "客户端本地 Worker 唤醒检测",
+      "pattern": "^export class DesktopWakeWordRuntime",
+      "evidence": "static"
+    },
+    "tui": {
+      "group": "客户端与音频实现",
+      "path": "tui/src/index.mjs",
+      "line": 141,
+      "symbol": "runTui",
+      "role": "终端交互和音频客户端入口",
+      "pattern": "^export async function runTui\\(",
+      "evidence": "static"
+    },
+    "presentation-runtime": {
+      "group": "结果投递与播放",
+      "path": "server/src/voice/realtime-presentation-runtime.mjs",
+      "line": 62,
+      "symbol": "RealtimePresentationRuntime",
+      "role": "音频 / 文字呈现、通知确认与播放事实",
+      "pattern": "^export class RealtimePresentationRuntime",
+      "evidence": "static"
+    },
+    "presentation-cancel": {
+      "group": "结果投递与播放",
+      "path": "server/src/voice/realtime-presentation-runtime.mjs",
+      "line": 608,
+      "symbol": "RealtimePresentationRuntime.cancelPlayback",
+      "role": "主动打断的通知确认及迟到输出抑制",
+      "pattern": "^  cancelPlayback\\(",
+      "evidence": "static"
+    }
+  }
+}

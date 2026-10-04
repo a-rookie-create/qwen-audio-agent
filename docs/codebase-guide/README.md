@@ -1,0 +1,55 @@
+# qwen-audio-agent 项目伴读：给 Python 使用者的演进式阅读路线
+
+**可以用 Git 历史来逐步理解这个项目。推荐的方式是：先建立当前系统的地图，再按架构转折点回看历史，每一阶段回到当前实现验证。** 发布标签适合作为阶段结束的快照，功能提交适合解释某个设计为什么出现。
+
+这份伴读假设你会 Python、尚不熟悉 JavaScript。目标是让你能自己追踪一次对话、一项后台任务和一条结果通知，理解模块如何协作，并知道以后应到哪里查问题或增加能力。
+
+分析日期：**2026-10-03，Asia/Shanghai**。代码基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`；包版本 `2.0.1`。本地历史完整，共 810 条可达提交。该基线比 `v2.0.1` 标签多一次提交，不能把二者当作相同快照。详见[证据与版本](evidence-and-history.md)。
+
+## 为什么不用“从第一条提交开始全部读”
+
+最早的 `edb2365` 已有 137 个文件、约 2.48 万行新增，包含网关、语音、后台、桌面和 TUI。仓库记录从一个已经成形的系统开始，无法还原更早的从零开发过程。历史中还有合并、补丁、回退、发版与大量文档变更；逐条读会失去主线。
+
+本伴读选择 12 个认知阶段。每阶段都解释：当时解决什么问题、增加哪个概念、看哪次提交、当前实现在哪里，以及读完能回答什么。这个阶段划分是教学安排，不是项目官方的版本分类。
+
+## 从哪里开始
+
+| 时间 | 路径 | 达成目标 |
+| --- | --- | --- |
+| 5 分钟 | [系统地图](00-system-overview.md) → [两条核心流程](flows/tasks-permissions-and-delivery.md)中的流程图 | 说清前台、编排运行时、后台和客户端的区别 |
+| 30 分钟 | 系统地图 → [Python 到 JavaScript](01-python-to-javascript.md)的第 1～5 节 → [入口与装配](03-architecture-and-entrypoints.md) → [任务受理链路](flows/tasks-permissions-and-delivery.md) | 找到真正入口，理解“受理即回” |
+| 深读 | Python 到 JavaScript → [12 阶段历史路线](02-history-reading-route.md) → 各专题 → [练习与答案](exercises/reading-workbook.md) | 用源码解释状态、权限、结果投递和恢复 |
+
+建议每次只完成一个阶段。先读该阶段的问题，再读 2～4 个定位符号；能回答检查题之后再看 diff。第一次阅读不需要安装全部后台、接入全部模型，也不需要先掌握 React。
+
+## 章节导航
+
+- [00：系统地图与术语](00-system-overview.md)：项目做什么，哪些能力在边界之外。
+- [01：Python 使用者的 JavaScript 阅读桥梁](01-python-to-javascript.md)：从真实项目片段理解语法与异步行为。
+- [02：按历史演进的 12 阶段](02-history-reading-route.md)：发布节点、功能提交、当前代码和检查题。
+- [03：架构、进程与执行入口](03-architecture-and-entrypoints.md)：启动、依赖注入、职责与生命周期。
+- [流程 A：语音、模型与工具](flows/voice-and-tools.md)：音频如何变成工具调用，工具结果如何续答。
+- [流程 B：任务、权限与结果投递](flows/tasks-permissions-and-delivery.md)：受理、排队、后台、取消与播报。
+- [专题：记忆、知识与上下文](subsystems/memory-knowledge-and-context.md)：偏好、事实、清单、历史与资料的区别。
+- [专题：客户端和扩展边界](subsystems/clients-and-extensions.md)：Web、桌面、TUI、手机，以及 Python 可以参与的位置。
+- [状态与持久化](data/state-and-persistence.md)：谁拥有事实，文件存什么，重启能恢复什么。
+- [运行与测试](operations/runtime-and-tests.md)：如何先读再跑，以及本次验证范围。
+- [练习与答案](exercises/reading-workbook.md)：分阶段任务、源码检查题和可运行的 Python 教学模型。
+- [关键代码索引](key-code-index.md)：按职责定位文件、符号和准确行号。
+- [证据与版本](evidence-and-history.md)：标签表、参考来源、分析方法与局限。
+
+## 如何读代码证据
+
+正文的代码链接固定到上述提交的 GitHub 行号，避免 `main` 更新后错位；[代码索引](key-code-index.md)还提供本地文件链接。行号只对本次基线成立。离线时用文件名与符号搜索即可。
+
+- **static**：直接核对源码、配置或 Git diff。
+- **test-run**：本次运行的现有自动化测试通过；不代表真实模型或硬件已验证。
+- **test-source**：阅读了测试用例，但本次未执行该文件。
+- **teaching**：帮助理解的 Python 模型或类比，不是生产实现。
+- **inferred**：推断，必须附上待验证条件；本伴读不会用它证明真实外部服务的表现。
+
+## 本伴读的边界
+
+当前核心调用链已核对代码。GitNexus 临时索引对应当前基线，辅助确认符号和调用者；全文搜索未启用，图中的动态回调和截断路径需要用源码补证。真实云端语音延迟、麦克风权限、远程连接、后台 Agent 登录和桌面打包未在本次验证中运行。
+
+参考了你提供的 [zread 项目概述](https://zread.ai/QwenAudio/qwen-audio-agent)，成功提取的是开篇概述，不是完整目录的逐章内容。项目自带的架构文档、协议、配置和代码是本伴读的主要依据。既有用户手册负责操作说明，本伴读负责解释“为什么这样组织、代码怎样实现”。
