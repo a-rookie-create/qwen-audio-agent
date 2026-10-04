@@ -2,6 +2,8 @@
 
 [返回伴读入口](../README.md) · 后续：[Task 与结果投递](tasks-permissions-and-delivery.md)
 
+本页从普通实时对话开始：用户说话，模型理解并回应，客户端播放；用户可以继续补充或打断。只有请求需要当前可用的工具时，才进入工具分支；需要后台能力时，才通过工具转入[流程 B](tasks-permissions-and-delivery.md)。这三条路径的选择由前台模型结合指令与实际能力决定，规则见 [PROMPT 的 Routing](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/config/frontend-agent/PROMPT.md#L24)。
+
 ## 1. 先分开两条连接
 
 ```text

@@ -4,6 +4,8 @@
 
 ## 使用方法与时间口径
 
+开始历史阅读之前，先按[系统地图](00-system-overview.md)认识产品目标，再沿[语音流程](flows/voice-and-tools.md)追踪一次普通对话，区分直接回答、前台工具和后台工作。历史路线用于解释这些能力如何演进。
+
 每阶段按“问题 → 官方文档 → 关键符号 → 历史 diff → 检查题”阅读。一次只追一条行为。版本标签用于保存阶段结果；功能提交用于观察设计变化。补丁版本只有在改变理解时才单列。
 
 日期统一按提交的 **committer 时间转换为 Asia/Shanghai**；分支作者时间可能早于合并时间。下面是按开发演进整理的教学路线，不是精确复刻作者写代码的顺序。对主线先用 `--first-parent`，要研究功能分支再看完整历史。
@@ -21,7 +23,7 @@
 | 9 | 08-28～09-04；2.0 开发期 | 统一客户端协议、事件 / 动作、移动端与远程接入 |
 | 10 | 09-04～09-10；2.0 开发期 | Memory / Knowledge Provider 与可裁剪领域 |
 | 11 | 09-16～09-23；`v2.0.0` | 多模型、WebRTC，以及任务 / 会话 / 传输进一步拆分 |
-| 12 | 09-26～09-28；`v2.0.1` 与当前 HEAD | 安装发现、会话恢复、场景规则与验证边界 |
+| 12 | 09-26～09-28；`v2.0.1` 与源码基线 `f6dd0e3` | 安装发现、会话恢复、场景规则与验证边界 |
 
 实际标签 SHA 和日期见[版本表](evidence-and-history.md)。**1.11 到 2.0 之间的功能集中演进，不能只看两个发版提交。** 这个区间最适合按功能提交分成数个阶段。
 
@@ -174,7 +176,7 @@ WebRTC 改变客户端媒体入口，不等于改变 BackendPort，也不代表�
 
 节点：[`a73bcbc` 2.0.1 安装与后台发现](https://github.com/QwenAudio/qwen-audio-agent/commit/a73bcbc)、[`f6dd0e3` 当前客服验证与输入处理改进](https://github.com/QwenAudio/qwen-audio-agent/commit/f6dd0e3)。
 
-先读 CHANGELOG 2.0.1，再看[后台安装](../../shared/backend/install.mjs)、[运行包发现](../../shared/backend/runtime-package.mjs)、[AcpBackendAdapter](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/backend/adapters/acp/backend-adapter.mjs#L115) 的会话复用；最后读[客服示例](../../examples/customer-service/README_ZH.md)。当前 HEAD 的变更还触及共用前台输入处理和 Provider，不能只凭提交标题判断“全是示例”。
+先读 CHANGELOG 2.0.1，再看[后台安装](../../shared/backend/install.mjs)、[运行包发现](../../shared/backend/runtime-package.mjs)、[AcpBackendAdapter](https://github.com/QwenAudio/qwen-audio-agent/blob/f6dd0e3703d58e4941159c1be89447f3fcb5063a/server/src/backend/adapters/acp/backend-adapter.mjs#L115) 的会话复用；最后读[客服示例](../../examples/customer-service/README_ZH.md)。源码基线 `f6dd0e3` 的变更还触及共用前台输入处理和 Provider，不能只凭提交标题判断“全是示例”。
 
 在客服示例中，最近对话可通过场景自己的适配逻辑交给后台；这不是框架通用层自动把所有前台记忆发给后台。业务的金额、库存、批准和资格校验位于示例服务，不能只交给 Prompt。
 

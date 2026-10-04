@@ -44,7 +44,7 @@ class TeachingRuntime:
                 work.status = "running"
                 self.log(f"后台开始工作: {work.objective}")
                 await asyncio.sleep(0.20)  # Simulated external work.
-                work.result = "已找到测试失败的原因"
+                work.result = "会议纪要已整理，包含讨论结论和行动项"
                 work.status = "completed"
                 work.notification = "pending"
                 self.log("工作 completed；通知 pending，用户还可以继续说话")
@@ -76,7 +76,7 @@ class TeachingRuntime:
 
 async def main() -> None:
     runtime = TeachingRuntime()
-    work = runtime.submit("检查项目为什么测试失败")
+    work = runtime.submit("把工作目录中的会议记录整理成纪要文件，列出行动项")
     background = [
         asyncio.create_task(runtime.execute_work()),
         asyncio.create_task(runtime.deliver_results()),

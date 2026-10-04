@@ -5,20 +5,20 @@
 ## 1. 本地基线
 
 - 仓库：`QwenAudio/qwen-audio-agent`，本地 `main`。
-- 分析日期：2026-10-03，Asia/Shanghai。
-- 提交：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`，提交日期 2026-09-28。
-- 根包版本：`2.0.1`；`v2.0.1` 指向 `a73bcbc`，当前 HEAD 是它后续的 `f6dd0e3`。
-- 历史：非 shallow，共 810 条从 HEAD 可达的提交；不声称包含所有远端分支或开发前历史。
+- 源码分析日期：2026-10-03，Asia/Shanghai；产品定位与阅读顺序修订日期：2026-10-04。
+- 源码分析基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`，提交日期 2026-09-28。后续伴读文档提交不改变源码基线与行号。
+- 根包版本：`2.0.1`；`v2.0.1` 指向 `a73bcbc`，源码基线是它后续的 `f6dd0e3`。
+- 历史：非 shallow，共 810 条从源码基线可达的提交；不声称包含所有远端分支或开发前历史。
 - 最早可达提交：`edb2365`，2026-07-26，137 文件、24849 行新增；已经是成形系统。
-- 工作开始时没有本地未提交变更。本次仅新增 `docs/codebase-guide/` 的伴读材料，没有改动产品代码或原有手写文档，没有创建 Git commit。
+- 初次分析开始时没有本地未提交变更。伴读材料仅位于 `docs/codebase-guide/`，没有改动产品代码或原有手写文档；初版随后按用户要求提交至用户的 GitHub 仓库。
 
-核对命令：`git rev-parse HEAD`、`git rev-parse --is-shallow-repository`、`git log --reverse`、`git show --stat edb2365`、`git tag --sort=version:refname`。历史路线日期使用 committer 时间；标签表展示被标记提交的时间，不等于 Release 页面发布时间或 tagger 时间。
+核对命令：`git rev-parse f6dd0e3`、`git rev-parse --is-shallow-repository`、`git log --reverse f6dd0e3`、`git show --stat edb2365`、`git tag --sort=version:refname`。历史路线日期使用 committer 时间；标签表展示被标记提交的时间，不等于 Release 页面发布时间或 tagger 时间。
 
 ## 2. 主要参考资料及优先级
 
 **第一层：当前源码、配置、已有测试与运行验证。** 工具受理、队列、权限、Session 与投递等关键行为分别定位到[代码索引](key-code-index.md)；准确路径、声明匹配和行号另存 [code-landmarks.json](code-landmarks.json)。历史因果用功能提交 diff 核对。
 
-**第二层：项目自带文档。** 优先阅读[架构总览](../architecture/overview.zh.md)、[架构不变量](../architecture/deep-dive.zh.md)、[服务端地图](../../server/src/README.md)、[客户端协议](../gateway-protocol.zh.md)、[扩展](../extensions.zh.md)、[配置](../configuration.zh.md)与[CHANGELOG](../../CHANGELOG.md)。场景事实使用各示例自己的 README 和代码。
+**第二层：项目自带文档。** 产品目标与应用定位从[项目 README](../../README_ZH.md)开始；机制与边界阅读[架构总览](../architecture/overview.zh.md)、[架构不变量](../architecture/deep-dive.zh.md)、[服务端地图](../../server/src/README.md)、[客户端协议](../gateway-protocol.zh.md)、[扩展](../extensions.zh.md)、[配置](../configuration.zh.md)与[CHANGELOG](../../CHANGELOG.md)。场景事实使用各示例自己的 README 和代码。
 
 **第三层：外部概述。** 参考了用户提供的 [zread 页面](https://zread.ai/QwenAudio/qwen-audio-agent)。它强调实时交流继续进行、后台工作结束后自然回流。Defuddle 成功提取到开篇概述，未取得完整目录所有章节；提取结果还缺失一处委派工具名称，因此工具名和实现细节均以源码核对。外部生成说明没有覆盖更高优先级的本地证据。
 

@@ -1,10 +1,12 @@
 # qwen-audio-agent 项目伴读：给 Python 使用者的演进式阅读路线
 
-**可以用 Git 历史来逐步理解这个项目。推荐的方式是：先建立当前系统的地图，再按架构转折点回看历史，每一阶段回到当前实现验证。** 发布标签适合作为阶段结束的快照，功能提交适合解释某个设计为什么出现。
+**先把握项目目标：qwen-audio-agent 要让用户通过实时语音与一个持续在场的助理交流，并在它办事期间继续对话。** 普通对话、自然打断、前台工具和后台执行共同服务这段体验。当前重点应用是桌面办公，也提供座舱、客服等扩展示例。产品定位以[项目 README](../../README_ZH.md)为依据，详见[系统地图](00-system-overview.md)。
 
-这份伴读假设你会 Python、尚不熟悉 JavaScript。目标是让你能自己追踪一次对话、一项后台任务和一条结果通知，理解模块如何协作，并知道以后应到哪里查问题或增加能力。
+**可以用 Git 历史来逐步理解这个项目。推荐的方式是：先认识产品目标和一次普通对话，再建立系统地图，按架构转折点回看历史，每一阶段回到代码基线验证。** 发布标签适合作为阶段结束的快照，功能提交适合解释某个设计为什么出现。
 
-分析日期：**2026-10-03，Asia/Shanghai**。代码基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`；包版本 `2.0.1`。本地历史完整，共 810 条可达提交。该基线比 `v2.0.1` 标签多一次提交，不能把二者当作相同快照。详见[证据与版本](evidence-and-history.md)。
+这份伴读假设你会 Python、尚不熟悉 JavaScript。目标是让你能自己追踪一次实时对话、一项前台工具调用、一项后台工作及其结果回流，理解模块怎样支持产品体验，并知道以后应到哪里查问题或增加能力。
+
+源码分析日期：**2026-10-03，Asia/Shanghai**；产品定位与阅读顺序修订于 **2026-10-04**。代码基线：`f6dd0e3703d58e4941159c1be89447f3fcb5063a`；包版本 `2.0.1`。该基线的本地历史完整，共 810 条可达提交，比 `v2.0.1` 标签多一次提交。后续伴读文档提交不改变这个源码基线。详见[证据与版本](evidence-and-history.md)。
 
 ## 为什么不用“从第一条提交开始全部读”
 
@@ -16,9 +18,9 @@
 
 | 时间 | 路径 | 达成目标 |
 | --- | --- | --- |
-| 5 分钟 | [系统地图](00-system-overview.md) → [两条核心流程](flows/tasks-permissions-and-delivery.md)中的流程图 | 说清前台、编排运行时、后台和客户端的区别 |
-| 30 分钟 | 系统地图 → [Python 到 JavaScript](01-python-to-javascript.md)的第 1～5 节 → [入口与装配](03-architecture-and-entrypoints.md) → [任务受理链路](flows/tasks-permissions-and-delivery.md) | 找到真正入口，理解“受理即回” |
-| 深读 | Python 到 JavaScript → [12 阶段历史路线](02-history-reading-route.md) → 各专题 → [练习与答案](exercises/reading-workbook.md) | 用源码解释状态、权限、结果投递和恢复 |
+| 5 分钟 | [系统地图](00-system-overview.md)的产品目标、使用场景与架构图 | 说清项目目标，区分直接对话、前台工具和后台工作 |
+| 30 分钟 | 系统地图 → [Python 到 JavaScript](01-python-to-javascript.md)的第 1～5 节 → [入口与装配](03-architecture-and-entrypoints.md) → [语音流程](flows/voice-and-tools.md)的主路径 | 找到入口，解释一次对话如何进入模型、返回声音，以及工具分支在哪里 |
+| 深读 | Python 到 JavaScript → [12 阶段历史路线](02-history-reading-route.md) → [后台工作与结果回流](flows/tasks-permissions-and-delivery.md) → 各专题 → [练习与答案](exercises/reading-workbook.md) | 用源码解释实时交流与持续工作如何协作，以及状态、权限、投递和恢复 |
 
 建议每次只完成一个阶段。先读该阶段的问题，再读 2～4 个定位符号；能回答检查题之后再看 diff。第一次阅读不需要安装全部后台、接入全部模型，也不需要先掌握 React。
 
