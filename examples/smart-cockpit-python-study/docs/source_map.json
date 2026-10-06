@@ -1,0 +1,940 @@
+{
+  "analyzed_commit": "c24ed491ceed16ed7191f30bb14f2cee81fe3361",
+  "analysis_date": "2026-10-06",
+  "kind": "Concise Python-style conceptual pseudocode, not a runnable migration",
+  "entries": [
+    {
+      "study_path": "overview.py",
+      "representation": "新写的单文件总览；原项目没有同名模块",
+      "study_symbols": [
+        {
+          "symbol": "普通聊天",
+          "line": 17
+        },
+        {
+          "symbol": "前台工具调用",
+          "line": 24
+        },
+        {
+          "symbol": "委派后台任务",
+          "line": 31
+        },
+        {
+          "symbol": "后台结果回来",
+          "line": 39
+        },
+        {
+          "symbol": "业务状态变化",
+          "line": 45
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/gateway/server.mjs",
+          "symbol": "startCockpitGateway",
+          "line": 64,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/app/gateway-application.mjs",
+          "symbol": "createGatewayApplication",
+          "line": 63,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/agent/executor.mjs",
+          "symbol": "runCockpitAgent",
+          "line": 194,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/cockpit-service.mjs",
+          "symbol": "CockpitService",
+          "line": 37,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "bootstrap/environment.py",
+      "study_symbols": [
+        {
+          "symbol": "load_cockpit_environment",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bootstrap/environment.mjs",
+          "symbol": "loadCockpitEnvironment",
+          "line": 9,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "bootstrap/start.py",
+      "study_symbols": [
+        {
+          "symbol": "start_four_processes",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "package.json",
+          "symbol": "example:smart-cockpit",
+          "line": 300,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "gateway/server.py",
+      "study_symbols": [
+        {
+          "symbol": "start_cockpit_gateway",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/gateway/server.mjs",
+          "symbol": "startCockpitGateway",
+          "line": 64,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/server.mjs",
+          "symbol": "waitForCockpitService",
+          "line": 43,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "gateway/profile_bundle.py",
+      "study_symbols": [
+        {
+          "symbol": "create_cockpit_frontend_mcp_configuration",
+          "line": 6
+        },
+        {
+          "symbol": "write_cockpit_frontend_profile_bundle",
+          "line": 10
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
+          "symbol": "createCockpitFrontendMcpConfiguration",
+          "line": 12,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
+          "symbol": "writeCockpitFrontendProfileBundle",
+          "line": 33,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "gateway/environment_events.py",
+      "study_symbols": [
+        {
+          "symbol": "select_assistant_profile",
+          "line": 6
+        },
+        {
+          "symbol": "navigation_preference_changed",
+          "line": 11
+        },
+        {
+          "symbol": "skill_triggered",
+          "line": 15
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
+          "symbol": "cockpitNavigationPreferenceEventDefinition",
+          "line": 32,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
+          "symbol": "cockpitSkillTriggeredEventDefinition",
+          "line": 55,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/assistant/event.mjs",
+          "symbol": "loadCockpitAssistantProfile",
+          "line": 11,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "gateway/spawn_thinking_tool.py",
+      "study_symbols": [
+        {
+          "symbol": "create_cockpit_spawn_thinking_description",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/gateway/spawn-thinking-tool.mjs",
+          "symbol": "createCockpitSpawnThinkingDescription",
+          "line": 18,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/server.py",
+      "study_symbols": [
+        {
+          "symbol": "start_cockpit_agent_server",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/server.mjs",
+          "symbol": "startCockpitAgentServer",
+          "line": 65,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/model.py",
+      "study_symbols": [
+        {
+          "symbol": "DashScopeCockpitModel",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/model.mjs",
+          "symbol": "DashScopeCockpitModel",
+          "line": 5,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/tools.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitAgentTools",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/tools.mjs",
+          "symbol": "CockpitAgentTools",
+          "line": 33,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/retrieval/providers/web-retrieval.mjs",
+          "symbol": "createWebRetrieval",
+          "line": 11,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/mcp_client.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitMcpTools",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/mcp-client.mjs",
+          "symbol": "CockpitMcpTools",
+          "line": 6,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/agent_history.py",
+      "study_symbols": [
+        {
+          "symbol": "AgentHistory",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/agent-history.mjs",
+          "symbol": "AgentHistory",
+          "line": 4,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "agent/executor.py",
+      "study_symbols": [
+        {
+          "symbol": "run_cockpit_agent",
+          "line": 8
+        },
+        {
+          "symbol": "CockpitAgentExecutor",
+          "line": 26
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/executor.mjs",
+          "symbol": "runCockpitAgent",
+          "line": 194,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/agent/executor.mjs",
+          "symbol": "CockpitAgentExecutor",
+          "line": 303,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "client/app.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitApp",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/client/src/App.jsx",
+          "symbol": "App",
+          "line": 110,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "client/voice_session.py",
+      "study_symbols": [
+        {
+          "symbol": "VoiceSessionController",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/client/src/hooks/useVoiceSession.js",
+          "symbol": "useVoiceSession",
+          "line": 114,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "client/cockpit_state.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitStateController",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/client/src/hooks/useCockpitState.js",
+          "symbol": "useCockpitState",
+          "line": 16,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "client/memory_and_skills.py",
+      "study_symbols": [
+        {
+          "symbol": "GatewayMemoryController",
+          "line": 6
+        },
+        {
+          "symbol": "CockpitSkillsController",
+          "line": 15
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/client/src/hooks/useGatewayMemory.js",
+          "symbol": "useGatewayMemory",
+          "line": 9,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/client/src/hooks/useCockpitSkills.js",
+          "symbol": "useCockpitSkills",
+          "line": 19,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "client/projections.py",
+      "study_symbols": [
+        {
+          "symbol": "apply_cockpit_state_update",
+          "line": 6
+        },
+        {
+          "symbol": "skill_triggered_event",
+          "line": 10
+        },
+        {
+          "symbol": "CockpitEnvironmentOutbox",
+          "line": 14
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/client/src/projections/cockpit-state.js",
+          "symbol": "applyCockpitStateUpdate",
+          "line": 32,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/client/src/projections/environment-events.js",
+          "symbol": "CockpitEnvironmentOutbox",
+          "line": 52,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/client/src/projections/environment-events.js",
+          "symbol": "skillTriggeredEvent",
+          "line": 28,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/server.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitServiceServer",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/server.mjs",
+          "symbol": "CockpitServiceServer",
+          "line": 51,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/mcp_server.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitMcpServer",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/mcp-server.mjs",
+          "symbol": "createCockpitMcpServer",
+          "line": 16,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/cockpit_service.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitService",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/cockpit-service.mjs",
+          "symbol": "CockpitService",
+          "line": 37,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/state_store.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitStateStore",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/state-store.mjs",
+          "symbol": "CockpitStateStore",
+          "line": 126,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/custom_skills/store.py",
+      "study_symbols": [
+        {
+          "symbol": "CustomSkillStore",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/store.mjs",
+          "symbol": "CustomSkillStore",
+          "line": 72,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/custom_skills/temperature_rules.py",
+      "study_symbols": [
+        {
+          "symbol": "normalize_temperature_trigger",
+          "line": 6
+        },
+        {
+          "symbol": "TemperatureSkillRules",
+          "line": 10
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
+          "symbol": "TemperatureSkillRules",
+          "line": 60,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
+          "symbol": "normalizeTemperatureTrigger",
+          "line": 10,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/registry.py",
+      "study_symbols": [
+        {
+          "symbol": "ToolRegistry",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/registry.mjs",
+          "symbol": "executeCockpitTool",
+          "line": 132,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/tools/surface-routing.mjs",
+          "symbol": "loadCockpitSurfaceRouting",
+          "line": 61,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/integrations/amap.py",
+      "study_symbols": [
+        {
+          "symbol": "ScenarioServices",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/integrations/amap/services.mjs",
+          "symbol": "createAmapCockpitServices",
+          "line": 10,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/vehicle-location.mjs",
+          "symbol": "normalizeVehicleLocation",
+          "line": 32,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/gateway_application.py",
+      "study_symbols": [
+        {
+          "symbol": "GatewayApplication",
+          "line": 7
+        },
+        {
+          "symbol": "create_gateway_application",
+          "line": 30
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/app/gateway-application.mjs",
+          "symbol": "createGatewayApplication",
+          "line": 63,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/transport/gateway-client-transport.mjs",
+          "symbol": "attachGatewayClientTransport",
+          "line": 62,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/frontend_session.py",
+      "study_symbols": [
+        {
+          "symbol": "RealtimeSessionRuntime",
+          "line": 8
+        },
+        {
+          "symbol": "ToolCallHandler",
+          "line": 31
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/app/frontend-runtime.mjs",
+          "symbol": "createFrontendRuntime",
+          "line": 12,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/voice/realtime-session-runtime.mjs",
+          "symbol": "createRealtimeSessionRuntime",
+          "line": 56,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/tools/tool-call-handler.mjs",
+          "symbol": "ToolCallHandler",
+          "line": 78,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/tools/mcp/frontend-mcp-client.mjs",
+          "symbol": "FrontendMcpClient",
+          "line": 141,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/task_runtime.py",
+      "study_symbols": [
+        {
+          "symbol": "TaskManager",
+          "line": 8
+        },
+        {
+          "symbol": "TaskOperations",
+          "line": 26
+        },
+        {
+          "symbol": "SessionTaskCoordinator",
+          "line": 37
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/task/task-manager.mjs",
+          "symbol": "TaskManager",
+          "line": 56,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/orchestration/task-operations.mjs",
+          "symbol": "TaskOperations",
+          "line": 34,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/orchestration/session-task-coordinator.mjs",
+          "symbol": "SessionTaskCoordinator",
+          "line": 12,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/backend_adapter.py",
+      "study_symbols": [
+        {
+          "symbol": "BackendPort",
+          "line": 8
+        },
+        {
+          "symbol": "A2ABackendAdapter",
+          "line": 14
+        },
+        {
+          "symbol": "create_backend_agent_host",
+          "line": 23
+        },
+        {
+          "symbol": "BackendWorkRuntime",
+          "line": 28
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/backend/backend-port.mjs",
+          "symbol": "BACKEND_PORT_METHODS",
+          "line": 22,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/backend/backend-adapter-sdk.mjs",
+          "symbol": "createBackendAgentHost",
+          "line": 36,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/backend/backend-work-runtime.mjs",
+          "symbol": "BackendWorkRuntime",
+          "line": 14,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/backend/adapters/a2a/backend-adapter.mjs",
+          "symbol": "createA2ABackendAdapter",
+          "line": 1223,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/extension_ports.py",
+      "study_symbols": [
+        {
+          "symbol": "MemoryProvider",
+          "line": 6
+        },
+        {
+          "symbol": "KnowledgeProvider",
+          "line": 14
+        },
+        {
+          "symbol": "WebRetrieval",
+          "line": 19
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/memory/provider.mjs",
+          "symbol": "assertMemoryProvider",
+          "line": 76,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/knowledge/provider.mjs",
+          "symbol": "assertKnowledgeRetrievalProvider",
+          "line": 156,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/voice/providers/provider-registry.mjs",
+          "symbol": "defineRealtimeProvider",
+          "line": 257,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/tools/frontend-tool-source.mjs",
+          "symbol": "assertFrontendToolSource",
+          "line": 12,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "framework_reference/gateway_client.py",
+      "study_symbols": [
+        {
+          "symbol": "GatewayClient",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "shared/gateway/client-sdk.mjs",
+          "symbol": "GatewayClient",
+          "line": 63,
+          "evidence": "static"
+        },
+        {
+          "path": "shared/protocol/gateway-client-protocol.mjs",
+          "symbol": "GatewayClientProtocolEvent",
+          "line": 18,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "bench/evaluator.py",
+      "study_symbols": [
+        {
+          "symbol": "score_trace",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bench/evaluator/score.mjs",
+          "symbol": "scoreTrace",
+          "line": 199,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "bench/runner.py",
+      "study_symbols": [
+        {
+          "symbol": "run_cases",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bench/runner/controlled-harness.mjs",
+          "symbol": "setupBenchmarkCase",
+          "line": 178,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/vehicle/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/vehicle/execute.mjs",
+          "symbol": "executeVehicleTool",
+          "line": 510,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/navigation/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/navigation/execute.mjs",
+          "symbol": "executeNavigationTool",
+          "line": 615,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/music/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/music/execute.mjs",
+          "symbol": "executeMusicTool",
+          "line": 302,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/weather/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 4
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/weather/execute.mjs",
+          "symbol": "executeWeatherTool",
+          "line": 22,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/flashbuy/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/flashbuy/execute.mjs",
+          "symbol": "executeFlashbuyTool",
+          "line": 144,
+          "evidence": "static"
+        }
+      ]
+    },
+    {
+      "study_path": "service/tools/custom_skills/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/custom-skills/execute.mjs",
+          "symbol": "executeCustomSkillTool",
+          "line": 23,
+          "evidence": "static"
+        }
+      ]
+    }
+  ]
+}
