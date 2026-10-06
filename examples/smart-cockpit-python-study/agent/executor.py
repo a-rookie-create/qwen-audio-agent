@@ -1,38 +1,72 @@
-"""后台 Agent 的核心思想：模型决定调用哪些工具，真实结果回到模型。
+"""真实的模型→工具→模型循环；预算、历史与失败状态均有实际实现。"""
+from __future__ import annotations
+import asyncio
+import json
+from typing import Callable
+from agent.agent_history import AgentHistory
+from agent.model import ChatModel
+from agent.tools import CockpitAgentTools
+from study_support import ToolResult, TraceLog
 
-对应原 runCockpitAgent / CockpitAgentExecutor。
-这里省略 Schema 转换、来源解析、超时控制和完整 A2A 事件。
-"""
 
-
-def run_cockpit_agent(objective, model, tools):
-    messages = [{'role': 'user', 'content': objective}]
-    for round_index in range(10):
-        # 原版最多 10 个模型轮次，最后一轮禁用工具，依据真实结果收尾。
-        available_tools = tools.list() if round_index < 9 else []
-        reply = model.complete(messages, available_tools)
-        messages.append(reply)
+async def run_cockpit_agent(objective: str, history: list[dict], model: ChatModel,
+                            tools: CockpitAgentTools, on_tool_call: Callable[[str], None]) -> ToolResult:
+    definitions = tools.list()
+    allowed = {tool.name for tool in definitions}
+    messages = [*history, {'role': 'user', 'content': objective}]
+    count = 0
+    last = ToolResult('未取得操作结果')
+    sources: dict[str, dict] = {}
+    for index in range(10):
+        final = index == 9 or count >= 32
+        reply = await model.complete(messages, [] if final else definitions)
         if not reply.tool_calls:
-            return reply.content          # 模型认为工作完成，返回回答。
-        if round_index == 9:
-            return 根据已取得结果诚实总结(messages)
+            return ToolResult(reply.content, {**last.data, 'sources': list(sources.values())}, is_error=last.is_error)
+        if final:
+            return last                     # 最后一轮不再执行模型提出的新工具。
+        messages.append({'role': 'assistant', 'content': reply.content or None, 'tool_calls': [
+            {'id': call.id, 'type': 'function', 'function': {'name': call.name,
+             'arguments': json.dumps(call.arguments, ensure_ascii=False)}} for call in reply.tool_calls]})
         for call in reply.tool_calls:
-            # 工具改变真实业务状态；不能用模型的口头承诺代替执行。
-            result = tools.call(call.name, call.arguments)
-            messages.append({'role': 'tool', 'content': result})
-    # 原版另限制实际工具调用数为 32、单任务上限 10 分钟，本页不展开实现。
+            if call.name not in allowed:
+                raise ValueError('模型选择了未注册工具：' + call.name)
+            if count >= 32:
+                result = ToolResult('调用预算已用完，此调用未执行', is_error=True)
+            else:
+                count += 1
+                on_tool_call(call.name)
+                result = await tools.call(call.name, call.arguments)
+            last = result
+            for citation in result.data.get('citations', []):
+                sources[citation['url']] = {**sources.get(citation['url'], {}), **citation}
+            messages.append({'role': 'tool', 'name': call.name, 'tool_call_id': call.id,
+                             'content': result.content, 'result': result})
+    return last
 
 
 class CockpitAgentExecutor:
-    def __init__(self, model, tools):
-        self.model, self.tools = model, tools
+    def __init__(self, model: ChatModel, tools: CockpitAgentTools, trace: TraceLog) -> None:
+        self.model, self.tools, self.trace = model, tools, trace
+        self.history = AgentHistory()
+        self.executions: dict[str, asyncio.Task] = {}
 
-    def execute(self, task, event_bus):
-        event_bus.publish('working', task)
+    async def execute(self, task_id: str, objective: str, context_id: str,
+                      on_progress: Callable[[str], None]) -> ToolResult:
+        self.trace.record('Agent', 'execute', objective)
+        work = asyncio.create_task(run_cockpit_agent(objective, self.history.messages(context_id),
+                self.model, self.tools, lambda name: on_progress('正在执行：' + name)))
+        self.executions[task_id] = work
         try:
-            result = run_cockpit_agent(task['objective'], self.model, self.tools)
-            event_bus.publish('artifact', result)  # 详细结果。
-            event_bus.publish('completed', result)
-        except Exception as error:
-            event_bus.publish('failed', str(error))
-        # 历史、进度、取消与来源信息由原实现继续管理。
+            result = await asyncio.wait_for(work, timeout=600)
+            self.history.append(context_id, objective, result.content)
+            return result
+        except asyncio.CancelledError:
+            self.history.append(context_id, objective, '任务已取消，已执行操作需查询状态。')
+            raise
+        finally:
+            self.executions.pop(task_id, None)
+
+    def cancel_task(self, task_id: str) -> None:
+        work = self.executions.get(task_id)
+        if work:
+            work.cancel()

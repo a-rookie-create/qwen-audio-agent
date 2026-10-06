@@ -1,8 +1,10 @@
-"""天气工具：外部查询 → 保存状态 → 返回结果，对应 executeWeatherTool。"""
+"""天气查询经可替换的 ScenarioServices；默认结果明确属于离线演示。"""
+from service.tools.shared import ToolContext
+from study_support import ToolResult
 
 
-def execute(name, arguments, state):
-    weather = 查询天气(arguments.get('city', '杭州'))
-    if not weather:
-        return '天气查询失败'            # 未取得数据，不把查询说成成功。
-    return state.update('weather', weather)
+async def execute(name: str, args: dict, ctx: ToolContext) -> ToolResult:
+    weather = ctx.services.weather(args.get('city') or '杭州')
+    ctx.update('weather', weather)
+    return ctx.result(f"{weather['city']}：{weather['temperature']} 度，{weather['condition']}",
+                      ['weather'], {'weather': weather})

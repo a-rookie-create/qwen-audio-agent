@@ -1,5 +1,5 @@
 {
-  "commit": "c24ed491ceed16ed7191f30bb14f2cee81fe3361",
+  "commit": "6bb306bb56530be481e4cbef85bb67b0502088ae",
   "exports": {
     "./package.json": "./package.json",
     "./electron": "./shared/electron-host.cjs",

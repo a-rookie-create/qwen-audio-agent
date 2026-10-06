@@ -35,15 +35,25 @@
 
 ## 像 SDK 那样调用的部分
 
+下面是学习版可运行的 Python 装配示例；它对应宿主接线思想，**不是原框架的官方 Python SDK**。
+
 ```python
-# Python 风格示意；真实公开入口是 JavaScript import。
-adapter = create_a2a_backend_adapter(agent_card_url=...)
-host = create_backend_agent_host(adapter)
-application = create_gateway_application(agent=host, auto_start=False, ...)
-application.start(host=..., port=...)
+import asyncio
+from bootstrap.start import build_study_runtime
+
+async def example():
+    runtime = await build_study_runtime()
+    try:
+        reply = await runtime.app.send("空调调到24度")
+        print(reply["text"])
+    finally:
+        await runtime.close()
+
+asyncio.run(example())
 ```
 
-这些是框架的宿主/装配 API。它们创建并启动应用，在同一个 Node.js 进程里接线。
+原框架的 `createGatewayApplication`、`createBackendAgentHost` 是 JavaScript 宿主/装配 API，在 Node.js 进程里接线。
+上面学习版的 `build_study_runtime` 在 Python 进程中创建教学对象，实现类似的职责衔接。
 GatewayClient 是客户端 SDK，帮助应用连接已经启动的 Gateway。
 createWebRetrieval 则可独立供 Agent 使用，调用时才执行网络检索。
 
@@ -65,7 +75,8 @@ createWebRetrieval 则可独立供 Agent 使用，调用时才执行网络检索
 | A2A Agent Card 和消息/任务接口 | Gateway 联系后台 | A2A Adapter |
 
 GCP 请求需要真实 envelope、event_id、握手与能力协商；不能只复制一条音频字典
-就宣称实现了协议。学习版 GatewayClient 把这些细节显式留为占位。
+就宣称实现了协议。学习版 GatewayClient 通过实际方法调用连接本地 Gateway 对象，不实现网络握手、封包或恢复。
+它的输入字典是教学事件格式，不能直接发送到原 Gateway。
 
 ## smart-cockpit 实际使用哪些
 
@@ -100,3 +111,5 @@ KnowledgeProvider 必需 describe/retrieve，管理方法 ingest/list/remove 可
 Realtime Provider 是供应商连接和事件转换的注册对象；不同契约不能混成一个服务。
 
 所有声明均为 static；准确符号与行号见 [源码对照](source_map.md)。
+
+学习版 `BackendPort`、Memory/Knowledge Provider 只实现演示用的接口子集；完整原契约以上表和原源码为准。

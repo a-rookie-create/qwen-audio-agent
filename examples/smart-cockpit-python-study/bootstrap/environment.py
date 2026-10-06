@@ -1,9 +1,18 @@
-"""环境加载只解决配置来源，对应 bootstrap/environment.mjs。
-优先级：进程已有变量 > 座舱 .env.local > 仓库 .env.local。
-"""
+"""可选环境加载，不默认读取原项目密钥文件。"""
+from __future__ import annotations
+import os
+from pathlib import Path
 
 
-def load_cockpit_environment(env):
-    合并缺失配置(env, 座舱环境文件)
-    合并缺失配置(env, 仓库环境文件)
-    return env
+def load_cockpit_environment(env: dict | None = None, files: tuple[Path, ...] = ()) -> dict:
+    values = dict(os.environ if env is None else env)
+    for path in files:
+        if not path.exists():
+            continue
+        for line in path.read_text().splitlines():
+            stripped = line.strip()
+            if not stripped or stripped.startswith('#') or '=' not in stripped:
+                continue
+            key, value = stripped.split('=', 1)
+            values.setdefault(key.strip(), value.strip().strip(chr(34)).strip(chr(39)))
+    return values

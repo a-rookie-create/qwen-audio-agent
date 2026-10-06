@@ -1,7 +1,8 @@
 # 哪些能换成 Python
 
 本地仓库的公开装配与客户端 SDK 是 JavaScript 模块，未发现对应 Python 装配 SDK。
-本学习副本的类、函数与伪操作只表达思想，不会让 Python 直接调用 .mjs 导出的函数。
+本学习副本已经是可运行的 Python，实现教学用对象与调用链；它没有直接调用 `.mjs` 导出的函数。
+默认版本在一个 Python 进程中使用本地接口，不能直接作为原 JS Gateway 的 GCP/A2A/MCP 客户端或服务端。
 
 | 部分 | Python 接入方式 | 必须保留的契约 |
 |---|---|---|
@@ -23,18 +24,29 @@
 音频生命周期、任务存储/恢复/授权、投递重试等，属于框架移植。
 “换一种语言连接服务”与“换一种语言实现服务器”工作量不同。
 
-## 一个重要例子
+## 怎样区分学习与迁移
+
+现在的学习版通过以下真实装配函数运行：
 
 ```python
-# 跨进程：可由 Python 实现，Gateway 内部语言无关。
-await python_client.connect("ws://gateway/api/realtime")
-await python_agent.serve_a2a(agent_card=..., executor=...)
+import asyncio
+from bootstrap.start import build_study_runtime
 
-# 进程内 JS 装配：不是 Python import 可直接调用的对象。
-application = createGatewayApplication(...)
+async def example():
+    runtime = await build_study_runtime()
+    try:
+        receipt = await runtime.app.send("帮我买杯咖啡")
+        task = await runtime.app.wait_for_task(receipt["task_ids"][0])
+        print(task.status, task.result.content)
+    finally:
+        await runtime.close()
+
+asyncio.run(example())
 ```
 
-上面的名字仅用于说明边界；没有承诺存在某个名为 python_client 的官方库。
-实施时必须按当前协议与实际选定 SDK 编写和验证。
+实际迁移需要把对应的本地边界替换为协议实现：
+`GatewayClient` 接真实 GCP；后台 `CockpitAgentServer` 提供真实 A2A；`CockpitServiceServer` 提供真实 HTTP/SSE 与 MCP。
+不能仅把 URL 填到目前接收 Python 对象的构造函数中就完成迁移。
+学习版已有业务执行和模型工具循环，可以作为理解这些边界的起点；协议适配仍要按原契约实现、验证。
 
 依据：[公开能力](framework_api.md)、[源码对照](source_map.md)。

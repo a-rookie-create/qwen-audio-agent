@@ -1,31 +1,34 @@
 {
-  "analyzed_commit": "c24ed491ceed16ed7191f30bb14f2cee81fe3361",
+  "analyzed_commit": "6bb306bb56530be481e4cbef85bb67b0502088ae",
   "analysis_date": "2026-10-06",
-  "kind": "Concise Python-style conceptual pseudocode, not a runnable migration",
+  "kind": "Runnable standard-library Python teaching implementation; local boundaries, offline models; not a protocol-compatible migration",
   "entries": [
     {
-      "study_path": "overview.py",
-      "representation": "新写的单文件总览；原项目没有同名模块",
+      "study_path": "main.py",
+      "source_landmarks": [],
       "study_symbols": [
         {
-          "symbol": "普通聊天",
-          "line": 17
+          "symbol": "interactive",
+          "line": 10
         },
         {
-          "symbol": "前台工具调用",
-          "line": 24
+          "symbol": "async_main",
+          "line": 27
         },
         {
-          "symbol": "委派后台任务",
-          "line": 31
-        },
+          "symbol": "main",
+          "line": 47
+        }
+      ],
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
+    },
+    {
+      "study_path": "overview.py",
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块",
+      "study_symbols": [
         {
-          "symbol": "后台结果回来",
-          "line": 39
-        },
-        {
-          "symbol": "业务状态变化",
-          "line": 45
+          "symbol": "run_demo",
+          "line": 7
         }
       ],
       "source_landmarks": [
@@ -56,28 +59,23 @@
       ]
     },
     {
-      "study_path": "bootstrap/environment.py",
-      "study_symbols": [
-        {
-          "symbol": "load_cockpit_environment",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/bootstrap/environment.mjs",
-          "symbol": "loadCockpitEnvironment",
-          "line": 9,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
       "study_path": "bootstrap/start.py",
       "study_symbols": [
         {
+          "symbol": "StudyRuntime",
+          "line": 21
+        },
+        {
+          "symbol": "StudyRuntime.close",
+          "line": 28
+        },
+        {
+          "symbol": "build_study_runtime",
+          "line": 33
+        },
+        {
           "symbol": "start_four_processes",
-          "line": 6
+          "line": 49
         }
       ],
       "source_landmarks": [
@@ -87,185 +85,8 @@
           "line": 300,
           "evidence": "static"
         }
-      ]
-    },
-    {
-      "study_path": "gateway/server.py",
-      "study_symbols": [
-        {
-          "symbol": "start_cockpit_gateway",
-          "line": 7
-        }
       ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/gateway/server.mjs",
-          "symbol": "startCockpitGateway",
-          "line": 64,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/gateway/server.mjs",
-          "symbol": "waitForCockpitService",
-          "line": 43,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "gateway/profile_bundle.py",
-      "study_symbols": [
-        {
-          "symbol": "create_cockpit_frontend_mcp_configuration",
-          "line": 6
-        },
-        {
-          "symbol": "write_cockpit_frontend_profile_bundle",
-          "line": 10
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
-          "symbol": "createCockpitFrontendMcpConfiguration",
-          "line": 12,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
-          "symbol": "writeCockpitFrontendProfileBundle",
-          "line": 33,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "gateway/environment_events.py",
-      "study_symbols": [
-        {
-          "symbol": "select_assistant_profile",
-          "line": 6
-        },
-        {
-          "symbol": "navigation_preference_changed",
-          "line": 11
-        },
-        {
-          "symbol": "skill_triggered",
-          "line": 15
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
-          "symbol": "cockpitNavigationPreferenceEventDefinition",
-          "line": 32,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
-          "symbol": "cockpitSkillTriggeredEventDefinition",
-          "line": 55,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/gateway/assistant/event.mjs",
-          "symbol": "loadCockpitAssistantProfile",
-          "line": 11,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "gateway/spawn_thinking_tool.py",
-      "study_symbols": [
-        {
-          "symbol": "create_cockpit_spawn_thinking_description",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/gateway/spawn-thinking-tool.mjs",
-          "symbol": "createCockpitSpawnThinkingDescription",
-          "line": 18,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "agent/server.py",
-      "study_symbols": [
-        {
-          "symbol": "start_cockpit_agent_server",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/agent/server.mjs",
-          "symbol": "startCockpitAgentServer",
-          "line": 65,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "agent/model.py",
-      "study_symbols": [
-        {
-          "symbol": "DashScopeCockpitModel",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/agent/model.mjs",
-          "symbol": "DashScopeCockpitModel",
-          "line": 5,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "agent/tools.py",
-      "study_symbols": [
-        {
-          "symbol": "CockpitAgentTools",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/agent/tools.mjs",
-          "symbol": "CockpitAgentTools",
-          "line": 33,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/frontend/retrieval/providers/web-retrieval.mjs",
-          "symbol": "createWebRetrieval",
-          "line": 11,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "agent/mcp_client.py",
-      "study_symbols": [
-        {
-          "symbol": "CockpitMcpTools",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/agent/mcp-client.mjs",
-          "symbol": "CockpitMcpTools",
-          "line": 6,
-          "evidence": "static"
-        }
-      ]
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "agent/agent_history.py",
@@ -273,6 +94,18 @@
         {
           "symbol": "AgentHistory",
           "line": 6
+        },
+        {
+          "symbol": "AgentHistory.__init__",
+          "line": 7
+        },
+        {
+          "symbol": "AgentHistory.messages",
+          "line": 11
+        },
+        {
+          "symbol": "AgentHistory.append",
+          "line": 15
         }
       ],
       "source_landmarks": [
@@ -282,18 +115,31 @@
           "line": 4,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "agent/executor.py",
       "study_symbols": [
         {
           "symbol": "run_cockpit_agent",
-          "line": 8
+          "line": 12
         },
         {
           "symbol": "CockpitAgentExecutor",
-          "line": 26
+          "line": 47
+        },
+        {
+          "symbol": "CockpitAgentExecutor.__init__",
+          "line": 48
+        },
+        {
+          "symbol": "CockpitAgentExecutor.execute",
+          "line": 53
+        },
+        {
+          "symbol": "CockpitAgentExecutor.cancel_task",
+          "line": 69
         }
       ],
       "source_landmarks": [
@@ -309,14 +155,251 @@
           "line": 303,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "agent/mcp_client.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitMcpTools",
+          "line": 6
+        },
+        {
+          "symbol": "CockpitMcpTools.__init__",
+          "line": 7
+        },
+        {
+          "symbol": "CockpitMcpTools.list",
+          "line": 10
+        },
+        {
+          "symbol": "CockpitMcpTools.call",
+          "line": 13
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/mcp-client.mjs",
+          "symbol": "CockpitMcpTools",
+          "line": 6,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "agent/model.py",
+      "study_symbols": [
+        {
+          "symbol": "ChatModel",
+          "line": 10
+        },
+        {
+          "symbol": "ChatModel.complete",
+          "line": 11
+        },
+        {
+          "symbol": "DemoChatModel",
+          "line": 14
+        },
+        {
+          "symbol": "DemoChatModel.__init__",
+          "line": 15
+        },
+        {
+          "symbol": "DemoChatModel.complete",
+          "line": 18
+        },
+        {
+          "symbol": "DashScopeCockpitModel",
+          "line": 50
+        },
+        {
+          "symbol": "DashScopeCockpitModel.__init__",
+          "line": 52
+        },
+        {
+          "symbol": "DashScopeCockpitModel.complete",
+          "line": 55
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/model.mjs",
+          "symbol": "DashScopeCockpitModel",
+          "line": 5,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "agent/server.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitAgentServer",
+          "line": 8
+        },
+        {
+          "symbol": "CockpitAgentServer.__init__",
+          "line": 9
+        },
+        {
+          "symbol": "CockpitAgentServer.agent_card",
+          "line": 13
+        },
+        {
+          "symbol": "CockpitAgentServer.submit",
+          "line": 16
+        },
+        {
+          "symbol": "CockpitAgentServer.cancel",
+          "line": 22
+        },
+        {
+          "symbol": "start_cockpit_agent_server",
+          "line": 26
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/server.mjs",
+          "symbol": "startCockpitAgentServer",
+          "line": 65,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "agent/tools.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitAgentTools",
+          "line": 7
+        },
+        {
+          "symbol": "CockpitAgentTools.__init__",
+          "line": 8
+        },
+        {
+          "symbol": "CockpitAgentTools.list",
+          "line": 11
+        },
+        {
+          "symbol": "CockpitAgentTools.call",
+          "line": 16
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/agent/tools.mjs",
+          "symbol": "CockpitAgentTools",
+          "line": 33,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/retrieval/providers/web-retrieval.mjs",
+          "symbol": "createWebRetrieval",
+          "line": 11,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "bench/evaluator.py",
+      "study_symbols": [
+        {
+          "symbol": "get_path",
+          "line": 5
+        },
+        {
+          "symbol": "score_trace",
+          "line": 11
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bench/evaluator/score.mjs",
+          "symbol": "scoreTrace",
+          "line": 199,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "bench/runner.py",
+      "study_symbols": [
+        {
+          "symbol": "run_cases",
+          "line": 13
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bench/runner/controlled-harness.mjs",
+          "symbol": "setupBenchmarkCase",
+          "line": 178,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "bootstrap/environment.py",
+      "study_symbols": [
+        {
+          "symbol": "load_cockpit_environment",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/bootstrap/environment.mjs",
+          "symbol": "loadCockpitEnvironment",
+          "line": 9,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "client/app.py",
       "study_symbols": [
         {
           "symbol": "CockpitApp",
-          "line": 7
+          "line": 12
+        },
+        {
+          "symbol": "CockpitApp.__init__",
+          "line": 13
+        },
+        {
+          "symbol": "CockpitApp.start",
+          "line": 21
+        },
+        {
+          "symbol": "CockpitApp.on_activity",
+          "line": 25
+        },
+        {
+          "symbol": "CockpitApp.on_state",
+          "line": 30
+        },
+        {
+          "symbol": "CockpitApp.send",
+          "line": 33
+        },
+        {
+          "symbol": "CockpitApp.wait_for_task",
+          "line": 36
+        },
+        {
+          "symbol": "CockpitApp.close",
+          "line": 39
         }
       ],
       "source_landmarks": [
@@ -326,31 +409,35 @@
           "line": 110,
           "evidence": "static"
         }
-      ]
-    },
-    {
-      "study_path": "client/voice_session.py",
-      "study_symbols": [
-        {
-          "symbol": "VoiceSessionController",
-          "line": 6
-        }
       ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/client/src/hooks/useVoiceSession.js",
-          "symbol": "useVoiceSession",
-          "line": 114,
-          "evidence": "static"
-        }
-      ]
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "client/cockpit_state.py",
       "study_symbols": [
         {
           "symbol": "CockpitStateController",
-          "line": 6
+          "line": 9
+        },
+        {
+          "symbol": "CockpitStateController.__init__",
+          "line": 10
+        },
+        {
+          "symbol": "CockpitStateController.start",
+          "line": 17
+        },
+        {
+          "symbol": "CockpitStateController.handle_event",
+          "line": 20
+        },
+        {
+          "symbol": "CockpitStateController.execute",
+          "line": 30
+        },
+        {
+          "symbol": "CockpitStateController.close",
+          "line": 34
         }
       ],
       "source_landmarks": [
@@ -360,7 +447,8 @@
           "line": 16,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "client/memory_and_skills.py",
@@ -370,8 +458,36 @@
           "line": 6
         },
         {
+          "symbol": "GatewayMemoryController.__init__",
+          "line": 7
+        },
+        {
+          "symbol": "GatewayMemoryController.load",
+          "line": 10
+        },
+        {
+          "symbol": "GatewayMemoryController.remove",
+          "line": 13
+        },
+        {
           "symbol": "CockpitSkillsController",
-          "line": 15
+          "line": 18
+        },
+        {
+          "symbol": "CockpitSkillsController.__init__",
+          "line": 19
+        },
+        {
+          "symbol": "CockpitSkillsController.list",
+          "line": 22
+        },
+        {
+          "symbol": "CockpitSkillsController.load",
+          "line": 25
+        },
+        {
+          "symbol": "CockpitSkillsController.remove",
+          "line": 28
         }
       ],
       "source_landmarks": [
@@ -387,22 +503,43 @@
           "line": 19,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "client/projections.py",
       "study_symbols": [
         {
           "symbol": "apply_cockpit_state_update",
-          "line": 6
+          "line": 8
+        },
+        {
+          "symbol": "navigation_preference_event",
+          "line": 17
         },
         {
           "symbol": "skill_triggered_event",
-          "line": 10
+          "line": 24
         },
         {
           "symbol": "CockpitEnvironmentOutbox",
-          "line": 14
+          "line": 33
+        },
+        {
+          "symbol": "CockpitEnvironmentOutbox.__init__",
+          "line": 34
+        },
+        {
+          "symbol": "CockpitEnvironmentOutbox.enqueue",
+          "line": 40
+        },
+        {
+          "symbol": "CockpitEnvironmentOutbox.flush",
+          "line": 48
+        },
+        {
+          "symbol": "CockpitEnvironmentOutbox.restore_context",
+          "line": 66
         }
       ],
       "source_landmarks": [
@@ -424,287 +561,129 @@
           "line": 28,
           "evidence": "static"
         }
-      ]
-    },
-    {
-      "study_path": "service/server.py",
-      "study_symbols": [
-        {
-          "symbol": "CockpitServiceServer",
-          "line": 6
-        }
       ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/server.mjs",
-          "symbol": "CockpitServiceServer",
-          "line": 51,
-          "evidence": "static"
-        }
-      ]
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "service/mcp_server.py",
+      "study_path": "client/voice_session.py",
       "study_symbols": [
         {
-          "symbol": "CockpitMcpServer",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/mcp-server.mjs",
-          "symbol": "createCockpitMcpServer",
-          "line": 16,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/cockpit_service.py",
-      "study_symbols": [
-        {
-          "symbol": "CockpitService",
-          "line": 7
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/cockpit-service.mjs",
-          "symbol": "CockpitService",
-          "line": 37,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/state_store.py",
-      "study_symbols": [
-        {
-          "symbol": "CockpitStateStore",
-          "line": 7
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/state-store.mjs",
-          "symbol": "CockpitStateStore",
-          "line": 126,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/custom_skills/store.py",
-      "study_symbols": [
-        {
-          "symbol": "CustomSkillStore",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/custom-skills/store.mjs",
-          "symbol": "CustomSkillStore",
-          "line": 72,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/custom_skills/temperature_rules.py",
-      "study_symbols": [
-        {
-          "symbol": "normalize_temperature_trigger",
-          "line": 6
-        },
-        {
-          "symbol": "TemperatureSkillRules",
+          "symbol": "VoiceSessionController",
           "line": 10
+        },
+        {
+          "symbol": "VoiceSessionController.__init__",
+          "line": 11
+        },
+        {
+          "symbol": "VoiceSessionController.start",
+          "line": 20
+        },
+        {
+          "symbol": "VoiceSessionController.on_event",
+          "line": 23
+        },
+        {
+          "symbol": "VoiceSessionController.send_text",
+          "line": 32
+        },
+        {
+          "symbol": "VoiceSessionController.send_audio",
+          "line": 35
+        },
+        {
+          "symbol": "VoiceSessionController.enqueue_environment",
+          "line": 38
+        },
+        {
+          "symbol": "VoiceSessionController.flush_environment",
+          "line": 44
+        },
+        {
+          "symbol": "VoiceSessionController.flush",
+          "line": 48
+        },
+        {
+          "symbol": "VoiceSessionController.select_persona",
+          "line": 54
+        },
+        {
+          "symbol": "VoiceSessionController.mute",
+          "line": 58
+        },
+        {
+          "symbol": "VoiceSessionController.close",
+          "line": 63
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
-          "symbol": "TemperatureSkillRules",
-          "line": 60,
+          "path": "examples/smart-cockpit/client/src/hooks/useVoiceSession.js",
+          "symbol": "useVoiceSession",
+          "line": 114,
           "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
-          "symbol": "normalizeTemperatureTrigger",
-          "line": 10,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/tools/registry.py",
-      "study_symbols": [
-        {
-          "symbol": "ToolRegistry",
-          "line": 6
         }
       ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/tools/registry.mjs",
-          "symbol": "executeCockpitTool",
-          "line": 132,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/service/tools/surface-routing.mjs",
-          "symbol": "loadCockpitSurfaceRouting",
-          "line": 61,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/integrations/amap.py",
-      "study_symbols": [
-        {
-          "symbol": "ScenarioServices",
-          "line": 6
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/integrations/amap/services.mjs",
-          "symbol": "createAmapCockpitServices",
-          "line": 10,
-          "evidence": "static"
-        },
-        {
-          "path": "examples/smart-cockpit/service/vehicle-location.mjs",
-          "symbol": "normalizeVehicleLocation",
-          "line": 32,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "framework_reference/gateway_application.py",
-      "study_symbols": [
-        {
-          "symbol": "GatewayApplication",
-          "line": 7
-        },
-        {
-          "symbol": "create_gateway_application",
-          "line": 30
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "server/src/app/gateway-application.mjs",
-          "symbol": "createGatewayApplication",
-          "line": 63,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/transport/gateway-client-transport.mjs",
-          "symbol": "attachGatewayClientTransport",
-          "line": 62,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "framework_reference/frontend_session.py",
-      "study_symbols": [
-        {
-          "symbol": "RealtimeSessionRuntime",
-          "line": 8
-        },
-        {
-          "symbol": "ToolCallHandler",
-          "line": 31
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "server/src/app/frontend-runtime.mjs",
-          "symbol": "createFrontendRuntime",
-          "line": 12,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/voice/realtime-session-runtime.mjs",
-          "symbol": "createRealtimeSessionRuntime",
-          "line": 56,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/frontend/tools/tool-call-handler.mjs",
-          "symbol": "ToolCallHandler",
-          "line": 78,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/frontend/tools/mcp/frontend-mcp-client.mjs",
-          "symbol": "FrontendMcpClient",
-          "line": 141,
-          "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "framework_reference/task_runtime.py",
-      "study_symbols": [
-        {
-          "symbol": "TaskManager",
-          "line": 8
-        },
-        {
-          "symbol": "TaskOperations",
-          "line": 26
-        },
-        {
-          "symbol": "SessionTaskCoordinator",
-          "line": 37
-        }
-      ],
-      "source_landmarks": [
-        {
-          "path": "server/src/task/task-manager.mjs",
-          "symbol": "TaskManager",
-          "line": 56,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/orchestration/task-operations.mjs",
-          "symbol": "TaskOperations",
-          "line": 34,
-          "evidence": "static"
-        },
-        {
-          "path": "server/src/orchestration/session-task-coordinator.mjs",
-          "symbol": "SessionTaskCoordinator",
-          "line": 12,
-          "evidence": "static"
-        }
-      ]
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "framework_reference/backend_adapter.py",
       "study_symbols": [
         {
           "symbol": "BackendPort",
-          "line": 8
+          "line": 10
+        },
+        {
+          "symbol": "BackendPort.submit",
+          "line": 11
+        },
+        {
+          "symbol": "BackendPort.cancel",
+          "line": 12
         },
         {
           "symbol": "A2ABackendAdapter",
-          "line": 14
+          "line": 15
+        },
+        {
+          "symbol": "A2ABackendAdapter.__init__",
+          "line": 16
+        },
+        {
+          "symbol": "A2ABackendAdapter.describe",
+          "line": 19
+        },
+        {
+          "symbol": "A2ABackendAdapter.submit",
+          "line": 22
+        },
+        {
+          "symbol": "A2ABackendAdapter.cancel",
+          "line": 27
+        },
+        {
+          "symbol": "A2ABackendAdapter.status",
+          "line": 30
         },
         {
           "symbol": "create_backend_agent_host",
-          "line": 23
+          "line": 34
         },
         {
           "symbol": "BackendWorkRuntime",
-          "line": 28
+          "line": 39
+        },
+        {
+          "symbol": "BackendWorkRuntime.__init__",
+          "line": 40
+        },
+        {
+          "symbol": "BackendWorkRuntime.run",
+          "line": 43
+        },
+        {
+          "symbol": "BackendWorkRuntime.cancel",
+          "line": 49
         }
       ],
       "source_landmarks": [
@@ -732,22 +711,63 @@
           "line": 1223,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "framework_reference/extension_ports.py",
       "study_symbols": [
         {
+          "symbol": "MemoryConflictError",
+          "line": 7
+        },
+        {
           "symbol": "MemoryProvider",
-          "line": 6
+          "line": 11
+        },
+        {
+          "symbol": "MemoryProvider.__init__",
+          "line": 12
+        },
+        {
+          "symbol": "MemoryProvider.list",
+          "line": 15
+        },
+        {
+          "symbol": "MemoryProvider.apply",
+          "line": 18
         },
         {
           "symbol": "KnowledgeProvider",
-          "line": 14
+          "line": 34
+        },
+        {
+          "symbol": "KnowledgeProvider.__init__",
+          "line": 35
+        },
+        {
+          "symbol": "KnowledgeProvider.ingest",
+          "line": 38
+        },
+        {
+          "symbol": "KnowledgeProvider.retrieve",
+          "line": 41
         },
         {
           "symbol": "WebRetrieval",
-          "line": 19
+          "line": 45
+        },
+        {
+          "symbol": "WebRetrieval.capabilities",
+          "line": 47
+        },
+        {
+          "symbol": "WebRetrieval.search",
+          "line": 50
+        },
+        {
+          "symbol": "WebRetrieval.fetch_url",
+          "line": 55
         }
       ],
       "source_landmarks": [
@@ -775,14 +795,191 @@
           "line": 12,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "framework_reference/frontend_session.py",
+      "study_symbols": [
+        {
+          "symbol": "FrontendMcpToolSource",
+          "line": 13
+        },
+        {
+          "symbol": "FrontendMcpToolSource.__init__",
+          "line": 14
+        },
+        {
+          "symbol": "FrontendMcpToolSource.execute",
+          "line": 17
+        },
+        {
+          "symbol": "DemoRealtimeModel",
+          "line": 21
+        },
+        {
+          "symbol": "DemoRealtimeModel.__init__",
+          "line": 23
+        },
+        {
+          "symbol": "DemoRealtimeModel.plan",
+          "line": 27
+        },
+        {
+          "symbol": "DemoRealtimeModel.summarize",
+          "line": 58
+        },
+        {
+          "symbol": "ToolCallHandler",
+          "line": 62
+        },
+        {
+          "symbol": "ToolCallHandler.__init__",
+          "line": 63
+        },
+        {
+          "symbol": "ToolCallHandler.handle",
+          "line": 66
+        },
+        {
+          "symbol": "RealtimeSessionRuntime",
+          "line": 79
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.__init__",
+          "line": 80
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.handle_input",
+          "line": 90
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.handle_client_event",
+          "line": 113
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.can_announce",
+          "line": 137
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.present_task_result",
+          "line": 140
+        },
+        {
+          "symbol": "RealtimeSessionRuntime.close",
+          "line": 148
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/app/frontend-runtime.mjs",
+          "symbol": "createFrontendRuntime",
+          "line": 12,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/voice/realtime-session-runtime.mjs",
+          "symbol": "createRealtimeSessionRuntime",
+          "line": 56,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/tools/tool-call-handler.mjs",
+          "symbol": "ToolCallHandler",
+          "line": 78,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/frontend/tools/mcp/frontend-mcp-client.mjs",
+          "symbol": "FrontendMcpClient",
+          "line": 141,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "framework_reference/gateway_application.py",
+      "study_symbols": [
+        {
+          "symbol": "GatewayApplication",
+          "line": 13
+        },
+        {
+          "symbol": "GatewayApplication.__init__",
+          "line": 14
+        },
+        {
+          "symbol": "GatewayApplication.start",
+          "line": 24
+        },
+        {
+          "symbol": "GatewayApplication.connect",
+          "line": 28
+        },
+        {
+          "symbol": "GatewayApplication.memory_request",
+          "line": 42
+        },
+        {
+          "symbol": "GatewayApplication.close",
+          "line": 49
+        },
+        {
+          "symbol": "create_gateway_application",
+          "line": 56
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "server/src/app/gateway-application.mjs",
+          "symbol": "createGatewayApplication",
+          "line": 63,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/transport/gateway-client-transport.mjs",
+          "symbol": "attachGatewayClientTransport",
+          "line": 62,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "framework_reference/gateway_client.py",
       "study_symbols": [
         {
           "symbol": "GatewayClient",
-          "line": 6
+          "line": 9
+        },
+        {
+          "symbol": "GatewayClient.__init__",
+          "line": 10
+        },
+        {
+          "symbol": "GatewayClient.start",
+          "line": 16
+        },
+        {
+          "symbol": "GatewayClient.send",
+          "line": 19
+        },
+        {
+          "symbol": "GatewayClient.request",
+          "line": 24
+        },
+        {
+          "symbol": "GatewayClient.wait_task",
+          "line": 34
+        },
+        {
+          "symbol": "GatewayClient.playback_ack",
+          "line": 40
+        },
+        {
+          "symbol": "GatewayClient.stop",
+          "line": 43
         }
       ],
       "source_landmarks": [
@@ -798,126 +995,532 @@
           "line": 18,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "bench/evaluator.py",
+      "study_path": "framework_reference/task_runtime.py",
       "study_symbols": [
         {
-          "symbol": "score_trace",
-          "line": 6
+          "symbol": "TaskRecord",
+          "line": 14
+        },
+        {
+          "symbol": "TaskRecord.snapshot",
+          "line": 25
+        },
+        {
+          "symbol": "TaskManager",
+          "line": 32
+        },
+        {
+          "symbol": "TaskManager.__init__",
+          "line": 33
+        },
+        {
+          "symbol": "TaskManager.create",
+          "line": 39
+        },
+        {
+          "symbol": "TaskManager._execute",
+          "line": 47
+        },
+        {
+          "symbol": "TaskManager._finish",
+          "line": 60
+        },
+        {
+          "symbol": "TaskManager.emit",
+          "line": 68
+        },
+        {
+          "symbol": "TaskManager.get",
+          "line": 72
+        },
+        {
+          "symbol": "TaskManager.wait",
+          "line": 78
+        },
+        {
+          "symbol": "TaskManager.cancel",
+          "line": 83
+        },
+        {
+          "symbol": "TaskManager.mark_delivered",
+          "line": 93
+        },
+        {
+          "symbol": "TaskManager.close",
+          "line": 99
+        },
+        {
+          "symbol": "TaskOperations",
+          "line": 104
+        },
+        {
+          "symbol": "TaskOperations.__init__",
+          "line": 105
+        },
+        {
+          "symbol": "TaskOperations.submit",
+          "line": 108
+        },
+        {
+          "symbol": "TaskOperations.cancel",
+          "line": 113
+        },
+        {
+          "symbol": "SessionTaskCoordinator",
+          "line": 119
+        },
+        {
+          "symbol": "SessionTaskCoordinator.__init__",
+          "line": 120
+        },
+        {
+          "symbol": "SessionTaskCoordinator.on_event",
+          "line": 127
+        },
+        {
+          "symbol": "SessionTaskCoordinator.refresh",
+          "line": 136
+        },
+        {
+          "symbol": "SessionTaskCoordinator._deliver",
+          "line": 147
+        },
+        {
+          "symbol": "SessionTaskCoordinator.flush",
+          "line": 154
+        },
+        {
+          "symbol": "SessionTaskCoordinator.close",
+          "line": 162
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/bench/evaluator/score.mjs",
-          "symbol": "scoreTrace",
-          "line": 199,
+          "path": "server/src/task/task-manager.mjs",
+          "symbol": "TaskManager",
+          "line": 56,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/orchestration/task-operations.mjs",
+          "symbol": "TaskOperations",
+          "line": 34,
+          "evidence": "static"
+        },
+        {
+          "path": "server/src/orchestration/session-task-coordinator.mjs",
+          "symbol": "SessionTaskCoordinator",
+          "line": 12,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "bench/runner.py",
+      "study_path": "gateway/environment_events.py",
       "study_symbols": [
         {
-          "symbol": "run_cases",
-          "line": 6
+          "symbol": "AgentDelivery",
+          "line": 9
+        },
+        {
+          "symbol": "load_profile",
+          "line": 17
+        },
+        {
+          "symbol": "select_assistant_profile",
+          "line": 23
+        },
+        {
+          "symbol": "navigation_preference_changed",
+          "line": 28
+        },
+        {
+          "symbol": "skill_triggered",
+          "line": 35
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/bench/runner/controlled-harness.mjs",
-          "symbol": "setupBenchmarkCase",
-          "line": 178,
+          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
+          "symbol": "cockpitNavigationPreferenceEventDefinition",
+          "line": 32,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/environment-events.mjs",
+          "symbol": "cockpitSkillTriggeredEventDefinition",
+          "line": 55,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/assistant/event.mjs",
+          "symbol": "loadCockpitAssistantProfile",
+          "line": 11,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "service/tools/vehicle/execute.py",
+      "study_path": "gateway/profile_bundle.py",
       "study_symbols": [
         {
-          "symbol": "execute",
-          "line": 6
+          "symbol": "GatewayConfig",
+          "line": 11
+        },
+        {
+          "symbol": "create_cockpit_frontend_mcp_configuration",
+          "line": 17
+        },
+        {
+          "symbol": "write_cockpit_frontend_profile_bundle",
+          "line": 21
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/service/tools/vehicle/execute.mjs",
-          "symbol": "executeVehicleTool",
-          "line": 510,
+          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
+          "symbol": "createCockpitFrontendMcpConfiguration",
+          "line": 12,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/gateway/profile-bundle.mjs",
+          "symbol": "writeCockpitFrontendProfileBundle",
+          "line": 33,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "service/tools/navigation/execute.py",
+      "study_path": "gateway/server.py",
       "study_symbols": [
         {
-          "symbol": "execute",
-          "line": 6
+          "symbol": "start_cockpit_gateway",
+          "line": 11
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/service/tools/navigation/execute.mjs",
-          "symbol": "executeNavigationTool",
-          "line": 615,
+          "path": "examples/smart-cockpit/gateway/server.mjs",
+          "symbol": "startCockpitGateway",
+          "line": 64,
           "evidence": "static"
-        }
-      ]
-    },
-    {
-      "study_path": "service/tools/music/execute.py",
-      "study_symbols": [
+        },
         {
-          "symbol": "execute",
-          "line": 6
+          "path": "examples/smart-cockpit/gateway/server.mjs",
+          "symbol": "waitForCockpitService",
+          "line": 43,
+          "evidence": "static"
         }
       ],
-      "source_landmarks": [
-        {
-          "path": "examples/smart-cockpit/service/tools/music/execute.mjs",
-          "symbol": "executeMusicTool",
-          "line": 302,
-          "evidence": "static"
-        }
-      ]
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "service/tools/weather/execute.py",
+      "study_path": "gateway/spawn_thinking_tool.py",
       "study_symbols": [
         {
-          "symbol": "execute",
+          "symbol": "create_cockpit_spawn_thinking_description",
           "line": 4
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/service/tools/weather/execute.mjs",
-          "symbol": "executeWeatherTool",
-          "line": 22,
+          "path": "examples/smart-cockpit/gateway/spawn-thinking-tool.mjs",
+          "symbol": "createCockpitSpawnThinkingDescription",
+          "line": 18,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
-      "study_path": "service/tools/flashbuy/execute.py",
+      "study_path": "service/cockpit_service.py",
       "study_symbols": [
         {
-          "symbol": "execute",
-          "line": 6
+          "symbol": "CockpitService",
+          "line": 13
+        },
+        {
+          "symbol": "CockpitService.__init__",
+          "line": 14
+        },
+        {
+          "symbol": "CockpitService.snapshot",
+          "line": 23
+        },
+        {
+          "symbol": "CockpitService.publish_activity",
+          "line": 26
+        },
+        {
+          "symbol": "CockpitService.execute",
+          "line": 29
+        },
+        {
+          "symbol": "CockpitService.list_skills",
+          "line": 40
+        },
+        {
+          "symbol": "CockpitService.delete_skill",
+          "line": 44
         }
       ],
       "source_landmarks": [
         {
-          "path": "examples/smart-cockpit/service/tools/flashbuy/execute.mjs",
-          "symbol": "executeFlashbuyTool",
-          "line": 144,
+          "path": "examples/smart-cockpit/service/cockpit-service.mjs",
+          "symbol": "CockpitService",
+          "line": 37,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/custom_skills/store.py",
+      "study_symbols": [
+        {
+          "symbol": "CustomSkillStore",
+          "line": 10
+        },
+        {
+          "symbol": "CustomSkillStore.__init__",
+          "line": 11
+        },
+        {
+          "symbol": "CustomSkillStore.list",
+          "line": 15
+        },
+        {
+          "symbol": "CustomSkillStore.get",
+          "line": 21
+        },
+        {
+          "symbol": "CustomSkillStore.upsert",
+          "line": 25
+        },
+        {
+          "symbol": "CustomSkillStore.delete",
+          "line": 44
+        },
+        {
+          "symbol": "CustomSkillStore._path",
+          "line": 51
+        },
+        {
+          "symbol": "CustomSkillStore._save",
+          "line": 55
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/store.mjs",
+          "symbol": "CustomSkillStore",
+          "line": 72,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/custom_skills/temperature_rules.py",
+      "study_symbols": [
+        {
+          "symbol": "normalize_temperature_trigger",
+          "line": 9
+        },
+        {
+          "symbol": "TemperatureSkillRules",
+          "line": 22
+        },
+        {
+          "symbol": "TemperatureSkillRules.__init__",
+          "line": 23
+        },
+        {
+          "symbol": "TemperatureSkillRules.prepare",
+          "line": 27
+        },
+        {
+          "symbol": "TemperatureSkillRules.refresh",
+          "line": 33
+        },
+        {
+          "symbol": "TemperatureSkillRules.observe",
+          "line": 38
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
+          "symbol": "TemperatureSkillRules",
+          "line": 60,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/custom-skills/temperature-rules.mjs",
+          "symbol": "normalizeTemperatureTrigger",
+          "line": 10,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/integrations/amap.py",
+      "study_symbols": [
+        {
+          "symbol": "ScenarioServices",
+          "line": 6
+        },
+        {
+          "symbol": "ScenarioServices.weather",
+          "line": 7
+        },
+        {
+          "symbol": "ScenarioServices.resolve_place",
+          "line": 10
+        },
+        {
+          "symbol": "ScenarioServices.plan_route",
+          "line": 15
+        },
+        {
+          "symbol": "ScenarioServices.search_places",
+          "line": 23
+        },
+        {
+          "symbol": "ScenarioServices.vehicle_location",
+          "line": 26
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/integrations/amap/services.mjs",
+          "symbol": "createAmapCockpitServices",
+          "line": 10,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/vehicle-location.mjs",
+          "symbol": "normalizeVehicleLocation",
+          "line": 32,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/mcp_server.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitMcpServer",
+          "line": 6
+        },
+        {
+          "symbol": "CockpitMcpServer.__init__",
+          "line": 7
+        },
+        {
+          "symbol": "CockpitMcpServer.list_tools",
+          "line": 10
+        },
+        {
+          "symbol": "CockpitMcpServer.call_tool",
+          "line": 13
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/mcp-server.mjs",
+          "symbol": "createCockpitMcpServer",
+          "line": 16,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/server.py",
+      "study_symbols": [
+        {
+          "symbol": "CockpitServiceServer",
+          "line": 8
+        },
+        {
+          "symbol": "CockpitServiceServer.__init__",
+          "line": 9
+        },
+        {
+          "symbol": "CockpitServiceServer.mcp",
+          "line": 12
+        },
+        {
+          "symbol": "CockpitServiceServer.handle",
+          "line": 17
+        },
+        {
+          "symbol": "CockpitServiceServer.subscribe",
+          "line": 38
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/server.mjs",
+          "symbol": "CockpitServiceServer",
+          "line": 51,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/state_store.py",
+      "study_symbols": [
+        {
+          "symbol": "create_initial_cockpit_state",
+          "line": 8
+        },
+        {
+          "symbol": "CockpitStateStore",
+          "line": 28
+        },
+        {
+          "symbol": "CockpitStateStore.__init__",
+          "line": 29
+        },
+        {
+          "symbol": "CockpitStateStore.snapshot",
+          "line": 33
+        },
+        {
+          "symbol": "CockpitStateStore.update",
+          "line": 37
+        },
+        {
+          "symbol": "CockpitStateStore.subscribe",
+          "line": 47
+        },
+        {
+          "symbol": "CockpitStateStore.reset",
+          "line": 53
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/state-store.mjs",
+          "symbol": "CockpitStateStore",
+          "line": 126,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
     },
     {
       "study_path": "service/tools/custom_skills/execute.py",
@@ -934,7 +1537,390 @@
           "line": 23,
           "evidence": "static"
         }
-      ]
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/flashbuy/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 12
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/flashbuy/execute.mjs",
+          "symbol": "executeFlashbuyTool",
+          "line": 144,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/music/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 9
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/music/execute.mjs",
+          "symbol": "executeMusicTool",
+          "line": 302,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/navigation/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 7
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/navigation/execute.mjs",
+          "symbol": "executeNavigationTool",
+          "line": 615,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/registry.py",
+      "study_symbols": [
+        {
+          "symbol": "ToolRegistry",
+          "line": 20
+        },
+        {
+          "symbol": "ToolRegistry.__init__",
+          "line": 21
+        },
+        {
+          "symbol": "ToolRegistry.definitions_for",
+          "line": 34
+        },
+        {
+          "symbol": "ToolRegistry.execute",
+          "line": 37
+        },
+        {
+          "symbol": "ToolRegistry.validate",
+          "line": 45
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/registry.mjs",
+          "symbol": "executeCockpitTool",
+          "line": 132,
+          "evidence": "static"
+        },
+        {
+          "path": "examples/smart-cockpit/service/tools/surface-routing.mjs",
+          "symbol": "loadCockpitSurfaceRouting",
+          "line": 61,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/shared.py",
+      "source_landmarks": [],
+      "study_symbols": [
+        {
+          "symbol": "ToolContext",
+          "line": 12
+        },
+        {
+          "symbol": "ToolContext.snapshot",
+          "line": 20
+        },
+        {
+          "symbol": "ToolContext.update",
+          "line": 23
+        },
+        {
+          "symbol": "ToolContext.result",
+          "line": 26
+        }
+      ],
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
+    },
+    {
+      "study_path": "service/tools/vehicle/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 13
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/vehicle/execute.mjs",
+          "symbol": "executeVehicleTool",
+          "line": 510,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "service/tools/weather/execute.py",
+      "study_symbols": [
+        {
+          "symbol": "execute",
+          "line": 6
+        }
+      ],
+      "source_landmarks": [
+        {
+          "path": "examples/smart-cockpit/service/tools/weather/execute.mjs",
+          "symbol": "executeWeatherTool",
+          "line": 22,
+          "evidence": "static"
+        }
+      ],
+      "representation": "可运行的教学实现；本地对象替代协议，部分业务简化；非逐行移植"
+    },
+    {
+      "study_path": "study_support.py",
+      "source_landmarks": [],
+      "study_symbols": [
+        {
+          "symbol": "ToolDefinition",
+          "line": 10
+        },
+        {
+          "symbol": "ToolResult",
+          "line": 19
+        },
+        {
+          "symbol": "ToolCall",
+          "line": 28
+        },
+        {
+          "symbol": "ModelReply",
+          "line": 35
+        },
+        {
+          "symbol": "TraceLog",
+          "line": 40
+        },
+        {
+          "symbol": "TraceLog.__init__",
+          "line": 42
+        },
+        {
+          "symbol": "TraceLog.record",
+          "line": 45
+        },
+        {
+          "symbol": "Signal",
+          "line": 49
+        },
+        {
+          "symbol": "Signal.__init__",
+          "line": 51
+        },
+        {
+          "symbol": "Signal.subscribe",
+          "line": 55
+        },
+        {
+          "symbol": "Signal.emit",
+          "line": 62
+        },
+        {
+          "symbol": "tool_result",
+          "line": 70
+        }
+      ],
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
+    },
+    {
+      "study_path": "tests/test_imports.py",
+      "source_landmarks": [],
+      "study_symbols": [
+        {
+          "symbol": "ImportTests",
+          "line": 7
+        },
+        {
+          "symbol": "ImportTests.test_all_application_modules_import",
+          "line": 8
+        }
+      ],
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
+    },
+    {
+      "study_path": "tests/test_runtime.py",
+      "source_landmarks": [],
+      "study_symbols": [
+        {
+          "symbol": "BrokenModel",
+          "line": 16
+        },
+        {
+          "symbol": "BrokenModel.complete",
+          "line": 17
+        },
+        {
+          "symbol": "RuntimeTests",
+          "line": 21
+        },
+        {
+          "symbol": "RuntimeTests.asyncSetUp",
+          "line": 22
+        },
+        {
+          "symbol": "RuntimeTests.asyncTearDown",
+          "line": 27
+        },
+        {
+          "symbol": "RuntimeTests.create_task",
+          "line": 35
+        },
+        {
+          "symbol": "RuntimeTests.set_temperature",
+          "line": 39
+        },
+        {
+          "symbol": "RuntimeTests.test_chat_does_not_create_task_or_change_business_state",
+          "line": 43
+        },
+        {
+          "symbol": "RuntimeTests.test_foreground_changes_state_and_updates_client",
+          "line": 51
+        },
+        {
+          "symbol": "RuntimeTests.test_original_tool_surfaces_are_preserved",
+          "line": 59
+        },
+        {
+          "symbol": "RuntimeTests.test_invalid_parameters_do_not_change_state",
+          "line": 67
+        },
+        {
+          "symbol": "RuntimeTests.test_unknown_tool_is_an_error",
+          "line": 77
+        },
+        {
+          "symbol": "RuntimeTests.test_every_manifest_tool_has_a_working_execution_path",
+          "line": 82
+        },
+        {
+          "symbol": "RuntimeTests.test_ui_commands_share_the_same_state_as_model_tools",
+          "line": 127
+        },
+        {
+          "symbol": "RuntimeTests.test_navigation_and_weather_use_explicit_demo_adapters",
+          "line": 133
+        },
+        {
+          "symbol": "RuntimeTests.test_mixed_input_splits_foreground_and_background",
+          "line": 142
+        },
+        {
+          "symbol": "RuntimeTests.test_background_receipt_is_immediate_and_chat_can_continue",
+          "line": 148
+        },
+        {
+          "symbol": "RuntimeTests.test_preview_does_not_order_until_explicit_confirmation",
+          "line": 159
+        },
+        {
+          "symbol": "RuntimeTests.test_muted_completion_waits_for_unmute",
+          "line": 175
+        },
+        {
+          "symbol": "RuntimeTests.test_delivery_requires_playback_ack",
+          "line": 185
+        },
+        {
+          "symbol": "RuntimeTests.test_queued_task_can_be_cancelled_before_execution",
+          "line": 194
+        },
+        {
+          "symbol": "RuntimeTests.test_running_task_can_be_cancelled",
+          "line": 201
+        },
+        {
+          "symbol": "RuntimeTests.test_backend_error_becomes_failed_task_and_returns_to_chat",
+          "line": 210
+        },
+        {
+          "symbol": "RuntimeTests.test_task_access_is_scoped_to_owner",
+          "line": 219
+        },
+        {
+          "symbol": "RuntimeTests.test_closing_session_does_not_cancel_accepted_work",
+          "line": 227
+        },
+        {
+          "symbol": "RuntimeTests.test_workflow_creation_saves_definition_without_executing",
+          "line": 234
+        },
+        {
+          "symbol": "RuntimeTests.test_event_skill_only_triggers_on_transition",
+          "line": 245
+        },
+        {
+          "symbol": "RuntimeTests.test_loading_an_already_matching_event_skill_does_not_trigger",
+          "line": 260
+        },
+        {
+          "symbol": "RuntimeTests.test_skills_ui_reads_and_deletes_same_definitions",
+          "line": 269
+        },
+        {
+          "symbol": "RuntimeTests.test_memory_save_delete_and_owner_isolation",
+          "line": 278
+        },
+        {
+          "symbol": "RuntimeTests.test_cockpit_state_isolation_and_snapshot_is_a_copy",
+          "line": 287
+        },
+        {
+          "symbol": "RuntimeTests.test_persona_selection_changes_foreground_profile",
+          "line": 300
+        },
+        {
+          "symbol": "RuntimeTests.test_web_task_keeps_citations_and_demo_label",
+          "line": 306
+        },
+        {
+          "symbol": "RuntimeTests.test_benchmark_runs_actual_calls",
+          "line": 314
+        },
+        {
+          "symbol": "SupportingTests",
+          "line": 320
+        },
+        {
+          "symbol": "SupportingTests.test_expired_reminder_is_dropped_but_latest_context_is_kept",
+          "line": 321
+        },
+        {
+          "symbol": "SupportingTests.test_optional_skill_persistence_round_trip",
+          "line": 336
+        },
+        {
+          "symbol": "SupportingTests.test_memory_conflict_is_atomic",
+          "line": 344
+        }
+      ],
+      "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
     }
   ]
 }

@@ -1,15 +1,36 @@
-"""客户端怎样获得业务状态？对应 useCockpitState.js。
-HTTP/SSE 直接连接座舱 Service，与语音 GCP 连接分开。
-"""
+"""状态与按钮命令直接连 Service；与 Gateway 语音通路分开。"""
+from __future__ import annotations
+from typing import Callable
+from service.server import CockpitServiceServer
+from client.projections import apply_cockpit_state_update
+from study_support import ToolResult
 
 
 class CockpitStateController:
-    def load(self):
-        return HTTP_GET('/api/cockpit/state')
+    def __init__(self, server: CockpitServiceServer, cockpit_id: str, on_activity: Callable,
+                 on_state: Callable) -> None:
+        self.server, self.cockpit_id = server, cockpit_id
+        self.on_activity, self.on_state = on_activity, on_state
+        self.state: dict | None = None
+        self.unsubscribe: Callable[[], None] | None = None
 
-    def subscribe(self, on_state):
-        SSE订阅('/api/cockpit/events', on_state)
+    def start(self) -> None:
+        self.unsubscribe = self.server.subscribe(self.cockpit_id, self.handle_event)
 
-    def execute(self, name, arguments):
-        return HTTP_POST('/api/cockpit/commands', {'name': name, 'arguments': arguments})
-        # 点击车辆面板可直接执行命令，不必先让模型推理。
+    def handle_event(self, event: dict) -> None:
+        if event['type'] == 'snapshot':
+            self.state = event['state']
+        elif event['type'] == 'state':
+            self.state = apply_cockpit_state_update(self.state, event)
+        elif event['type'] == 'activity':
+            self.on_activity(event)
+            return
+        self.on_state(self.state)
+
+    async def execute(self, name: str, args: dict | None = None) -> ToolResult:
+        return await self.server.handle('POST', '/api/cockpit/commands',
+            {'name': name, 'arguments': args or {}}, self.cockpit_id)
+
+    def close(self) -> None:
+        if self.unsubscribe:
+            self.unsubscribe()

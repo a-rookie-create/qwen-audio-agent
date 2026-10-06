@@ -1,12 +1,27 @@
-"""怎样将后台 Agent 暴露给 Gateway？对应 agent/server.mjs。
-A2A 服务接收任务，执行器负责模型循环；不是另一套实时语音会话。
-"""
+"""进程内 A2A 边界：接收工作，调用执行器，记录结果；不实现线上 A2A 传输。"""
+from __future__ import annotations
+from typing import Callable
+from agent.executor import CockpitAgentExecutor
+from study_support import ToolResult
 
 
-def start_cockpit_agent_server():
-    model = DashScopeCockpitModel(模型客户端)
-    tools = CockpitAgentTools(后台MCP接入, 网页检索能力)
-    executor = CockpitAgentExecutor(model, tools)
-    # A2A 请求先转换为执行器需要的任务；编码、流式状态等由协议层处理。
-    启动A2A服务(任务处理器=executor.execute)
-    发布AgentCard()  # Gateway 通过这个描述发现后台接口与能力。
+class CockpitAgentServer:
+    def __init__(self, executor: CockpitAgentExecutor) -> None:
+        self.executor = executor
+        self.results: dict[str, ToolResult] = {}
+
+    def agent_card(self) -> dict:
+        return {'name': 'Python Study Agent', 'transport': 'in-process', 'streaming': True}
+
+    async def submit(self, task_id: str, objective: str, context_id: str,
+                     on_progress: Callable[[str], None]) -> ToolResult:
+        result = await self.executor.execute(task_id, objective, context_id, on_progress)
+        self.results[task_id] = result
+        return result
+
+    def cancel(self, task_id: str) -> None:
+        self.executor.cancel_task(task_id)
+
+
+def start_cockpit_agent_server(executor: CockpitAgentExecutor) -> CockpitAgentServer:
+    return CockpitAgentServer(executor)

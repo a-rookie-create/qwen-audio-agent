@@ -1,16 +1,49 @@
-"""场景事件怎样影响对话？对应 environment-events 与 assistant/event。
-只展示三种行为；事件 Schema、限流、去重省略。
-"""
+"""场景事件的实际校验和投递；人设、静默事实、温度提醒各有明确路径。"""
+from pathlib import Path
+from dataclasses import dataclass
+
+PROFILE_IDS = {'healer', 'action', 'sharp'}
 
 
-def select_assistant_profile(profile_id):
-    校验允许的人设ID(profile_id)
-    更新当前实时会话人设(profile_id)  # 同一会话更新，不重新创建一套 Agent。
+@dataclass
+class AgentDelivery:
+    mode: str
+    text: str
+    name: str = ''
+    data: dict | None = None
+    profile_id: str = ''
 
 
-def navigation_preference_changed(data):
-    静默更新前台上下文(data)         # 环境事实不是新的用户话语。
+def load_profile(profile_id: str) -> str:
+    if profile_id not in PROFILE_IDS:
+        raise ValueError('未知人设 ID')
+    return (Path(__file__).parent / 'assistant' / (profile_id + '.md')).read_text()
 
 
-def skill_triggered(data):
-    安排一次自然提醒(data)           # 只提醒，不执行提醒文字中的命令。
+def select_assistant_profile(event: dict) -> AgentDelivery:
+    profile_id = event['data']['profile']
+    return AgentDelivery('handle', load_profile(profile_id), profile_id=profile_id)
+
+
+def navigation_preference_changed(event: dict) -> AgentDelivery:
+    data = event['data']
+    if data.get('strategy') not in {0, 13, 5, 4, 11, 14, 2}:
+        raise ValueError('未知导航偏好')
+    return AgentDelivery('context', '已更新路线偏好', event['name'], data)
+
+
+def skill_triggered(event: dict) -> AgentDelivery:
+    data = event['data']
+    trigger = data['trigger']
+    matches = lambda t: trigger.get('min', 16) <= t <= trigger.get('max', 32)
+    if matches(data['previousTemperature']) or not matches(data['temperature']):
+        raise ValueError('没有观察到进入温度条件的变化')
+    return AgentDelivery('respond', '温度提醒：' + data['reminder'], event['name'], data)
+    # 只是提醒内容，不把提醒字符串解析成新的工具指令。
+
+
+CLIENT_EVENT_DEFINITIONS = {
+    'cockpit.assistant_profile.selected': select_assistant_profile,
+    'cockpit.navigation.preference_changed': navigation_preference_changed,
+    'cockpit.skill.triggered': skill_triggered,
+}
