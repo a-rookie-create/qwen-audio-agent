@@ -11,6 +11,7 @@ class ImportTests(unittest.TestCase):
             relative = path.relative_to(root)
             if relative.parts[0] == 'tests' or path.name == '__init__.py':
                 continue
+            # 将 agent/model.py 转成 agent.model，实际 import 验证模块间引用可解析。
             name = '.'.join(relative.with_suffix('').parts)
             with self.subTest(module=name):
                 self.assertIsNotNone(importlib.import_module(name))

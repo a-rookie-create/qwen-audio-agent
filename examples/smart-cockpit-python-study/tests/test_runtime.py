@@ -19,6 +19,7 @@ class BrokenModel:
 
 
 class RuntimeTests(unittest.IsolatedAsyncioTestCase):
+    # 每个测试使用独立事件循环与运行时，避免业务记录和待执行 Task 跨用例残留。
     async def asyncSetUp(self):
         self.runtime = await build_study_runtime(model=DemoChatModel(delay=0.001))
         self.app = self.runtime.app
@@ -33,6 +34,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.runtime.agent.executor.executions, {})
 
     async def create_task(self, text='帮我买杯咖啡'):
+        # 前台只返回接受回执，这个辅助函数取出任务记录，故意不等待其完成。
         reply = await self.app.send(text)
         return self.runtime.gateway.tasks.get(reply['task_ids'][0], 'demo-user')
 
@@ -81,6 +83,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_every_manifest_tool_has_a_working_execution_path(self):
         # 按业务顺序调用，检查全部工具确实能到达业务实现。
+        # 收藏后才能导航到收藏，搜索商品后才能加购；这些前置状态来自真实执行。
         steps = [
             ('vehicle_location_query', {}), ('vehicle_state_query', {}),
             ('vehicle_climate_control', {'action': 'open'}),
@@ -173,6 +176,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(self.service.snapshot()['flashbuy']['order']['id'], order_id)
 
     async def test_muted_completion_waits_for_unmute(self):
+        # 执行完成与播报分离：静音不阻止工具执行，但结果要等取消静音后才投递。
         await self.app.voice.mute(True)
         task = await self.create_task()
         await self.app.wait_for_task(task.id)
@@ -183,6 +187,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(task.notification, 'delivered')
 
     async def test_delivery_requires_playback_ack(self):
+        # 关闭自动确认，区分“回复已发出”与“客户端报告播放完成”两个阶段。
         self.app.voice.auto_play = False
         task = await self.create_task()
         await self.app.wait_for_task(task.id)
@@ -192,6 +197,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(task.notification, 'delivered')
 
     async def test_queued_task_can_be_cancelled_before_execution(self):
+        # 不先让出事件循环，验证 create_task 安排的协程还没开始也能正确取消。
         task = await self.create_task()
         await self.app.voice.client.request('task.cancel', {'task_id': task.id})
         self.assertEqual(task.status, 'cancelled')
@@ -201,6 +207,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
     async def test_running_task_can_be_cancelled(self):
         self.runtime.agent.executor.model = DemoChatModel(delay=0.1)
         task = await self.create_task()
+        # 让事件循环启动后台工作；较慢模型保证取消时它仍处于运行阶段。
         await asyncio.sleep(0.01)
         self.assertEqual(task.status, 'running')
         await self.app.voice.client.request('task.cancel', {'task_id': task.id})
@@ -249,6 +256,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertFalse(result.is_error)
         await self.app.voice.flush()
         self.assertEqual(len(self.app.voice.messages), 0)
+        # 22->19 首次进入条件，19->18 不重复；离开到 25 后再次进入 19 才第二次提醒。
         for temperature in (19, 18, 25, 19):
             await self.set_temperature(temperature)
             await self.app.voice.flush()
@@ -285,6 +293,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await self.app.memory.remove(documents[0]), [])
 
     async def test_cockpit_state_isolation_and_snapshot_is_a_copy(self):
+        # 第二个客户端绑定不同车机；同时检查 ID 隔离与深拷贝对内部数据的保护。
         other = CockpitApp(self.runtime.gateway, self.runtime.service, 'other', 'other', 'other')
         other.start()
         try:
@@ -320,6 +329,7 @@ class RuntimeTests(unittest.IsolatedAsyncioTestCase):
 class SupportingTests(unittest.IsolatedAsyncioTestCase):
     async def test_expired_reminder_is_dropped_but_latest_context_is_kept(self):
         clock = [0.0]
+        # 注入可控制的时钟模拟过期，无需真实等待三十秒。
         outbox = CockpitEnvironmentOutbox(ttl=30, now=lambda: clock[0])
         outbox.enqueue({'name': 'reminder', 'event_id': 'r1', 'delivery_hint': 'respond'})
         outbox.enqueue({'name': 'context', 'delivery_hint': 'context', 'data': {'strategy': 0}})
@@ -334,6 +344,7 @@ class SupportingTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(delivered[0]['data']['strategy'], 2)
 
     async def test_optional_skill_persistence_round_trip(self):
+        # 创建新 Store 重新读同一临时目录，验证数据来自文件而不是旧对象内存。
         with TemporaryDirectory() as directory:
             store = CustomSkillStore(Path(directory))
             skill = store.upsert('../cockpit', {'name': '上车', 'instructions': '空调调到24度'})
@@ -342,6 +353,7 @@ class SupportingTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(len(list(Path(directory).glob('*.json'))), 1)
 
     async def test_memory_conflict_is_atomic(self):
+        # 一批变更先添加、后删除冲突；两者都不能提交，验证副本上的整批修改策略。
         provider = MemoryProvider()
         documents = provider.apply('user', [{'operation': 'add', 'text': '原记忆'}])
         with self.assertRaises(MemoryConflictError):

@@ -13,11 +13,11 @@
         },
         {
           "symbol": "async_main",
-          "line": 27
+          "line": 30
         },
         {
           "symbol": "main",
-          "line": 47
+          "line": 52
         }
       ],
       "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
@@ -63,19 +63,19 @@
       "study_symbols": [
         {
           "symbol": "StudyRuntime",
-          "line": 21
+          "line": 22
         },
         {
           "symbol": "StudyRuntime.close",
-          "line": 28
+          "line": 29
         },
         {
           "symbol": "build_study_runtime",
-          "line": 33
+          "line": 36
         },
         {
           "symbol": "start_four_processes",
-          "line": 49
+          "line": 60
         }
       ],
       "source_landmarks": [
@@ -105,7 +105,7 @@
         },
         {
           "symbol": "AgentHistory.append",
-          "line": 15
+          "line": 17
         }
       ],
       "source_landmarks": [
@@ -127,19 +127,19 @@
         },
         {
           "symbol": "CockpitAgentExecutor",
-          "line": 47
+          "line": 57
         },
         {
           "symbol": "CockpitAgentExecutor.__init__",
-          "line": 48
+          "line": 58
         },
         {
           "symbol": "CockpitAgentExecutor.execute",
-          "line": 53
+          "line": 64
         },
         {
           "symbol": "CockpitAgentExecutor.cancel_task",
-          "line": 69
+          "line": 84
         }
       ],
       "source_landmarks": [
@@ -175,7 +175,7 @@
         },
         {
           "symbol": "CockpitMcpTools.call",
-          "line": 13
+          "line": 14
         }
       ],
       "source_landmarks": [
@@ -193,35 +193,35 @@
       "study_symbols": [
         {
           "symbol": "ChatModel",
-          "line": 10
-        },
-        {
-          "symbol": "ChatModel.complete",
           "line": 11
         },
         {
-          "symbol": "DemoChatModel",
-          "line": 14
+          "symbol": "ChatModel.complete",
+          "line": 12
         },
         {
-          "symbol": "DemoChatModel.__init__",
+          "symbol": "DemoChatModel",
           "line": 15
         },
         {
+          "symbol": "DemoChatModel.__init__",
+          "line": 16
+        },
+        {
           "symbol": "DemoChatModel.complete",
-          "line": 18
+          "line": 19
         },
         {
           "symbol": "DashScopeCockpitModel",
-          "line": 50
+          "line": 58
         },
         {
           "symbol": "DashScopeCockpitModel.__init__",
-          "line": 52
+          "line": 60
         },
         {
           "symbol": "DashScopeCockpitModel.complete",
-          "line": 55
+          "line": 63
         }
       ],
       "source_landmarks": [
@@ -251,15 +251,15 @@
         },
         {
           "symbol": "CockpitAgentServer.submit",
-          "line": 16
+          "line": 17
         },
         {
           "symbol": "CockpitAgentServer.cancel",
-          "line": 22
+          "line": 24
         },
         {
           "symbol": "start_cockpit_agent_server",
-          "line": 26
+          "line": 29
         }
       ],
       "source_landmarks": [
@@ -289,7 +289,7 @@
         },
         {
           "symbol": "CockpitAgentTools.call",
-          "line": 16
+          "line": 17
         }
       ],
       "source_landmarks": [
@@ -317,7 +317,7 @@
         },
         {
           "symbol": "score_trace",
-          "line": 11
+          "line": 12
         }
       ],
       "source_landmarks": [
@@ -379,27 +379,27 @@
         },
         {
           "symbol": "CockpitApp.start",
-          "line": 21
+          "line": 23
         },
         {
           "symbol": "CockpitApp.on_activity",
-          "line": 25
+          "line": 28
         },
         {
           "symbol": "CockpitApp.on_state",
-          "line": 30
+          "line": 34
         },
         {
           "symbol": "CockpitApp.send",
-          "line": 33
+          "line": 38
         },
         {
           "symbol": "CockpitApp.wait_for_task",
-          "line": 36
+          "line": 41
         },
         {
           "symbol": "CockpitApp.close",
-          "line": 39
+          "line": 45
         }
       ],
       "source_landmarks": [
@@ -425,19 +425,19 @@
         },
         {
           "symbol": "CockpitStateController.start",
-          "line": 17
+          "line": 18
         },
         {
           "symbol": "CockpitStateController.handle_event",
-          "line": 20
+          "line": 22
         },
         {
           "symbol": "CockpitStateController.execute",
-          "line": 30
+          "line": 34
         },
         {
           "symbol": "CockpitStateController.close",
-          "line": 34
+          "line": 39
         }
       ],
       "source_landmarks": [
@@ -467,27 +467,27 @@
         },
         {
           "symbol": "GatewayMemoryController.remove",
-          "line": 13
+          "line": 14
         },
         {
           "symbol": "CockpitSkillsController",
-          "line": 18
+          "line": 20
         },
         {
           "symbol": "CockpitSkillsController.__init__",
-          "line": 19
-        },
-        {
-          "symbol": "CockpitSkillsController.list",
           "line": 22
         },
         {
-          "symbol": "CockpitSkillsController.load",
+          "symbol": "CockpitSkillsController.list",
           "line": 25
         },
         {
-          "symbol": "CockpitSkillsController.remove",
+          "symbol": "CockpitSkillsController.load",
           "line": 28
+        },
+        {
+          "symbol": "CockpitSkillsController.remove",
+          "line": 32
         }
       ],
       "source_landmarks": [
@@ -515,31 +515,31 @@
         },
         {
           "symbol": "navigation_preference_event",
-          "line": 17
+          "line": 19
         },
         {
           "symbol": "skill_triggered_event",
-          "line": 24
+          "line": 27
         },
         {
           "symbol": "CockpitEnvironmentOutbox",
-          "line": 33
+          "line": 38
         },
         {
           "symbol": "CockpitEnvironmentOutbox.__init__",
-          "line": 34
+          "line": 39
         },
         {
           "symbol": "CockpitEnvironmentOutbox.enqueue",
-          "line": 40
+          "line": 46
         },
         {
           "symbol": "CockpitEnvironmentOutbox.flush",
-          "line": 48
+          "line": 56
         },
         {
           "symbol": "CockpitEnvironmentOutbox.restore_context",
-          "line": 66
+          "line": 79
         }
       ],
       "source_landmarks": [
@@ -577,43 +577,43 @@
         },
         {
           "symbol": "VoiceSessionController.start",
-          "line": 20
+          "line": 22
         },
         {
           "symbol": "VoiceSessionController.on_event",
-          "line": 23
+          "line": 25
         },
         {
           "symbol": "VoiceSessionController.send_text",
-          "line": 32
+          "line": 36
         },
         {
           "symbol": "VoiceSessionController.send_audio",
-          "line": 35
+          "line": 39
         },
         {
           "symbol": "VoiceSessionController.enqueue_environment",
-          "line": 38
+          "line": 43
         },
         {
           "symbol": "VoiceSessionController.flush_environment",
-          "line": 44
+          "line": 51
         },
         {
           "symbol": "VoiceSessionController.flush",
-          "line": 48
+          "line": 57
         },
         {
           "symbol": "VoiceSessionController.select_persona",
-          "line": 54
+          "line": 65
         },
         {
           "symbol": "VoiceSessionController.mute",
-          "line": 58
+          "line": 70
         },
         {
           "symbol": "VoiceSessionController.close",
-          "line": 63
+          "line": 76
         }
       ],
       "source_landmarks": [
@@ -631,59 +631,59 @@
       "study_symbols": [
         {
           "symbol": "BackendPort",
-          "line": 10
-        },
-        {
-          "symbol": "BackendPort.submit",
           "line": 11
         },
         {
-          "symbol": "BackendPort.cancel",
+          "symbol": "BackendPort.submit",
           "line": 12
         },
         {
-          "symbol": "A2ABackendAdapter",
-          "line": 15
+          "symbol": "BackendPort.cancel",
+          "line": 13
         },
         {
-          "symbol": "A2ABackendAdapter.__init__",
+          "symbol": "A2ABackendAdapter",
           "line": 16
         },
         {
+          "symbol": "A2ABackendAdapter.__init__",
+          "line": 17
+        },
+        {
           "symbol": "A2ABackendAdapter.describe",
-          "line": 19
+          "line": 20
         },
         {
           "symbol": "A2ABackendAdapter.submit",
-          "line": 22
+          "line": 23
         },
         {
           "symbol": "A2ABackendAdapter.cancel",
-          "line": 27
+          "line": 29
         },
         {
           "symbol": "A2ABackendAdapter.status",
-          "line": 30
+          "line": 33
         },
         {
           "symbol": "create_backend_agent_host",
-          "line": 34
+          "line": 38
         },
         {
           "symbol": "BackendWorkRuntime",
-          "line": 39
-        },
-        {
-          "symbol": "BackendWorkRuntime.__init__",
-          "line": 40
-        },
-        {
-          "symbol": "BackendWorkRuntime.run",
           "line": 43
         },
         {
+          "symbol": "BackendWorkRuntime.__init__",
+          "line": 44
+        },
+        {
+          "symbol": "BackendWorkRuntime.run",
+          "line": 47
+        },
+        {
           "symbol": "BackendWorkRuntime.cancel",
-          "line": 49
+          "line": 54
         }
       ],
       "source_landmarks": [
@@ -731,43 +731,43 @@
         },
         {
           "symbol": "MemoryProvider.list",
-          "line": 15
+          "line": 16
         },
         {
           "symbol": "MemoryProvider.apply",
-          "line": 18
+          "line": 19
         },
         {
           "symbol": "KnowledgeProvider",
-          "line": 34
+          "line": 37
         },
         {
           "symbol": "KnowledgeProvider.__init__",
-          "line": 35
-        },
-        {
-          "symbol": "KnowledgeProvider.ingest",
           "line": 38
         },
         {
-          "symbol": "KnowledgeProvider.retrieve",
+          "symbol": "KnowledgeProvider.ingest",
           "line": 41
         },
         {
-          "symbol": "WebRetrieval",
+          "symbol": "KnowledgeProvider.retrieve",
           "line": 45
         },
         {
-          "symbol": "WebRetrieval.capabilities",
-          "line": 47
-        },
-        {
-          "symbol": "WebRetrieval.search",
+          "symbol": "WebRetrieval",
           "line": 50
         },
         {
-          "symbol": "WebRetrieval.fetch_url",
+          "symbol": "WebRetrieval.capabilities",
+          "line": 52
+        },
+        {
+          "symbol": "WebRetrieval.search",
           "line": 55
+        },
+        {
+          "symbol": "WebRetrieval.fetch_url",
+          "line": 61
         }
       ],
       "source_landmarks": [
@@ -815,59 +815,59 @@
         },
         {
           "symbol": "DemoRealtimeModel",
-          "line": 21
+          "line": 22
         },
         {
           "symbol": "DemoRealtimeModel.__init__",
-          "line": 23
+          "line": 24
         },
         {
           "symbol": "DemoRealtimeModel.plan",
-          "line": 27
+          "line": 28
         },
         {
           "symbol": "DemoRealtimeModel.summarize",
-          "line": 58
-        },
-        {
-          "symbol": "ToolCallHandler",
-          "line": 62
-        },
-        {
-          "symbol": "ToolCallHandler.__init__",
           "line": 63
         },
         {
+          "symbol": "ToolCallHandler",
+          "line": 68
+        },
+        {
+          "symbol": "ToolCallHandler.__init__",
+          "line": 69
+        },
+        {
           "symbol": "ToolCallHandler.handle",
-          "line": 66
+          "line": 72
         },
         {
           "symbol": "RealtimeSessionRuntime",
-          "line": 79
+          "line": 88
         },
         {
           "symbol": "RealtimeSessionRuntime.__init__",
-          "line": 80
+          "line": 89
         },
         {
           "symbol": "RealtimeSessionRuntime.handle_input",
-          "line": 90
+          "line": 100
         },
         {
           "symbol": "RealtimeSessionRuntime.handle_client_event",
-          "line": 113
+          "line": 126
         },
         {
           "symbol": "RealtimeSessionRuntime.can_announce",
-          "line": 137
+          "line": 156
         },
         {
           "symbol": "RealtimeSessionRuntime.present_task_result",
-          "line": 140
+          "line": 160
         },
         {
           "symbol": "RealtimeSessionRuntime.close",
-          "line": 148
+          "line": 169
         }
       ],
       "source_landmarks": [
@@ -911,23 +911,23 @@
         },
         {
           "symbol": "GatewayApplication.start",
-          "line": 24
+          "line": 26
         },
         {
           "symbol": "GatewayApplication.connect",
-          "line": 28
+          "line": 31
         },
         {
           "symbol": "GatewayApplication.memory_request",
-          "line": 42
+          "line": 47
         },
         {
           "symbol": "GatewayApplication.close",
-          "line": 49
+          "line": 55
         },
         {
           "symbol": "create_gateway_application",
-          "line": 56
+          "line": 63
         }
       ],
       "source_landmarks": [
@@ -963,23 +963,23 @@
         },
         {
           "symbol": "GatewayClient.send",
-          "line": 19
+          "line": 20
         },
         {
           "symbol": "GatewayClient.request",
-          "line": 24
+          "line": 26
         },
         {
           "symbol": "GatewayClient.wait_task",
-          "line": 34
+          "line": 37
         },
         {
           "symbol": "GatewayClient.playback_ack",
-          "line": 40
+          "line": 44
         },
         {
           "symbol": "GatewayClient.stop",
-          "line": 43
+          "line": 48
         }
       ],
       "source_landmarks": [
@@ -1003,99 +1003,99 @@
       "study_symbols": [
         {
           "symbol": "TaskRecord",
-          "line": 14
+          "line": 15
         },
         {
           "symbol": "TaskRecord.snapshot",
-          "line": 25
+          "line": 28
         },
         {
           "symbol": "TaskManager",
-          "line": 32
+          "line": 36
         },
         {
           "symbol": "TaskManager.__init__",
-          "line": 33
+          "line": 37
         },
         {
           "symbol": "TaskManager.create",
-          "line": 39
+          "line": 44
         },
         {
           "symbol": "TaskManager._execute",
-          "line": 47
+          "line": 53
         },
         {
           "symbol": "TaskManager._finish",
-          "line": 60
+          "line": 69
         },
         {
           "symbol": "TaskManager.emit",
-          "line": 68
+          "line": 79
         },
         {
           "symbol": "TaskManager.get",
-          "line": 72
-        },
-        {
-          "symbol": "TaskManager.wait",
-          "line": 78
-        },
-        {
-          "symbol": "TaskManager.cancel",
           "line": 83
         },
         {
+          "symbol": "TaskManager.wait",
+          "line": 90
+        },
+        {
+          "symbol": "TaskManager.cancel",
+          "line": 96
+        },
+        {
           "symbol": "TaskManager.mark_delivered",
-          "line": 93
+          "line": 107
         },
         {
           "symbol": "TaskManager.close",
-          "line": 99
+          "line": 114
         },
         {
           "symbol": "TaskOperations",
-          "line": 104
-        },
-        {
-          "symbol": "TaskOperations.__init__",
-          "line": 105
-        },
-        {
-          "symbol": "TaskOperations.submit",
-          "line": 108
-        },
-        {
-          "symbol": "TaskOperations.cancel",
-          "line": 113
-        },
-        {
-          "symbol": "SessionTaskCoordinator",
-          "line": 119
-        },
-        {
-          "symbol": "SessionTaskCoordinator.__init__",
           "line": 120
         },
         {
+          "symbol": "TaskOperations.__init__",
+          "line": 121
+        },
+        {
+          "symbol": "TaskOperations.submit",
+          "line": 124
+        },
+        {
+          "symbol": "TaskOperations.cancel",
+          "line": 131
+        },
+        {
+          "symbol": "SessionTaskCoordinator",
+          "line": 138
+        },
+        {
+          "symbol": "SessionTaskCoordinator.__init__",
+          "line": 139
+        },
+        {
           "symbol": "SessionTaskCoordinator.on_event",
-          "line": 127
+          "line": 148
         },
         {
           "symbol": "SessionTaskCoordinator.refresh",
-          "line": 136
+          "line": 158
         },
         {
           "symbol": "SessionTaskCoordinator._deliver",
-          "line": 147
+          "line": 172
         },
         {
           "symbol": "SessionTaskCoordinator.flush",
-          "line": 154
+          "line": 181
         },
         {
           "symbol": "SessionTaskCoordinator.close",
-          "line": 162
+          "line": 190
         }
       ],
       "source_landmarks": [
@@ -1129,19 +1129,19 @@
         },
         {
           "symbol": "load_profile",
-          "line": 17
+          "line": 18
         },
         {
           "symbol": "select_assistant_profile",
-          "line": 23
+          "line": 25
         },
         {
           "symbol": "navigation_preference_changed",
-          "line": 28
+          "line": 31
         },
         {
           "symbol": "skill_triggered",
-          "line": 35
+          "line": 39
         }
       ],
       "source_landmarks": [
@@ -1179,7 +1179,7 @@
         },
         {
           "symbol": "write_cockpit_frontend_profile_bundle",
-          "line": 21
+          "line": 22
         }
       ],
       "source_landmarks": [
@@ -1253,23 +1253,23 @@
         },
         {
           "symbol": "CockpitService.snapshot",
-          "line": 23
+          "line": 25
         },
         {
           "symbol": "CockpitService.publish_activity",
-          "line": 26
+          "line": 28
         },
         {
           "symbol": "CockpitService.execute",
-          "line": 29
+          "line": 32
         },
         {
           "symbol": "CockpitService.list_skills",
-          "line": 40
+          "line": 48
         },
         {
           "symbol": "CockpitService.delete_skill",
-          "line": 44
+          "line": 53
         }
       ],
       "source_landmarks": [
@@ -1299,23 +1299,23 @@
         },
         {
           "symbol": "CustomSkillStore.get",
-          "line": 21
+          "line": 22
         },
         {
           "symbol": "CustomSkillStore.upsert",
-          "line": 25
+          "line": 27
         },
         {
           "symbol": "CustomSkillStore.delete",
-          "line": 44
+          "line": 50
         },
         {
           "symbol": "CustomSkillStore._path",
-          "line": 51
+          "line": 58
         },
         {
           "symbol": "CustomSkillStore._save",
-          "line": 55
+          "line": 62
         }
       ],
       "source_landmarks": [
@@ -1337,23 +1337,23 @@
         },
         {
           "symbol": "TemperatureSkillRules",
-          "line": 22
+          "line": 24
         },
         {
           "symbol": "TemperatureSkillRules.__init__",
-          "line": 23
+          "line": 25
         },
         {
           "symbol": "TemperatureSkillRules.prepare",
-          "line": 27
+          "line": 29
         },
         {
           "symbol": "TemperatureSkillRules.refresh",
-          "line": 33
+          "line": 37
         },
         {
           "symbol": "TemperatureSkillRules.observe",
-          "line": 38
+          "line": 43
         }
       ],
       "source_landmarks": [
@@ -1381,23 +1381,23 @@
         },
         {
           "symbol": "ScenarioServices.weather",
-          "line": 7
+          "line": 8
         },
         {
           "symbol": "ScenarioServices.resolve_place",
-          "line": 10
+          "line": 11
         },
         {
           "symbol": "ScenarioServices.plan_route",
-          "line": 15
+          "line": 17
         },
         {
           "symbol": "ScenarioServices.search_places",
-          "line": 23
+          "line": 26
         },
         {
           "symbol": "ScenarioServices.vehicle_location",
-          "line": 26
+          "line": 30
         }
       ],
       "source_landmarks": [
@@ -1433,7 +1433,7 @@
         },
         {
           "symbol": "CockpitMcpServer.call_tool",
-          "line": 13
+          "line": 14
         }
       ],
       "source_landmarks": [
@@ -1463,11 +1463,11 @@
         },
         {
           "symbol": "CockpitServiceServer.handle",
-          "line": 17
+          "line": 18
         },
         {
           "symbol": "CockpitServiceServer.subscribe",
-          "line": 38
+          "line": 42
         }
       ],
       "source_landmarks": [
@@ -1489,27 +1489,27 @@
         },
         {
           "symbol": "CockpitStateStore",
-          "line": 28
-        },
-        {
-          "symbol": "CockpitStateStore.__init__",
           "line": 29
         },
         {
+          "symbol": "CockpitStateStore.__init__",
+          "line": 30
+        },
+        {
           "symbol": "CockpitStateStore.snapshot",
-          "line": 33
+          "line": 36
         },
         {
           "symbol": "CockpitStateStore.update",
-          "line": 37
+          "line": 42
         },
         {
           "symbol": "CockpitStateStore.subscribe",
-          "line": 47
+          "line": 58
         },
         {
           "symbol": "CockpitStateStore.reset",
-          "line": 53
+          "line": 65
         }
       ],
       "source_landmarks": [
@@ -1599,23 +1599,23 @@
       "study_symbols": [
         {
           "symbol": "ToolRegistry",
-          "line": 20
-        },
-        {
-          "symbol": "ToolRegistry.__init__",
           "line": 21
         },
         {
+          "symbol": "ToolRegistry.__init__",
+          "line": 22
+        },
+        {
           "symbol": "ToolRegistry.definitions_for",
-          "line": 34
+          "line": 38
         },
         {
           "symbol": "ToolRegistry.execute",
-          "line": 37
+          "line": 42
         },
         {
           "symbol": "ToolRegistry.validate",
-          "line": 45
+          "line": 52
         }
       ],
       "source_landmarks": [
@@ -1644,15 +1644,15 @@
         },
         {
           "symbol": "ToolContext.snapshot",
-          "line": 20
+          "line": 21
         },
         {
           "symbol": "ToolContext.update",
-          "line": 23
+          "line": 25
         },
         {
           "symbol": "ToolContext.result",
-          "line": 26
+          "line": 30
         }
       ],
       "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
@@ -1662,7 +1662,7 @@
       "study_symbols": [
         {
           "symbol": "execute",
-          "line": 13
+          "line": 14
         }
       ],
       "source_landmarks": [
@@ -1699,51 +1699,51 @@
       "study_symbols": [
         {
           "symbol": "ToolDefinition",
-          "line": 10
+          "line": 11
         },
         {
           "symbol": "ToolResult",
-          "line": 19
+          "line": 21
         },
         {
           "symbol": "ToolCall",
-          "line": 28
+          "line": 31
         },
         {
           "symbol": "ModelReply",
-          "line": 35
+          "line": 39
         },
         {
           "symbol": "TraceLog",
-          "line": 40
-        },
-        {
-          "symbol": "TraceLog.__init__",
-          "line": 42
-        },
-        {
-          "symbol": "TraceLog.record",
           "line": 45
         },
         {
+          "symbol": "TraceLog.__init__",
+          "line": 47
+        },
+        {
+          "symbol": "TraceLog.record",
+          "line": 50
+        },
+        {
           "symbol": "Signal",
-          "line": 49
-        },
-        {
-          "symbol": "Signal.__init__",
-          "line": 51
-        },
-        {
-          "symbol": "Signal.subscribe",
           "line": 55
         },
         {
-          "symbol": "Signal.emit",
+          "symbol": "Signal.__init__",
+          "line": 57
+        },
+        {
+          "symbol": "Signal.subscribe",
           "line": 62
         },
         {
+          "symbol": "Signal.emit",
+          "line": 71
+        },
+        {
           "symbol": "tool_result",
-          "line": 70
+          "line": 82
         }
       ],
       "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
@@ -1781,143 +1781,143 @@
         },
         {
           "symbol": "RuntimeTests.asyncSetUp",
-          "line": 22
+          "line": 23
         },
         {
           "symbol": "RuntimeTests.asyncTearDown",
-          "line": 27
+          "line": 28
         },
         {
           "symbol": "RuntimeTests.create_task",
-          "line": 35
+          "line": 36
         },
         {
           "symbol": "RuntimeTests.set_temperature",
-          "line": 39
+          "line": 41
         },
         {
           "symbol": "RuntimeTests.test_chat_does_not_create_task_or_change_business_state",
-          "line": 43
+          "line": 45
         },
         {
           "symbol": "RuntimeTests.test_foreground_changes_state_and_updates_client",
-          "line": 51
+          "line": 53
         },
         {
           "symbol": "RuntimeTests.test_original_tool_surfaces_are_preserved",
-          "line": 59
+          "line": 61
         },
         {
           "symbol": "RuntimeTests.test_invalid_parameters_do_not_change_state",
-          "line": 67
+          "line": 69
         },
         {
           "symbol": "RuntimeTests.test_unknown_tool_is_an_error",
-          "line": 77
+          "line": 79
         },
         {
           "symbol": "RuntimeTests.test_every_manifest_tool_has_a_working_execution_path",
-          "line": 82
+          "line": 84
         },
         {
           "symbol": "RuntimeTests.test_ui_commands_share_the_same_state_as_model_tools",
-          "line": 127
+          "line": 130
         },
         {
           "symbol": "RuntimeTests.test_navigation_and_weather_use_explicit_demo_adapters",
-          "line": 133
+          "line": 136
         },
         {
           "symbol": "RuntimeTests.test_mixed_input_splits_foreground_and_background",
-          "line": 142
+          "line": 145
         },
         {
           "symbol": "RuntimeTests.test_background_receipt_is_immediate_and_chat_can_continue",
-          "line": 148
+          "line": 151
         },
         {
           "symbol": "RuntimeTests.test_preview_does_not_order_until_explicit_confirmation",
-          "line": 159
+          "line": 162
         },
         {
           "symbol": "RuntimeTests.test_muted_completion_waits_for_unmute",
-          "line": 175
+          "line": 178
         },
         {
           "symbol": "RuntimeTests.test_delivery_requires_playback_ack",
-          "line": 185
+          "line": 189
         },
         {
           "symbol": "RuntimeTests.test_queued_task_can_be_cancelled_before_execution",
-          "line": 194
+          "line": 199
         },
         {
           "symbol": "RuntimeTests.test_running_task_can_be_cancelled",
-          "line": 201
+          "line": 207
         },
         {
           "symbol": "RuntimeTests.test_backend_error_becomes_failed_task_and_returns_to_chat",
-          "line": 210
+          "line": 217
         },
         {
           "symbol": "RuntimeTests.test_task_access_is_scoped_to_owner",
-          "line": 219
+          "line": 226
         },
         {
           "symbol": "RuntimeTests.test_closing_session_does_not_cancel_accepted_work",
-          "line": 227
-        },
-        {
-          "symbol": "RuntimeTests.test_workflow_creation_saves_definition_without_executing",
           "line": 234
         },
         {
+          "symbol": "RuntimeTests.test_workflow_creation_saves_definition_without_executing",
+          "line": 241
+        },
+        {
           "symbol": "RuntimeTests.test_event_skill_only_triggers_on_transition",
-          "line": 245
+          "line": 252
         },
         {
           "symbol": "RuntimeTests.test_loading_an_already_matching_event_skill_does_not_trigger",
-          "line": 260
+          "line": 268
         },
         {
           "symbol": "RuntimeTests.test_skills_ui_reads_and_deletes_same_definitions",
-          "line": 269
+          "line": 277
         },
         {
           "symbol": "RuntimeTests.test_memory_save_delete_and_owner_isolation",
-          "line": 278
+          "line": 286
         },
         {
           "symbol": "RuntimeTests.test_cockpit_state_isolation_and_snapshot_is_a_copy",
-          "line": 287
+          "line": 295
         },
         {
           "symbol": "RuntimeTests.test_persona_selection_changes_foreground_profile",
-          "line": 300
+          "line": 309
         },
         {
           "symbol": "RuntimeTests.test_web_task_keeps_citations_and_demo_label",
-          "line": 306
+          "line": 315
         },
         {
           "symbol": "RuntimeTests.test_benchmark_runs_actual_calls",
-          "line": 314
+          "line": 323
         },
         {
           "symbol": "SupportingTests",
-          "line": 320
+          "line": 329
         },
         {
           "symbol": "SupportingTests.test_expired_reminder_is_dropped_but_latest_context_is_kept",
-          "line": 321
+          "line": 330
         },
         {
           "symbol": "SupportingTests.test_optional_skill_persistence_round_trip",
-          "line": 336
+          "line": 346
         },
         {
           "symbol": "SupportingTests.test_memory_conflict_is_atomic",
-          "line": 344
+          "line": 355
         }
       ],
       "representation": "学习版新增的执行入口、共享类型或验证模块；原项目没有一一对应的同名模块"
