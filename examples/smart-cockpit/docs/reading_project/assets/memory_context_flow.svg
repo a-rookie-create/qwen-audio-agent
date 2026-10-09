@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="564" viewBox="0 0 1120 564" role="img" aria-labelledby="title">
+<title id="title">这些信息分别存在哪里？</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1120" height="564" fill="#fff"/>
+<text x="48" y="53" class="heading" >这些信息分别存在哪里？</text>
+<text x="48" y="88" class="subtitle" >长期信息、当前状态和任务历史有不同的用途与生命周期。</text>
+
+<g data-card="长期记忆"><rect x="48" y="152" width="312" height="256" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="72" y="180" class="tag" fill="#7766b0">跨会话个性化</text>
+<text x="72" y="213" class="node-title" >长期记忆</text>
+<text x="72" y="251" class="body" >Gateway / Memory Provider</text>
+<text x="72" y="280" class="body" >用户偏好、稳定事实与决定</text>
+<text x="72" y="309" class="body" >USER.md / MEMORY.md</text>
+<text x="72" y="338" class="body" >默认 Markdown 持久化</text>
+<text x="72" y="367" class="body" >新会话与重启后仍保留</text>
+</g>
+<g data-card="座舱业务状态"><rect x="404" y="152" width="312" height="256" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="428" y="180" class="tag" fill="#288b7c">当前业务事实</text>
+<text x="428" y="213" class="node-title" >座舱业务状态</text>
+<text x="428" y="251" class="body" >Service / State Store</text>
+<text x="428" y="280" class="body" >温度、路线、音乐与购物车</text>
+<text x="428" y="309" class="body" >按 cockpitId 分组</text>
+<text x="428" y="338" class="body" >当前实现保存在内存</text>
+<text x="428" y="367" class="body" >重启后恢复初始状态</text>
+</g>
+<g data-card="后台任务历史"><rect x="760" y="152" width="312" height="256" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="784" y="180" class="tag" fill="#4277b6">连续任务上下文</text>
+<text x="784" y="213" class="node-title" >后台任务历史</text>
+<text x="784" y="251" class="body" >后台 Agent / A2A Context</text>
+<text x="784" y="280" class="body" >此前请求与最终回复</text>
+<text x="784" y="309" class="body" >最多保留最近 50 轮</text>
+<text x="784" y="338" class="body" >不重放旧工具调用</text>
+<text x="784" y="367" class="body" >重启后清空</text>
+</g>
+<path d="M48 453H1072" stroke="#e2e8f0"/>
+<text x="48" y="484" class="small" >自定义技能另存 Service 的 JSON 文件；当前对话由前台会话管理。</text>
+<text x="48" y="511" class="small" >记忆帮助理解需求；当前状态与外部查询提供本次执行的事实依据。</text>
+</svg>

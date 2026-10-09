@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="704" viewBox="0 0 1120 704" role="img" aria-labelledby="title">
+<title id="title">业务操作怎样成为统一状态？</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1120" height="704" fill="#fff"/>
+<text x="48" y="53" class="heading" >业务操作怎样成为统一状态？</text>
+<text x="48" y="88" class="subtitle" >语音与按钮共用执行器；调用方拿执行结果，界面接收状态事实。</text>
+
+<path class="edge" d="M456 228H664" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<rect x="462.5" y="182" width="195" height="31" rx="6" fill="#fff"/>
+<text x="560" y="205" class="label" >工具 / HTTP</text>
+<path class="edge" d="M868 298V420" stroke="#7766b0"  marker-end="url(#arrow-purple)"/>
+<rect x="789.5" y="340" width="157" height="31" rx="6" fill="#fff"/>
+<text x="868" y="363" class="label" >校验成功再提交</text>
+<path class="edge" d="M664 496H456" stroke="#288b7c"  marker-end="url(#arrow-teal)"/>
+<rect x="481.5" y="450" width="157" height="31" rx="6" fill="#fff"/>
+<text x="560" y="473" class="label" >返回 / 通知</text>
+<g data-card="多种操作入口"><rect x="48" y="152" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="180" class="tag" fill="#4277b6">01  模型与界面</text>
+<text x="72" y="213" class="node-title" >多种操作入口</text>
+<text x="72" y="246" class="body" >前台 / 后台 MCP 调用</text>
+<text x="72" y="274" class="body" >客户端 HTTP 按钮操作</text>
+</g>
+<g data-card="Service 业务执行器"><rect x="664" y="152" width="408" height="146" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="688" y="180" class="tag" fill="#288b7c">02  统一入口</text>
+<text x="688" y="213" class="node-title" >Service 业务执行器</text>
+<text x="688" y="246" class="body" >确定动作，检查参数与业务条件</text>
+<text x="688" y="274" class="body" >执行对应领域的业务操作</text>
+</g>
+<g data-card="统一状态 Store"><rect x="664" y="420" width="408" height="146" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="688" y="448" class="tag" fill="#288b7c">03  内存业务状态</text>
+<text x="688" y="481" class="node-title" >统一状态 Store</text>
+<text x="688" y="514" class="body" >成功后保存新状态与版本</text>
+<text x="688" y="542" class="body" >提交后发布状态变化事件</text>
+</g>
+<g data-card="调用方与订阅界面"><rect x="48" y="420" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="448" class="tag" fill="#4277b6">04  两类反馈</text>
+<text x="72" y="481" class="node-title" >调用方与订阅界面</text>
+<text x="72" y="514" class="body" >工具结果返回模型或调用方</text>
+<text x="72" y="542" class="body" >SSE 将新业务状态推送界面</text>
+</g>
+<path d="M48 610H1072" stroke="#e2e8f0"/>
+<text x="48" y="641" class="small" >状态描述“当前是什么”；活动事件另行描述“正在进行到哪一步”。</text>
+<text x="48" y="668" class="small" >当前业务状态保存在 Service 内存，技能与长期记忆另有持久存储。</text>
+</svg>

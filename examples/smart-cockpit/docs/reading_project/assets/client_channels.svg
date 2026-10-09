@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="742" viewBox="0 0 1120 742" role="img" aria-labelledby="title">
+<title id="title">客户端怎样连接对话与业务？</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1120" height="742" fill="#fff"/>
+<text x="48" y="53" class="heading" >客户端怎样连接对话与业务？</text>
+<text x="48" y="88" class="subtitle" >同一个界面消费两类信息，声音与画面各有数据来源。</text>
+
+<path class="edge" d="M456 284H556V236H664" stroke="#4277b6" marker-start="url(#arrow-blue)" marker-end="url(#arrow-blue)"/>
+<rect x="471.0" y="138" width="176" height="31" rx="6" fill="#fff"/>
+<text x="559" y="161" class="label" >GCP / WS</text>
+<text x="559" y="188" class="small" text-anchor="middle">音频、对话、任务</text>
+<path class="edge" d="M456 444H556V520H664" stroke="#288b7c" marker-start="url(#arrow-teal)" marker-end="url(#arrow-teal)"/>
+<rect x="452.0" y="554" width="214" height="31" rx="6" fill="#fff"/>
+<text x="559" y="577" class="label" >HTTP / SSE</text>
+<text x="559" y="604" class="small" text-anchor="middle">操作、快照与状态</text>
+<g data-card="React 座舱客户端"><rect x="48" y="236" width="408" height="238" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="264" class="tag" fill="#4277b6">客户端 I/O 与呈现</text>
+<text x="72" y="297" class="node-title" >React 座舱客户端</text>
+<text x="72" y="335" class="body" >采音、播放与语音交互</text>
+<text x="72" y="365" class="body" >地图、3D 车辆与业务面板</text>
+<text x="72" y="395" class="body" >记忆、技能与任务展示</text>
+<text x="72" y="425" class="body" >将环境事件转给 Gateway</text>
+</g>
+<g data-card="Gateway"><rect x="664" y="152" width="408" height="168" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="688" y="180" class="tag" fill="#7766b0">框架宿主</text>
+<text x="688" y="213" class="node-title" >Gateway</text>
+<text x="688" y="245" class="body" >管理前台会话与异步任务</text>
+<text x="688" y="272" class="body" >返回对话事件与回复音频</text>
+<text x="688" y="299" class="body" >接收播放回执和场景事件</text>
+</g>
+<g data-card="座舱 Service"><rect x="664" y="436" width="408" height="168" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="688" y="464" class="tag" fill="#288b7c">场景基础设施</text>
+<text x="688" y="497" class="node-title" >座舱 Service</text>
+<text x="688" y="529" class="body" >HTTP 执行界面按钮操作</text>
+<text x="688" y="556" class="body" >SSE 推送业务状态与活动</text>
+<text x="688" y="583" class="body" >技能定义与统一业务状态</text>
+</g>
+<path d="M48 650H1072" stroke="#e2e8f0"/>
+<text x="48" y="681" class="small" >记忆面板使用 Gateway 的 HTTP 控制面；技能面板使用 Service HTTP。</text>
+<text x="48" y="708" class="small" >界面读取执行后的事实，模型通过业务工具操作场景。</text>
+</svg>

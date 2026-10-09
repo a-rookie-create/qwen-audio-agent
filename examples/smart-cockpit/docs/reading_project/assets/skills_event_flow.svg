@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="716" viewBox="0 0 1200 716" role="img" aria-labelledby="title">
+<title id="title">技能的两种执行方式</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1200" height="716" fill="#fff"/>
+<text x="48" y="53" class="heading" >技能的两种执行方式</text>
+<text x="48" y="88" class="subtitle" >工作流由用户按需运行；温度提醒由 Service 观察状态触发。</text>
+
+<text x="48" y="133" class="subtitle" >工作流：保存步骤说明，运行时再协调实际工具</text>
+<text x="48" y="400" class="subtitle" >事件提醒：保存条件，只在从条件外进入条件内时触发</text>
+<path class="edge" d="M368 226H440" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<path class="edge" d="M760 226H832" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<path class="edge" d="M368 493H440" stroke="#288b7c"  marker-end="url(#arrow-teal)"/>
+<path class="edge" d="M760 493H832" stroke="#288b7c"  marker-end="url(#arrow-teal)"/>
+<g data-card="保存工作流"><rect x="48" y="150" width="320" height="160" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="178" class="tag" fill="#4277b6">用户主动执行</text>
+<text x="72" y="211" class="node-title" >保存工作流</text>
+<text x="72" y="244" class="body" >名称、简介、步骤说明</text>
+<text x="72" y="272" class="body" >创建本身不立即执行</text>
+</g>
+<g data-card="用户运行时加载"><rect x="440" y="150" width="320" height="160" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="464" y="178" class="tag" fill="#4277b6">用户主动执行</text>
+<text x="464" y="211" class="node-title" >用户运行时加载</text>
+<text x="464" y="244" class="body" >读取保存的步骤</text>
+<text x="464" y="272" class="body" >模型按实际工具归属协调</text>
+</g>
+<g data-card="执行已有业务工具"><rect x="832" y="150" width="320" height="160" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="856" y="178" class="tag" fill="#4277b6">用户主动执行</text>
+<text x="856" y="211" class="node-title" >执行已有业务工具</text>
+<text x="856" y="244" class="body" >前台步骤直接调用</text>
+<text x="856" y="272" class="body" >后台步骤按需委派</text>
+</g>
+<g data-card="保存温度条件"><rect x="48" y="417" width="320" height="160" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="72" y="445" class="tag" fill="#288b7c">程序检测触发</text>
+<text x="72" y="478" class="node-title" >保存温度条件</text>
+<text x="72" y="511" class="body" >空调设定温度的上下界</text>
+<text x="72" y="539" class="body" >以当前状态建立观察基线</text>
+</g>
+<g data-card="Service 判断变化"><rect x="440" y="417" width="320" height="160" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="464" y="445" class="tag" fill="#288b7c">程序检测触发</text>
+<text x="464" y="478" class="node-title" >Service 判断变化</text>
+<text x="464" y="511" class="body" >从条件外进入条件内</text>
+<text x="464" y="539" class="body" >持续满足时不重复提醒</text>
+</g>
+<g data-card="事件转为自然提醒"><rect x="832" y="417" width="320" height="160" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="856" y="445" class="tag" fill="#288b7c">程序检测触发</text>
+<text x="856" y="478" class="node-title" >事件转为自然提醒</text>
+<text x="856" y="511" class="body" >SSE → Client → GCP</text>
+<text x="856" y="539" class="body" >前台播报，不调用工具</text>
+</g>
+<path d="M48 622H1152" stroke="#e2e8f0"/>
+<text x="48" y="653" class="small" >技能内容是用户数据；创建、加载与实际执行分别发生。</text>
+<text x="48" y="680" class="small" >事件规则当前支持空调设定温度，未接车内实际温度传感器。</text>
+</svg>

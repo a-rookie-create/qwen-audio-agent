@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="704" viewBox="0 0 1120 704" role="img" aria-labelledby="title">
+<title id="title">导航怎样从一句话变成一条路线？</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1120" height="704" fill="#fff"/>
+<text x="48" y="53" class="heading" >导航怎样从一句话变成一条路线？</text>
+<text x="48" y="88" class="subtitle" >模型表达地点、顺序与偏好；地图服务提供坐标与道路事实。</text>
+
+<path class="edge" d="M456 228H664" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<rect x="504.0" y="182" width="112" height="31" rx="6" fill="#fff"/>
+<text x="560" y="205" class="label" >工具调用</text>
+<path class="edge" d="M868 298V420" stroke="#7766b0"  marker-end="url(#arrow-purple)"/>
+<rect x="799.0" y="340" width="138" height="31" rx="6" fill="#fff"/>
+<text x="868" y="363" class="label" >地图服务调用</text>
+<path class="edge" d="M664 496H456" stroke="#288b7c"  marker-end="url(#arrow-teal)"/>
+<rect x="500.5" y="450" width="119" height="31" rx="6" fill="#fff"/>
+<text x="560" y="473" class="label" >成功后提交</text>
+<g data-card="自然语言导航意图"><rect x="48" y="152" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="180" class="tag" fill="#4277b6">01  用户与实时模型</text>
+<text x="72" y="213" class="node-title" >自然语言导航意图</text>
+<text x="72" y="246" class="body" >先去学校，再去机场</text>
+<text x="72" y="274" class="body" >保留途经顺序与不走高速偏好</text>
+</g>
+<g data-card="导航业务工具"><rect x="664" y="152" width="408" height="146" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="688" y="180" class="tag" fill="#288b7c">02  Service</text>
+<text x="688" y="213" class="node-title" >导航业务工具</text>
+<text x="688" y="246" class="body" >区分搜索、预览、开始与修改</text>
+<text x="688" y="274" class="body" >读取当前路线与统一车辆位置</text>
+</g>
+<g data-card="高德适配与分段规划"><rect x="664" y="420" width="408" height="146" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="688" y="448" class="tag" fill="#7766b0">03  外部服务</text>
+<text x="688" y="481" class="node-title" >高德适配与分段规划</text>
+<text x="688" y="514" class="body" >POI / 地理编码解析地点</text>
+<text x="688" y="542" class="body" >按有序地点序列规划各段路线</text>
+</g>
+<g data-card="路线状态与交互反馈"><rect x="48" y="420" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="448" class="tag" fill="#4277b6">04  结果呈现</text>
+<text x="72" y="481" class="node-title" >路线状态与交互反馈</text>
+<text x="72" y="514" class="body" >保存路线、阶段与地图图层</text>
+<text x="72" y="542" class="body" >UI 展示路线，语音说明里程耗时</text>
+</g>
+<path d="M48 610H1072" stroke="#e2e8f0"/>
+<text x="48" y="641" class="small" >定位默认有 Demo 回退；路线动画不等于真实车辆行驶轨迹。</text>
+<text x="48" y="668" class="small" >地点搜索不自动开始导航，路线偏好不等于车辆当前所在道路。</text>
+</svg>

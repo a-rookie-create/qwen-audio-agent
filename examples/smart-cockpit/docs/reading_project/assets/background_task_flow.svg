@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="972" viewBox="0 0 1120 972" role="img" aria-labelledby="title">
+<title id="title">后台任务怎样完成并回到对话？</title>
+<defs><marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#4277b6"/></marker><marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7766b0"/></marker><marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#288b7c"/></marker><marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#758294"/></marker><style>
+text {font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#243248}
+.heading{font-size:30px;font-weight:650} .subtitle{font-size:19px;fill:#607086}
+.node-title{font-size:24px;font-weight:600} .body{font-size:18px;fill:#4d6077}
+.tag{font-size:15px;font-weight:600} .label{font-size:18px;font-weight:550;text-anchor:middle}
+.small{font-size:17px;fill:#607086} .edge{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+</style></defs>
+<rect width="1120" height="972" fill="#fff"/>
+<text x="48" y="53" class="heading" >后台任务怎样完成并回到对话？</text>
+<text x="48" y="88" class="subtitle" >提交目标后先返回受理信息；后台工具循环独立推进。</text>
+
+<path class="edge" d="M456 228H664" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<rect x="504.0" y="182" width="112" height="31" rx="6" fill="#fff"/>
+<text x="560" y="205" class="label" >异步受理</text>
+<path class="edge" d="M868 298V420" stroke="#7766b0"  marker-end="url(#arrow-purple)"/>
+<rect x="799.0" y="340" width="138" height="31" rx="6" fill="#fff"/>
+<text x="868" y="363" class="label" >A2A 交接</text>
+<path class="edge" d="M664 496H456" stroke="#288b7c"  marker-end="url(#arrow-teal)"/>
+<rect x="504.0" y="450" width="112" height="31" rx="6" fill="#fff"/>
+<text x="560" y="473" class="label" >汇总证据</text>
+<path class="edge" d="M252 566V688" stroke="#7766b0"  marker-end="url(#arrow-purple)"/>
+<rect x="196.0" y="608" width="112" height="31" rx="6" fill="#fff"/>
+<text x="252" y="631" class="label" >任务结果</text>
+<path class="edge" d="M456 764H664" stroke="#4277b6"  marker-end="url(#arrow-blue)"/>
+<rect x="504.0" y="718" width="112" height="31" rx="6" fill="#fff"/>
+<text x="560" y="741" class="label" >对话呈现</text>
+<g data-card="前台委派明确目标"><rect x="48" y="152" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="72" y="180" class="tag" fill="#4277b6">01  前台 Agent</text>
+<text x="72" y="213" class="node-title" >前台委派明确目标</text>
+<text x="72" y="246" class="body" >保留主题、时间范围与约束</text>
+<text x="72" y="274" class="body" >携带本次相关上下文</text>
+</g>
+<g data-card="框架建立异步任务"><rect x="664" y="152" width="408" height="146" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="688" y="180" class="tag" fill="#7766b0">02  编排运行时</text>
+<text x="688" y="213" class="node-title" >框架建立异步任务</text>
+<text x="688" y="246" class="body" >记录任务身份与生命周期</text>
+<text x="688" y="274" class="body" >对话继续，工作独立执行</text>
+</g>
+<g data-card="后台模型与工具循环"><rect x="664" y="420" width="408" height="146" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="688" y="448" class="tag" fill="#7766b0">03  后台 Agent</text>
+<text x="688" y="481" class="node-title" >后台模型与工具循环</text>
+<text x="688" y="514" class="body" >模型选择 → 工具执行 → 结果回填</text>
+<text x="688" y="542" class="body" >依据实际结果继续或结束</text>
+</g>
+<g data-card="完整报告与口播摘要"><rect x="48" y="420" width="408" height="146" rx="16" fill="#eff8f5" stroke="#badace"/>
+<text x="72" y="448" class="tag" fill="#288b7c">04  任务交付</text>
+<text x="72" y="481" class="node-title" >完整报告与口播摘要</text>
+<text x="72" y="514" class="body" >收集实际来源与读取状态</text>
+<text x="72" y="542" class="body" >输出详细 Artifact 和简短摘要</text>
+</g>
+<g data-card="框架安排结果回流"><rect x="48" y="688" width="408" height="146" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+<text x="72" y="716" class="tag" fill="#7766b0">05  结果调度</text>
+<text x="72" y="749" class="node-title" >框架安排结果回流</text>
+<text x="72" y="782" class="body" >接收完成、失败或取消事件</text>
+<text x="72" y="810" class="body" >按当前交互状态安排呈现</text>
+</g>
+<g data-card="客户端展示与播放"><rect x="664" y="688" width="408" height="146" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+<text x="688" y="716" class="tag" fill="#4277b6">06  用户交互</text>
+<text x="688" y="749" class="node-title" >客户端展示与播放</text>
+<text x="688" y="782" class="body" >保留文字结果，播放语音回复</text>
+<text x="688" y="810" class="body" >上报播放开始、结束或取消</text>
+</g>
+<path d="M48 878H1072" stroke="#e2e8f0"/>
+<text x="48" y="909" class="small" >执行器管理预算、取消和超时；取消不自动回滚已成功的业务动作。</text>
+<text x="48" y="936" class="small" >任务完成与结果播放完成是不同状态。</text>
+</svg>

@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1000" viewBox="0 0 1200 1000" role="img" aria-labelledby="title description">
+  <title id="title">智能座舱：实时语音交互与任务分流</title>
+  <desc id="description">用户通过客户端与 Gateway 前台 Agent 交流。前台通过 MCP 直接调用座舱 Service；需后台执行的工作交给编排运行时，经 A2A 提交给后台 Agent。后台使用 Service 工具及检索工具，结果返回前台。Service 通过 HTTP 与 SSE 同步客户端状态。</desc>
+  <defs>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#4277b6"/></marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7766b0"/></marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#288b7c"/></marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#758294"/></marker>
+    <style>
+      text { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; fill: #243248; }
+      .heading { font-size: 32px; font-weight: 650; }
+      .subtitle { font-size: 20px; fill: #607086; }
+      .node-title { font-size: 24px; font-weight: 600; }
+      .body { font-size: 18px; fill: #4d6077; }
+      .small { font-size: 16px; fill: #607086; }
+      .tag { font-size: 15px; font-weight: 600; letter-spacing: .5px; }
+      .edge { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+      .label { font-size: 18px; font-weight: 550; text-anchor: middle; }
+      .label-detail { font-size: 16px; fill: #64748b; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1000" fill="#ffffff"/>
+  <text class="heading" x="48" y="53">智能座舱：实时语音交互与任务分流</text>
+  <text class="subtitle" x="48" y="87">前台保持交流，后台继续工作；两侧共用同一份座舱状态。</text>
+
+  <rect x="422" y="132" width="352" height="496" rx="20" fill="#f4f7fd" stroke="#b7c6dc" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="446" y="166" font-size="23" font-weight="650">Gateway</text>
+  <text class="small" x="572" y="166">复用 qwen-audio-agent</text>
+  <text class="small" x="446" y="188">承载前台会话与编排运行时</text>
+
+  <!-- 对话通道 -->
+  <path class="edge" d="M180 188 V244" stroke="#758294" marker-start="url(#arrow-gray)" marker-end="url(#arrow-gray)"/>
+  <path class="edge" d="M312 304 H446" stroke="#4277b6" marker-start="url(#arrow-blue)" marker-end="url(#arrow-blue)"/>
+  <text class="label" x="377" y="258" fill="#4277b6">GCP / WS</text>
+  <text class="label-detail" x="377" y="280">音频、对话事件</text>
+
+  <!-- 前台委派 / 结果回流 -->
+  <path class="edge" d="M527 362 V440" stroke="#7766b0" marker-end="url(#arrow-purple)"/>
+  <path class="edge" d="M671 440 V362" stroke="#4277b6" marker-end="url(#arrow-blue)"/>
+  <rect x="474" y="386" width="106" height="28" rx="6" fill="#f4f7fd"/>
+  <text class="label" x="527" y="406">异步委派</text>
+  <rect x="618" y="386" width="106" height="28" rx="6" fill="#f4f7fd"/>
+  <text class="label" x="671" y="406">结果回流</text>
+
+  <!-- 后台任务通道 -->
+  <path class="edge" d="M750 518 H908" stroke="#7766b0" marker-start="url(#arrow-purple)" marker-end="url(#arrow-purple)"/>
+  <text class="label" x="829" y="473">A2A</text>
+  <text class="label-detail" x="829" y="497">目标、进度、结果</text>
+
+  <!-- 前后台共用业务工具 -->
+  <path class="edge" d="M446 340 H374 V792 H446" stroke="#288b7c" marker-start="url(#arrow-teal)" marker-end="url(#arrow-teal)"/>
+  <rect x="316" y="640" width="116" height="62" rx="8" fill="#ffffff"/>
+  <text class="label" x="374" y="663">MCP</text>
+  <text class="label-detail" x="374" y="686">前台业务工具</text>
+
+  <path class="edge" d="M966 602 V686 H802 V792 H750" stroke="#288b7c" marker-start="url(#arrow-teal)" marker-end="url(#arrow-teal)"/>
+  <rect x="812" y="655" width="124" height="61" rx="8" fill="#ffffff"/>
+  <text class="label" x="874" y="677">MCP</text>
+  <text class="label-detail" x="874" y="701">后台业务工具</text>
+
+  <!-- 业务状态独立同步到 UI -->
+  <path class="edge" d="M446 852 H180 V424" stroke="#758294" stroke-dasharray="7 5" marker-end="url(#arrow-gray)"/>
+  <rect x="86" y="647" width="188" height="66" rx="8" fill="#ffffff"/>
+  <text class="label" x="180" y="672">HTTP / SSE</text>
+  <text class="label-detail" x="180" y="697">获取快照、推送状态</text>
+
+  <!-- 后台检索能力 -->
+  <path class="edge" d="M1096 602 V734" stroke="#7766b0" marker-start="url(#arrow-purple)" marker-end="url(#arrow-purple)"/>
+  <rect x="1041" y="654" width="110" height="29" rx="6" fill="#ffffff"/>
+  <text class="label" x="1096" y="675">检索工具</text>
+
+  <!-- 用户与客户端 -->
+  <rect x="48" y="108" width="264" height="80" rx="16" fill="#f5f6f8" stroke="#d8dfe8"/>
+  <text class="node-title" x="72" y="143">用户</text>
+  <text class="body" x="72" y="171">说话、打断、继续提问</text>
+
+  <rect x="48" y="244" width="264" height="180" rx="16" fill="#f1f7fd" stroke="#b9d0e9"/>
+  <text class="tag" x="72" y="274" fill="#4277b6">交互入口</text>
+  <text class="node-title" x="72" y="312">座舱客户端</text>
+  <text class="body" x="72" y="345">采集声音、播放回复</text>
+  <text class="body" x="72" y="374">显示座舱与任务状态</text>
+  <text class="small" x="72" y="402">React / Browser Audio</text>
+
+  <!-- Gateway 内的两个逻辑组件 -->
+  <rect x="446" y="202" width="304" height="160" rx="14" fill="#ffffff" stroke="#b9cce5"/>
+  <text class="tag" x="468" y="230" fill="#4277b6">实时交流</text>
+  <text class="node-title" x="468" y="263">前台 Agent</text>
+  <text class="body" x="468" y="294">接入 Realtime 语音模型</text>
+  <text x="468" y="323" font-size="17" fill="#4d6077">理解输入、选择工具、组织回复</text>
+  <text class="small" x="468" y="348">车控 / 导航 / 音乐 / 天气 / 技能</text>
+
+  <rect x="446" y="440" width="304" height="162" rx="14" fill="#ffffff" stroke="#cabfe6"/>
+  <text class="tag" x="468" y="468" fill="#7766b0">异步调度</text>
+  <text class="node-title" x="468" y="502">编排运行时</text>
+  <text class="body" x="468" y="535">管理任务、进度与结果投递</text>
+  <text class="body" x="468" y="564">按交互状态安排结果播报</text>
+  <text class="small" x="468" y="589">框架负责调度，后台负责执行</text>
+
+  <!-- 后台与共享业务基础设施 -->
+  <rect x="908" y="440" width="264" height="162" rx="16" fill="#f6f3fc" stroke="#d0c4e7"/>
+  <text class="tag" x="930" y="468" fill="#7766b0">持续工作</text>
+  <text class="node-title" x="930" y="502">座舱后台 Agent</text>
+  <text class="body" x="930" y="535">模型规划与多步执行</text>
+  <text class="body" x="930" y="564">闪购 / 新闻研究等任务</text>
+  <text class="small" x="930" y="589">Qwen3.8-Flash</text>
+
+  <rect x="446" y="734" width="304" height="150" rx="16" fill="#eff8f5" stroke="#badace"/>
+  <text class="tag" x="468" y="762" fill="#288b7c">共享业务层</text>
+  <text class="node-title" x="468" y="796">座舱 Service</text>
+  <text class="body" x="468" y="829">业务校验、工具执行</text>
+  <text class="body" x="468" y="858">维护统一的座舱状态</text>
+
+  <rect x="908" y="734" width="264" height="150" rx="16" fill="#faf8fd" stroke="#ddd5eb"/>
+  <text class="tag" x="930" y="762" fill="#7766b0">信息获取</text>
+  <text class="node-title" x="930" y="796">搜索与网页读取</text>
+  <text class="body" x="930" y="829">获取资料与来源证据</text>
+  <text class="small" x="930" y="858">框架提供的检索工具</text>
+
+  <path d="M48 926 H1172" stroke="#e2e8f0"/>
+  <text class="small" x="48" y="956">实线：对话、工具或任务交互　　虚线：业务状态同步　　箭头表示信息流向</text>
+  <text class="small" x="48" y="982">按默认领域配置展示；实时模型由 Gateway 连接外部模型服务。</text>
+</svg>
